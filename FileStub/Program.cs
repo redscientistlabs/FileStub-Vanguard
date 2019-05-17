@@ -17,8 +17,8 @@ namespace FileStub
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var frm = new CS_Core_Form();
-            S.SET<CS_Core_Form>(frm);
+            var frm = new MainForm();
+            S.SET<MainForm>(frm);
             Application.Run(frm);
 
         }

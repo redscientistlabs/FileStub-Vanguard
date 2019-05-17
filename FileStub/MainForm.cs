@@ -13,10 +13,10 @@ using Vanguard;
 
 namespace FileStub
 {
-    public partial class CS_Core_Form : Form
+    public partial class MainForm : Form
     {
 
-        public CS_Core_Form()
+        public MainForm()
         {
             InitializeComponent();
             Text += FileWatch.CemuStubVersion;
@@ -44,36 +44,8 @@ namespace FileStub
 
         private void CS_Core_Form_Load(object sender, EventArgs e)
         {
-            cbSelectedGame.SelectedIndex = 0;
-            FileWatch.LoadKnownGames();
         }
 
-        private void CbSelectedGame_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (FileWatch.DontSelectGame)
-                return;
-
-            string selected = cbSelectedGame.SelectedItem.ToString();
-            if (selected == "Autodetect")
-            { 
-
-
-                FileWatch.Start();
-                return;
-            }
-
-            if(!FileWatch.SelectGame(selected))
-            {
-                cbSelectedGame.SelectedIndex = 0;
-                return;
-            }
-
-            if(!VanguardCore.vanguardStarted)
-                VanguardCore.Start();
-            else if (VanguardCore.vanguardConnected)
-                FileWatch.UpdateDomains();
-
-        }
 
         private void BtnSettings_MouseDown(object sender, MouseEventArgs e)
         {
@@ -122,5 +94,6 @@ namespace FileStub
 
             loadMenuItems.Show(this, locate);
         }
+
     }
 }

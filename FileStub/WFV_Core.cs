@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using FileStub;
 using Newtonsoft.Json;
+using RTCV.CorruptCore;
+using static RTCV.CorruptCore.FileInterface;
 
 namespace FileStub
 {
@@ -67,7 +69,7 @@ namespace FileStub
         public static ProgressForm progressForm = null;
 
         //object references
-        public static MemoryInterface currentMemoryInterface = null;
+        public static FileMemoryInterface currentMemoryInterface = null;
 
         //File management
         public static Dictionary<String, String> CompositeFilenameDico = null;

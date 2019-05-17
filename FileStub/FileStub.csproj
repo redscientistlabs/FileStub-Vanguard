@@ -34,8 +34,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ceras, Version=4.0.38.0, Culture=neutral, processorArchitecture=MSIL">
@@ -65,15 +64,13 @@
     <Compile Include="Executor.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileWatch.cs" />
-    <Compile Include="CS_stubForm.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CS_stubForm.Designer.cs">
-      <DependentUpon>CS_stubForm.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Objects.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Objects.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressForm.cs">
       <SubType>Form</SubType>
@@ -90,9 +87,6 @@
     </Compile>
     <Compile Include="VanguardCore.cs" />
     <Compile Include="VanguiardImplementation.cs" />
-    <Compile Include="CS_Objects.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="WFV_Core.cs" />
     <Compile Include="WFV_Enums.cs" />
     <Compile Include="WFV_MainForm.cs">
@@ -101,8 +95,8 @@
     <Compile Include="WFV_MainForm.Designer.cs">
       <DependentUpon>WFV_MainForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="CS_stubForm.resx">
-      <DependentUpon>CS_stubForm.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>

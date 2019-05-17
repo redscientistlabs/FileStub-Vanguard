@@ -19,7 +19,7 @@ namespace FileStub
     public static class FileWatch
     {
         static Timer watch = null;
-        public static string CemuStubVersion = "0.04";
+        public static string CemuStubVersion = "0.01";
         public static string expectedCemuTitle = "Cemu 1.15.6c";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -51,10 +51,6 @@ namespace FileStub
                 RemoveDomains();
 
             FileWatch.currentGameInfo = new CemuGameInfo();
-
-            S.GET<CS_Core_Form>().lbCemuStatus.Text = "Waiting for Cemu";
-            S.GET<CS_Core_Form>().lbTargetedGameId.Text = "";
-            S.GET<CS_Core_Form>().lbTargetedGameRpx.Text = $"No game selected. Cemu Stub will auto-detect and prepare any game you load in {expectedCemuTitle}";
 
             DisableInterface();
             state = CemuState.UNFOUND;
@@ -161,8 +157,6 @@ namespace FileStub
             FileInterface.CompositeFilenameDico.Remove(lastRef.gameName);
             knownGamesDico.Remove(lastRef.gameName);
             SaveKnownGames();
-            S.GET<CS_Core_Form>().cbSelectedGame.SelectedIndex = 0;
-            S.GET<CS_Core_Form>().cbSelectedGame.Items.Remove(lastRef.gameName);
         }
 
         internal static bool SelectGame(string selected = null)
@@ -194,7 +188,6 @@ namespace FileStub
                     }
                     else
                     {
-                        S.GET<CS_Core_Form>().cbSelectedGame.SelectedIndex = 0;
                         return false;
                     }
 
@@ -206,7 +199,6 @@ namespace FileStub
                 }
                 else
                 {
-                    S.GET<CS_Core_Form>().cbSelectedGame.SelectedIndex = 0;
                     return false;
                 }
             }
@@ -220,7 +212,6 @@ namespace FileStub
                 if(result == DialogResult.Yes)
                     UnmodGame();
 
-                S.GET<CS_Core_Form>().cbSelectedGame.SelectedIndex = 0;
                 return false;
             }
 
@@ -228,9 +219,6 @@ namespace FileStub
                 return false;
 
             state = CemuState.READY;
-            S.GET<CS_Core_Form>().lbCemuStatus.Text = "Ready for corrupting";
-            S.GET<CS_Core_Form>().lbTargetedGameRpx.Text = currentGameInfo.gameRpxFileInfo.FullName;
-            S.GET<CS_Core_Form>().lbTargetedGameId.Text = "Game ID: " + currentGameInfo.FirstID + "-" + currentGameInfo.SecondID;
             EnableInterface();
 
             return true;
@@ -264,10 +252,6 @@ namespace FileStub
                 if(!SelectGame())
                     return;
 
-                DontSelectGame = true;
-                S.GET<CS_Core_Form>().cbSelectedGame.Items.Add(currentGameInfo.gameName);
-                S.GET<CS_Core_Form>().cbSelectedGame.SelectedIndex = S.GET<CS_Core_Form>().cbSelectedGame.Items.Count - 1;
-                DontSelectGame = false;
 
                 foreach (CemuGameInfo cgi in knownGamesDico.Values)
                     cgi.cemuExeFile = currentGameInfo.cemuExeFile;
@@ -298,8 +282,6 @@ namespace FileStub
                     knownGamesDico = serializer.Deserialize<Dictionary<string, CemuGameInfo>>(reader);
                 }
 
-                foreach (var key in knownGamesDico.Keys)
-                    S.GET<CS_Core_Form>().cbSelectedGame.Items.Add(key);
             }
             catch (IOException e)
             {
@@ -343,21 +325,17 @@ namespace FileStub
 
                 if (ex is FileNotFoundException && knownGamesDico.ContainsKey(currentGameInfo.gameName))
                 {
-                    var cbSelectedGame = S.GET<CS_Core_Form>().cbSelectedGame;
-                    object selectedItem = cbSelectedGame.SelectedItem;
-                    cbSelectedGame.SelectedIndex = 0;
-
+                    string selectedItem = "REPLACE ME AT SOME POINT";
                     if(MessageBox.Show($"Do you want to remove the entry for {selectedItem}?", "Error lading rpx file", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        cbSelectedGame.Items.Remove(selectedItem);
-                        knownGamesDico.Remove(selectedItem.ToString());
+
                         SaveKnownGames();
                     }
 
                 }
                 else
                 {
-                    S.GET<CS_Core_Form>().cbSelectedGame.SelectedIndex = 0;
+                    //S.GET<MainForm>().cbSelectedGame.SelectedIndex = 0;
                 }
                 return false;
 
@@ -676,7 +654,6 @@ namespace FileStub
 
             if (state == CemuState.UNFOUND && p != null)
             {
-                S.GET<CS_Core_Form>().lbCemuStatus.Text = "Cemu detected, waiting for a loaded game";
                 state = CemuState.RUNNING;
             }
             else if (
@@ -685,7 +662,6 @@ namespace FileStub
                 state != CemuState.READY && 
                 p == null)
             {
-                S.GET<CS_Core_Form>().lbCemuStatus.Text = "Waiting for Cemu";
                 state = CemuState.UNFOUND;
                 DisableInterface();
             }
@@ -748,15 +724,15 @@ namespace FileStub
 
         public static void EnableInterface()
         {
-            S.GET<CS_Core_Form>().btnResetBackup.Enabled = true;
-            S.GET<CS_Core_Form>().btnRestoreBackup.Enabled = true;
+            S.GET<MainForm>().btnResetBackup.Enabled = true;
+            S.GET<MainForm>().btnRestoreBackup.Enabled = true;
             InterfaceEnabled = true;
         }
 
         public static void DisableInterface()
         {
-            S.GET<CS_Core_Form>().btnResetBackup.Enabled = false;
-            S.GET<CS_Core_Form>().btnRestoreBackup.Enabled = false;
+            S.GET<MainForm>().btnResetBackup.Enabled = false;
+            S.GET<MainForm>().btnRestoreBackup.Enabled = false;
             InterfaceEnabled = false;
         }
 

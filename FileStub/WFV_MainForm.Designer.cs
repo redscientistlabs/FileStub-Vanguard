@@ -50,7 +50,6 @@
             this.rbNoExecution = new System.Windows.Forms.RadioButton();
             this.btnEditExec = new System.Windows.Forms.Button();
             this.lbExecution = new System.Windows.Forms.Label();
-            this.cbInjectOnSelect = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.btnEnableCaching = new System.Windows.Forms.Button();
@@ -86,7 +85,7 @@
             this.lbTarget.Location = new System.Drawing.Point(88, 38);
             this.lbTarget.Name = "lbTarget";
             this.lbTarget.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
-            this.lbTarget.Size = new System.Drawing.Size(416, 23);
+            this.lbTarget.Size = new System.Drawing.Size(486, 23);
             this.lbTarget.TabIndex = 12;
             this.lbTarget.Tag = "color:darker";
             this.lbTarget.Text = "No target selected";
@@ -98,7 +97,7 @@
             this.btnRestoreFileBackup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRestoreFileBackup.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnRestoreFileBackup.ForeColor = System.Drawing.Color.GreenYellow;
-            this.btnRestoreFileBackup.Location = new System.Drawing.Point(397, 11);
+            this.btnRestoreFileBackup.Location = new System.Drawing.Point(242, 8);
             this.btnRestoreFileBackup.Name = "btnRestoreFileBackup";
             this.btnRestoreFileBackup.Size = new System.Drawing.Size(107, 23);
             this.btnRestoreFileBackup.TabIndex = 27;
@@ -136,7 +135,7 @@
             this.pnTargetPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTargetPanel.Location = new System.Drawing.Point(0, 0);
             this.pnTargetPanel.Name = "pnTargetPanel";
-            this.pnTargetPanel.Size = new System.Drawing.Size(765, 73);
+            this.pnTargetPanel.Size = new System.Drawing.Size(586, 73);
             this.pnTargetPanel.TabIndex = 39;
             this.pnTargetPanel.Tag = "color:darkest";
             // 
@@ -160,7 +159,7 @@
             this.btnClearAllBackups.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearAllBackups.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnClearAllBackups.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnClearAllBackups.Location = new System.Drawing.Point(509, 38);
+            this.btnClearAllBackups.Location = new System.Drawing.Point(468, 8);
             this.btnClearAllBackups.Name = "btnClearAllBackups";
             this.btnClearAllBackups.Size = new System.Drawing.Size(108, 23);
             this.btnClearAllBackups.TabIndex = 33;
@@ -177,7 +176,7 @@
             this.btnResetBackup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResetBackup.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnResetBackup.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnResetBackup.Location = new System.Drawing.Point(509, 11);
+            this.btnResetBackup.Location = new System.Drawing.Point(354, 8);
             this.btnResetBackup.Name = "btnResetBackup";
             this.btnResetBackup.Size = new System.Drawing.Size(108, 23);
             this.btnResetBackup.TabIndex = 32;
@@ -192,7 +191,7 @@
             this.cbWriteCopyMode.AutoSize = true;
             this.cbWriteCopyMode.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbWriteCopyMode.ForeColor = System.Drawing.Color.White;
-            this.cbWriteCopyMode.Location = new System.Drawing.Point(114, 58);
+            this.cbWriteCopyMode.Location = new System.Drawing.Point(413, 15);
             this.cbWriteCopyMode.Name = "cbWriteCopyMode";
             this.cbWriteCopyMode.Size = new System.Drawing.Size(126, 17);
             this.cbWriteCopyMode.TabIndex = 34;
@@ -208,7 +207,6 @@
             this.pnBottom.Controls.Add(this.lbArgs);
             this.pnBottom.Controls.Add(this.tbArgs);
             this.pnBottom.Controls.Add(this.cbTerminateOnReExec);
-            this.pnBottom.Controls.Add(this.cbWriteCopyMode);
             this.pnBottom.Controls.Add(this.rbExecuteWith);
             this.pnBottom.Controls.Add(this.rbExecuteScript);
             this.pnBottom.Controls.Add(this.rbExecuteOtherProgram);
@@ -216,11 +214,10 @@
             this.pnBottom.Controls.Add(this.rbNoExecution);
             this.pnBottom.Controls.Add(this.btnEditExec);
             this.pnBottom.Controls.Add(this.lbExecution);
-            this.pnBottom.Controls.Add(this.cbInjectOnSelect);
             this.pnBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnBottom.Location = new System.Drawing.Point(0, 368);
+            this.pnBottom.Location = new System.Drawing.Point(0, 230);
             this.pnBottom.Name = "pnBottom";
-            this.pnBottom.Size = new System.Drawing.Size(765, 92);
+            this.pnBottom.Size = new System.Drawing.Size(586, 87);
             this.pnBottom.TabIndex = 40;
             this.pnBottom.Tag = "color:darkest";
             // 
@@ -231,7 +228,7 @@
             this.btnKillProcess.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnKillProcess.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnKillProcess.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnKillProcess.Location = new System.Drawing.Point(528, 30);
+            this.btnKillProcess.Location = new System.Drawing.Point(489, 30);
             this.btnKillProcess.Name = "btnKillProcess";
             this.btnKillProcess.Size = new System.Drawing.Size(87, 23);
             this.btnKillProcess.TabIndex = 55;
@@ -246,7 +243,7 @@
             this.lbArgs.AutoSize = true;
             this.lbArgs.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbArgs.ForeColor = System.Drawing.Color.White;
-            this.lbArgs.Location = new System.Drawing.Point(454, 58);
+            this.lbArgs.Location = new System.Drawing.Point(220, 58);
             this.lbArgs.Name = "lbArgs";
             this.lbArgs.Size = new System.Drawing.Size(29, 13);
             this.lbArgs.TabIndex = 54;
@@ -259,9 +256,9 @@
             this.tbArgs.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbArgs.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.tbArgs.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.tbArgs.Location = new System.Drawing.Point(484, 59);
+            this.tbArgs.Location = new System.Drawing.Point(250, 59);
             this.tbArgs.Name = "tbArgs";
-            this.tbArgs.Size = new System.Drawing.Size(131, 15);
+            this.tbArgs.Size = new System.Drawing.Size(324, 15);
             this.tbArgs.TabIndex = 53;
             this.tbArgs.Tag = "color:darker";
             this.tbArgs.Visible = false;
@@ -273,7 +270,7 @@
             this.cbTerminateOnReExec.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbTerminateOnReExec.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbTerminateOnReExec.ForeColor = System.Drawing.Color.White;
-            this.cbTerminateOnReExec.Location = new System.Drawing.Point(247, 58);
+            this.cbTerminateOnReExec.Location = new System.Drawing.Point(9, 58);
             this.cbTerminateOnReExec.Name = "cbTerminateOnReExec";
             this.cbTerminateOnReExec.Size = new System.Drawing.Size(196, 17);
             this.cbTerminateOnReExec.TabIndex = 48;
@@ -286,7 +283,7 @@
             this.rbExecuteWith.AutoSize = true;
             this.rbExecuteWith.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbExecuteWith.ForeColor = System.Drawing.Color.White;
-            this.rbExecuteWith.Location = new System.Drawing.Point(258, 8);
+            this.rbExecuteWith.Location = new System.Drawing.Point(250, 8);
             this.rbExecuteWith.Name = "rbExecuteWith";
             this.rbExecuteWith.Size = new System.Drawing.Size(90, 17);
             this.rbExecuteWith.TabIndex = 47;
@@ -298,7 +295,7 @@
             this.rbExecuteScript.AutoSize = true;
             this.rbExecuteScript.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbExecuteScript.ForeColor = System.Drawing.Color.White;
-            this.rbExecuteScript.Location = new System.Drawing.Point(501, 8);
+            this.rbExecuteScript.Location = new System.Drawing.Point(485, 8);
             this.rbExecuteScript.Name = "rbExecuteScript";
             this.rbExecuteScript.Size = new System.Drawing.Size(54, 17);
             this.rbExecuteScript.TabIndex = 46;
@@ -312,7 +309,7 @@
             this.rbExecuteOtherProgram.AutoSize = true;
             this.rbExecuteOtherProgram.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbExecuteOtherProgram.ForeColor = System.Drawing.Color.White;
-            this.rbExecuteOtherProgram.Location = new System.Drawing.Point(354, 8);
+            this.rbExecuteOtherProgram.Location = new System.Drawing.Point(342, 8);
             this.rbExecuteOtherProgram.Name = "rbExecuteOtherProgram";
             this.rbExecuteOtherProgram.Size = new System.Drawing.Size(142, 17);
             this.rbExecuteOtherProgram.TabIndex = 45;
@@ -325,7 +322,7 @@
             this.rbExecuteCorruptedFile.AutoSize = true;
             this.rbExecuteCorruptedFile.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.rbExecuteCorruptedFile.ForeColor = System.Drawing.Color.White;
-            this.rbExecuteCorruptedFile.Location = new System.Drawing.Point(114, 8);
+            this.rbExecuteCorruptedFile.Location = new System.Drawing.Point(110, 8);
             this.rbExecuteCorruptedFile.Name = "rbExecuteCorruptedFile";
             this.rbExecuteCorruptedFile.Size = new System.Drawing.Size(137, 17);
             this.rbExecuteCorruptedFile.TabIndex = 44;
@@ -355,7 +352,7 @@
             this.btnEditExec.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEditExec.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnEditExec.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btnEditExec.Location = new System.Drawing.Point(454, 30);
+            this.btnEditExec.Location = new System.Drawing.Point(415, 30);
             this.btnEditExec.Name = "btnEditExec";
             this.btnEditExec.Size = new System.Drawing.Size(67, 23);
             this.btnEditExec.TabIndex = 35;
@@ -373,23 +370,10 @@
             this.lbExecution.Location = new System.Drawing.Point(6, 30);
             this.lbExecution.Name = "lbExecution";
             this.lbExecution.Padding = new System.Windows.Forms.Padding(2, 5, 1, 1);
-            this.lbExecution.Size = new System.Drawing.Size(440, 23);
+            this.lbExecution.Size = new System.Drawing.Size(403, 23);
             this.lbExecution.TabIndex = 42;
             this.lbExecution.Tag = "color:darker";
             this.lbExecution.Text = "No execution set";
-            // 
-            // cbInjectOnSelect
-            // 
-            this.cbInjectOnSelect.AutoSize = true;
-            this.cbInjectOnSelect.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbInjectOnSelect.ForeColor = System.Drawing.Color.White;
-            this.cbInjectOnSelect.Location = new System.Drawing.Point(7, 58);
-            this.cbInjectOnSelect.Name = "cbInjectOnSelect";
-            this.cbInjectOnSelect.Size = new System.Drawing.Size(103, 17);
-            this.cbInjectOnSelect.TabIndex = 41;
-            this.cbInjectOnSelect.TabStop = false;
-            this.cbInjectOnSelect.Text = "Inject on select";
-            this.cbInjectOnSelect.UseVisualStyleBackColor = true;
             // 
             // label9
             // 
@@ -420,7 +404,7 @@
             this.btnEnableCaching.ForeColor = System.Drawing.Color.GreenYellow;
             this.btnEnableCaching.Location = new System.Drawing.Point(220, 10);
             this.btnEnableCaching.Name = "btnEnableCaching";
-            this.btnEnableCaching.Size = new System.Drawing.Size(209, 21);
+            this.btnEnableCaching.Size = new System.Drawing.Size(173, 21);
             this.btnEnableCaching.TabIndex = 35;
             this.btnEnableCaching.TabStop = false;
             this.btnEnableCaching.Tag = "color:darker";
@@ -461,9 +445,10 @@
             this.panel3.Controls.Add(this.label8);
             this.panel3.Controls.Add(this.btnDisableAutoUncorrupt);
             this.panel3.Controls.Add(this.btnEnableCaching);
-            this.panel3.Location = new System.Drawing.Point(12, 80);
+            this.panel3.Controls.Add(this.cbWriteCopyMode);
+            this.panel3.Location = new System.Drawing.Point(0, 72);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(450, 42);
+            this.panel3.Size = new System.Drawing.Size(586, 44);
             this.panel3.TabIndex = 115;
             this.panel3.Tag = "color:darkest";
             // 
@@ -471,8 +456,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(765, 460);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
+            this.ClientSize = new System.Drawing.Size(586, 317);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.pnBottom);
             this.Controls.Add(this.pnTargetPanel);
@@ -516,7 +501,6 @@
         private System.Windows.Forms.Button btnKillProcess;
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.Label lbArgs;
-        private System.Windows.Forms.CheckBox cbInjectOnSelect;
         public System.Windows.Forms.Button btnEnableCaching;
         private System.Windows.Forms.Button btnDisableAutoUncorrupt;
         private System.Windows.Forms.Label label8;
