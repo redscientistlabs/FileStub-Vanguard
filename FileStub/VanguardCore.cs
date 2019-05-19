@@ -120,7 +120,7 @@ namespace Vanguard
             var partial = new PartialSpec("VanguardSpec");
 
             partial[VSPEC.NAME] = "FileStub";
-            partial[VSPEC.SYSTEM] = "Windows File System";
+            partial[VSPEC.SYSTEM] = "FileSystem";
             partial[VSPEC.GAMENAME] = String.Empty;
             partial[VSPEC.SYSTEMPREFIX] = String.Empty;
             partial[VSPEC.OPENROMFILENAME] = String.Empty;

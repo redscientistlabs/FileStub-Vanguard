@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.IO;
 using static RTCV.CorruptCore.FileInterface;
 using RTCV.CorruptCore;
+using Vanguard;
 
 namespace FileStub
 {
@@ -128,7 +129,10 @@ namespace FileStub
                     multipleFiles += "|";
             }
 
-            WFV_Core.currentMemoryInterface = new MultipleFileInterface(multipleFiles);
+            FileWatch.currentFileInfo.targetInterface = new MultipleFileInterface(multipleFiles);
+
+            if (VanguardCore.vanguardConnected)
+                FileWatch.UpdateDomains();
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -189,6 +193,9 @@ namespace FileStub
             }
         }
 
-
+        private void CbLoadAnything_CheckedChanged(object sender, EventArgs e)
+        {
+            MultipleFileInterface.LoadAnything = (sender as CheckBox).Checked;
+        }
     }
 }

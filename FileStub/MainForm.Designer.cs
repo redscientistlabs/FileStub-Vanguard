@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.label5 = new System.Windows.Forms.Label();
             this.pnTarget = new System.Windows.Forms.Panel();
+            this.cbTargetType = new System.Windows.Forms.ComboBox();
+            this.btnUnloadTarget = new System.Windows.Forms.Button();
             this.btnBrowseTarget = new System.Windows.Forms.Button();
             this.lbTarget = new System.Windows.Forms.Label();
             this.btnTargetSettings = new System.Windows.Forms.Button();
@@ -39,6 +41,8 @@
             this.tbArgs = new System.Windows.Forms.TextBox();
             this.lbExecution = new System.Windows.Forms.Label();
             this.pnSideBar = new System.Windows.Forms.Panel();
+            this.lbTargetStatus = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.btnClearAllBackups = new System.Windows.Forms.Button();
             this.pnGlitchHarvesterOpen = new System.Windows.Forms.Panel();
             this.btnRestoreBackup = new System.Windows.Forms.Button();
@@ -48,10 +52,6 @@
             this.pnTargetExecution = new System.Windows.Forms.Panel();
             this.btnEditExec = new System.Windows.Forms.Button();
             this.lbTargetExecution = new System.Windows.Forms.Label();
-            this.btnReleaseTarget = new System.Windows.Forms.Button();
-            this.lbTargetStatus = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbTargetType = new System.Windows.Forms.ComboBox();
             this.pnTarget.SuspendLayout();
             this.pnSideBar.SuspendLayout();
             this.pnTargetExecution.SuspendLayout();
@@ -62,7 +62,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(133, 28);
+            this.label5.Location = new System.Drawing.Point(131, 26);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(88, 15);
             this.label5.TabIndex = 12;
@@ -70,15 +70,54 @@
             // 
             // pnTarget
             // 
+            this.pnTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pnTarget.Controls.Add(this.cbTargetType);
-            this.pnTarget.Controls.Add(this.btnReleaseTarget);
+            this.pnTarget.Controls.Add(this.btnUnloadTarget);
             this.pnTarget.Controls.Add(this.btnBrowseTarget);
             this.pnTarget.Controls.Add(this.lbTarget);
-            this.pnTarget.Location = new System.Drawing.Point(131, 51);
+            this.pnTarget.Location = new System.Drawing.Point(129, 49);
             this.pnTarget.Name = "pnTarget";
-            this.pnTarget.Size = new System.Drawing.Size(359, 73);
+            this.pnTarget.Size = new System.Drawing.Size(359, 108);
             this.pnTarget.TabIndex = 13;
+            // 
+            // cbTargetType
+            // 
+            this.cbTargetType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbTargetType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.cbTargetType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTargetType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbTargetType.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbTargetType.ForeColor = System.Drawing.Color.White;
+            this.cbTargetType.FormattingEnabled = true;
+            this.cbTargetType.Location = new System.Drawing.Point(12, 14);
+            this.cbTargetType.Name = "cbTargetType";
+            this.cbTargetType.Size = new System.Drawing.Size(248, 21);
+            this.cbTargetType.TabIndex = 118;
+            this.cbTargetType.TabStop = false;
+            this.cbTargetType.Tag = "color:normal";
+            this.cbTargetType.SelectedIndexChanged += new System.EventHandler(this.CbTargetType_SelectedIndexChanged);
+            // 
+            // btnUnloadTarget
+            // 
+            this.btnUnloadTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUnloadTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnUnloadTarget.FlatAppearance.BorderSize = 0;
+            this.btnUnloadTarget.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUnloadTarget.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnUnloadTarget.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnUnloadTarget.Location = new System.Drawing.Point(263, 12);
+            this.btnUnloadTarget.Name = "btnUnloadTarget";
+            this.btnUnloadTarget.Size = new System.Drawing.Size(84, 23);
+            this.btnUnloadTarget.TabIndex = 42;
+            this.btnUnloadTarget.TabStop = false;
+            this.btnUnloadTarget.Tag = "color:darker";
+            this.btnUnloadTarget.Text = "Unload";
+            this.btnUnloadTarget.UseVisualStyleBackColor = false;
+            this.btnUnloadTarget.Visible = false;
+            this.btnUnloadTarget.Click += new System.EventHandler(this.BtnReleaseTarget_Click);
             // 
             // btnBrowseTarget
             // 
@@ -99,19 +138,23 @@
             // 
             // lbTarget
             // 
+            this.lbTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.lbTarget.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbTarget.ForeColor = System.Drawing.Color.PaleGoldenrod;
             this.lbTarget.Location = new System.Drawing.Point(87, 39);
             this.lbTarget.Name = "lbTarget";
             this.lbTarget.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
-            this.lbTarget.Size = new System.Drawing.Size(260, 23);
+            this.lbTarget.Size = new System.Drawing.Size(260, 55);
             this.lbTarget.TabIndex = 36;
             this.lbTarget.Tag = "color:darker";
             this.lbTarget.Text = "No target selected";
+            this.lbTarget.Visible = false;
             // 
             // btnTargetSettings
             // 
+            this.btnTargetSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTargetSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnTargetSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnTargetSettings.FlatAppearance.BorderSize = 0;
@@ -119,7 +162,7 @@
             this.btnTargetSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnTargetSettings.ForeColor = System.Drawing.Color.OrangeRed;
             this.btnTargetSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnTargetSettings.Image")));
-            this.btnTargetSettings.Location = new System.Drawing.Point(458, 15);
+            this.btnTargetSettings.Location = new System.Drawing.Point(456, 13);
             this.btnTargetSettings.Name = "btnTargetSettings";
             this.btnTargetSettings.Size = new System.Drawing.Size(32, 32);
             this.btnTargetSettings.TabIndex = 172;
@@ -129,6 +172,7 @@
             // 
             // btnKillProcess
             // 
+            this.btnKillProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnKillProcess.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.btnKillProcess.FlatAppearance.BorderSize = 0;
             this.btnKillProcess.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -142,9 +186,11 @@
             this.btnKillProcess.Tag = "color:darker";
             this.btnKillProcess.Text = "Kill Process";
             this.btnKillProcess.UseVisualStyleBackColor = false;
+            this.btnKillProcess.Click += new System.EventHandler(this.BtnKillProcess_Click);
             // 
             // lbArgs
             // 
+            this.lbArgs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbArgs.AutoSize = true;
             this.lbArgs.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbArgs.ForeColor = System.Drawing.Color.White;
@@ -157,6 +203,8 @@
             // 
             // tbArgs
             // 
+            this.tbArgs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbArgs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.tbArgs.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbArgs.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -170,6 +218,9 @@
             // 
             // lbExecution
             // 
+            this.lbExecution.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbExecution.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.lbExecution.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbExecution.ForeColor = System.Drawing.Color.PaleGoldenrod;
@@ -194,9 +245,30 @@
             this.pnSideBar.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnSideBar.Location = new System.Drawing.Point(0, 0);
             this.pnSideBar.Name = "pnSideBar";
-            this.pnSideBar.Size = new System.Drawing.Size(118, 291);
+            this.pnSideBar.Size = new System.Drawing.Size(118, 313);
             this.pnSideBar.TabIndex = 174;
             this.pnSideBar.Tag = "color:dark3";
+            // 
+            // lbTargetStatus
+            // 
+            this.lbTargetStatus.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbTargetStatus.ForeColor = System.Drawing.Color.White;
+            this.lbTargetStatus.Location = new System.Drawing.Point(9, 37);
+            this.lbTargetStatus.Name = "lbTargetStatus";
+            this.lbTargetStatus.Size = new System.Drawing.Size(110, 44);
+            this.lbTargetStatus.TabIndex = 123;
+            this.lbTargetStatus.Text = "No target selected";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(8, 12);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(48, 19);
+            this.label2.TabIndex = 122;
+            this.label2.Text = "Status";
             // 
             // btnClearAllBackups
             // 
@@ -220,6 +292,7 @@
             this.btnClearAllBackups.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnClearAllBackups.UseVisualStyleBackColor = false;
             this.btnClearAllBackups.Visible = false;
+            this.btnClearAllBackups.Click += new System.EventHandler(this.BtnClearAllBackups_Click);
             // 
             // pnGlitchHarvesterOpen
             // 
@@ -252,6 +325,7 @@
             this.btnRestoreBackup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRestoreBackup.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnRestoreBackup.UseVisualStyleBackColor = false;
+            this.btnRestoreBackup.Click += new System.EventHandler(this.BtnRestoreBackup_Click);
             // 
             // btnResetBackup
             // 
@@ -274,9 +348,12 @@
             this.btnResetBackup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnResetBackup.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnResetBackup.UseVisualStyleBackColor = false;
+            this.btnResetBackup.Click += new System.EventHandler(this.BtnResetBackup_Click);
             // 
             // cbSelectedExecution
             // 
+            this.cbSelectedExecution.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSelectedExecution.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.cbSelectedExecution.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSelectedExecution.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -293,6 +370,7 @@
             // 
             // btnExecutionSettings
             // 
+            this.btnExecutionSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExecutionSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnExecutionSettings.Enabled = false;
             this.btnExecutionSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
@@ -301,7 +379,7 @@
             this.btnExecutionSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnExecutionSettings.ForeColor = System.Drawing.Color.OrangeRed;
             this.btnExecutionSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnExecutionSettings.Image")));
-            this.btnExecutionSettings.Location = new System.Drawing.Point(458, 145);
+            this.btnExecutionSettings.Location = new System.Drawing.Point(456, 168);
             this.btnExecutionSettings.Name = "btnExecutionSettings";
             this.btnExecutionSettings.Size = new System.Drawing.Size(32, 32);
             this.btnExecutionSettings.TabIndex = 177;
@@ -312,6 +390,9 @@
             // 
             // pnTargetExecution
             // 
+            this.pnTargetExecution.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnTargetExecution.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pnTargetExecution.Controls.Add(this.btnEditExec);
             this.pnTargetExecution.Controls.Add(this.cbSelectedExecution);
@@ -320,13 +401,14 @@
             this.pnTargetExecution.Controls.Add(this.tbArgs);
             this.pnTargetExecution.Controls.Add(this.lbArgs);
             this.pnTargetExecution.Enabled = false;
-            this.pnTargetExecution.Location = new System.Drawing.Point(131, 181);
+            this.pnTargetExecution.Location = new System.Drawing.Point(129, 204);
             this.pnTargetExecution.Name = "pnTargetExecution";
             this.pnTargetExecution.Size = new System.Drawing.Size(359, 92);
             this.pnTargetExecution.TabIndex = 176;
             // 
             // btnEditExec
             // 
+            this.btnEditExec.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEditExec.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.btnEditExec.FlatAppearance.BorderSize = 0;
             this.btnEditExec.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -348,73 +430,18 @@
             this.lbTargetExecution.Enabled = false;
             this.lbTargetExecution.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.lbTargetExecution.ForeColor = System.Drawing.Color.White;
-            this.lbTargetExecution.Location = new System.Drawing.Point(133, 159);
+            this.lbTargetExecution.Location = new System.Drawing.Point(131, 182);
             this.lbTargetExecution.Name = "lbTargetExecution";
             this.lbTargetExecution.Size = new System.Drawing.Size(95, 15);
             this.lbTargetExecution.TabIndex = 175;
             this.lbTargetExecution.Text = "Target execution";
-            // 
-            // btnReleaseTarget
-            // 
-            this.btnReleaseTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.btnReleaseTarget.FlatAppearance.BorderSize = 0;
-            this.btnReleaseTarget.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReleaseTarget.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnReleaseTarget.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btnReleaseTarget.Location = new System.Drawing.Point(248, 12);
-            this.btnReleaseTarget.Name = "btnReleaseTarget";
-            this.btnReleaseTarget.Size = new System.Drawing.Size(99, 23);
-            this.btnReleaseTarget.TabIndex = 42;
-            this.btnReleaseTarget.TabStop = false;
-            this.btnReleaseTarget.Tag = "color:darker";
-            this.btnReleaseTarget.Text = "Release Target";
-            this.btnReleaseTarget.UseVisualStyleBackColor = false;
-            this.btnReleaseTarget.Visible = false;
-            this.btnReleaseTarget.Click += new System.EventHandler(this.BtnReleaseTarget_Click);
-            // 
-            // lbTargetStatus
-            // 
-            this.lbTargetStatus.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbTargetStatus.ForeColor = System.Drawing.Color.White;
-            this.lbTargetStatus.Location = new System.Drawing.Point(9, 37);
-            this.lbTargetStatus.Name = "lbTargetStatus";
-            this.lbTargetStatus.Size = new System.Drawing.Size(110, 44);
-            this.lbTargetStatus.TabIndex = 123;
-            this.lbTargetStatus.Text = "No target selected";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(8, 12);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 19);
-            this.label2.TabIndex = 122;
-            this.label2.Text = "Status";
-            // 
-            // cbTargetType
-            // 
-            this.cbTargetType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.cbTargetType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTargetType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbTargetType.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbTargetType.ForeColor = System.Drawing.Color.White;
-            this.cbTargetType.FormattingEnabled = true;
-            this.cbTargetType.Location = new System.Drawing.Point(12, 14);
-            this.cbTargetType.Name = "cbTargetType";
-            this.cbTargetType.Size = new System.Drawing.Size(233, 21);
-            this.cbTargetType.TabIndex = 118;
-            this.cbTargetType.TabStop = false;
-            this.cbTargetType.Tag = "color:normal";
-            this.cbTargetType.SelectedIndexChanged += new System.EventHandler(this.CbTargetType_SelectedIndexChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.ClientSize = new System.Drawing.Size(508, 291);
+            this.ClientSize = new System.Drawing.Size(500, 313);
             this.Controls.Add(this.btnExecutionSettings);
             this.Controls.Add(this.pnTargetExecution);
             this.Controls.Add(this.lbTargetExecution);
@@ -422,10 +449,9 @@
             this.Controls.Add(this.btnTargetSettings);
             this.Controls.Add(this.pnTarget);
             this.Controls.Add(this.label5);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(524, 330);
+            this.MinimumSize = new System.Drawing.Size(516, 352);
             this.Name = "MainForm";
             this.Text = "File Stub ";
             this.Load += new System.EventHandler(this.CS_Core_Form_Load);
@@ -459,7 +485,7 @@
         private System.Windows.Forms.Button btnBrowseTarget;
         public System.Windows.Forms.Label lbTarget;
         private System.Windows.Forms.Button btnEditExec;
-        private System.Windows.Forms.Button btnReleaseTarget;
+        private System.Windows.Forms.Button btnUnloadTarget;
         public System.Windows.Forms.Label lbTargetStatus;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.ComboBox cbTargetType;

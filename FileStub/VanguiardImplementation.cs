@@ -107,7 +107,9 @@ namespace Vanguard
 
                     case REMOTE_PRECORRUPTACTION:
                         //FileWatch.KillCemuProcess();
-                        //FileWatch.RestoreBackup();
+                        FileWatch.TerminateIfNeeded();
+                        FileWatch.RestoreTarget();
+                        //FileWatch.targetInterface?.RestoreBackup();
                         break;
 
                     case REMOTE_POSTCORRUPTACTION:

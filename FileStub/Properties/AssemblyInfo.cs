@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CemuStub")]
+[assembly: AssemblyTitle("FileStub")]
 [assembly: AssemblyDescription("Bridge between Cemu Emulator and RTC")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Redscientist Media")]
-[assembly: AssemblyProduct("CemuStub")]
+[assembly: AssemblyProduct("FileStub")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2acb6ee7-df56-4b84-857c-535f75ce0ca8")]
+[assembly: Guid("2acb6ce7-df56-4b84-857c-535e75ce0cc8")]
 
 // Version information for an assembly consists of the following four values:
 //

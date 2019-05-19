@@ -23,7 +23,8 @@ namespace FileStub
 
             SyncObjectSingleton.SyncObject = this;
 
-            Text += FileWatch.FileStubVersion;
+
+        Text += FileWatch.FileStubVersion;
 
             this.cbSelectedExecution.Items.AddRange(new object[] {
                 ExecutionType.NO_EXECUTION,
@@ -37,6 +38,7 @@ namespace FileStub
                 TargetType.SINGLE_FILE,
                 TargetType.MULTIPLE_FILE_SINGLEDOMAIN,
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN,
+                TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH,
             });
 
         }
@@ -107,11 +109,14 @@ namespace FileStub
                     btnEditExec.Text = "Edit Script";
                     break;
             }
+
+            Executor.RefreshLabel();
+
         }
 
         private void BtnEditExec_Click(object sender, EventArgs e)
         {
-
+            Executor.EditExec();
         }
 
 
@@ -122,10 +127,12 @@ namespace FileStub
             var diff = lbTarget.Location.X - btnBrowseTarget.Location.X;
             originalLbTargetLocation = lbTarget.Location;
             lbTarget.Location = btnBrowseTarget.Location;
+            lbTarget.Visible = true;
+
             btnBrowseTarget.Visible = false;
             originalLbTargetSize = lbTarget.Size;
             lbTarget.Size = new Size(lbTarget.Size.Width + diff, lbTarget.Size.Height);
-            btnReleaseTarget.Visible = true;
+            btnUnloadTarget.Visible = true;
             cbTargetType.Enabled = false;
 
             lbTargetExecution.Enabled = true;
@@ -136,16 +143,17 @@ namespace FileStub
             btnResetBackup.Enabled = true;
             btnClearAllBackups.Enabled = true;
 
-            lbTargetStatus.Text = FileWatch.selectedTarget.ToString() + " target loaded";
+            lbTargetStatus.Text = FileWatch.currentFileInfo.selectedTargetType.ToString() + " target loaded";
         }
 
         public void DisableInterface()
         {
-            btnReleaseTarget.Visible = false;
+            btnUnloadTarget.Visible = false;
             btnBrowseTarget.Visible = true;
             lbTarget.Size = originalLbTargetSize;
             lbTarget.Location = originalLbTargetLocation;
-            cbTargetType.Enabled = false;
+            lbTarget.Visible = false;
+            cbTargetType.Enabled = true;
 
             cbSelectedExecution.SelectedIndex = 0;
             lbTargetExecution.Enabled = false;
@@ -166,8 +174,6 @@ namespace FileStub
 
             if (!VanguardCore.vanguardConnected)
                 VanguardCore.Start();
-            else
-                FileWatch.UpdateDomains();
 
             EnableInterface();
 
@@ -175,14 +181,65 @@ namespace FileStub
 
         private void BtnReleaseTarget_Click(object sender, EventArgs e)
         {
+            FileWatch.CloseTarget();
             DisableInterface();
         }
 
         private void CbTargetType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //if(cbSelectedExecution.SelectedItem.ToString())
-            FileWatch.selectedTarget = cbTargetType.SelectedItem.ToString();
+            FileWatch.currentFileInfo.selectedTargetType = cbTargetType.SelectedItem.ToString();
 
+        }
+
+        private void BtnKillProcess_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("NOT IMPLEMENTED");
+        }
+
+        private void BtnRestoreBackup_Click(object sender, EventArgs e)
+        {
+            FileWatch.currentFileInfo.targetInterface?.RestoreBackup();
+        }
+
+        private void BtnResetBackup_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(
+@"This resets the backup of the current target by using the current data from it.
+If you override a clean backup using a corrupted file,
+you won't be able to restore the original file using it.
+
+Are you sure you want to reset the current target's backup?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            FileWatch.currentFileInfo.targetInterface?.ResetBackup(true);
+
+        }
+
+        private void BtnClearAllBackups_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to clear ALL THE BACKUPS\n from FileStub's cache?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+
+            FileWatch.currentFileInfo.targetInterface?.RestoreBackup();
+
+            foreach (string file in Directory.GetFiles(FileWatch.currentDir + "\\TEMP"))
+            {
+                try
+                {
+                    File.Delete(file);
+                }
+                catch
+                {
+                    MessageBox.Show($"Could not delete file {file}");
+                }
+            }
+
+            FileInterface.CompositeFilenameDico = new Dictionary<string, string>();
+            FileWatch.currentFileInfo.targetInterface?.ResetBackup(false);
+            FileInterface.SaveCompositeFilenameDico();
+            MessageBox.Show("All the backups were cleared.");
         }
     }
 }

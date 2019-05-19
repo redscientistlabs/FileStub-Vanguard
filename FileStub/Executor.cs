@@ -1,4 +1,5 @@
 ﻿using RTCV.CorruptCore;
+using RTCV.NetCore.StaticTools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,9 +18,9 @@ namespace FileStub
 
         public static void EditExec()
         {
-            var gh = WFV_Core.ghForm;
 
-            if (gh.rbExecuteOtherProgram.Checked || gh.rbExecuteWith.Checked)
+            if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM ||
+                FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
                 OpenFileDialog OpenFileDialog1;
                 OpenFileDialog1 = new OpenFileDialog();
@@ -40,7 +41,7 @@ namespace FileStub
                 else
                     return;
             }
-            else if (gh.rbExecuteScript.Checked)
+            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.SCRIPT)
             {
                 MessageBox.Show("UNIMPLEMENTED");
             }
@@ -51,18 +52,16 @@ namespace FileStub
 
         public static void Execute()
         {
-            var gh = WFV_Core.ghForm;
-
             //Hijack no execution for the Netcore executor
-            if (gh.rbNoExecution.Checked)
+            if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.NO_EXECUTION)
             {
 
             }
-            else if (gh.rbExecuteCorruptedFile.Checked)
+            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
             {
-                if (WFV_Core.currentTargetType == "File")
+                if (FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
                 {
-                    var fi = (FileInterface)WFV_Core.currentMemoryInterface;
+                    var fi = (FileInterface)FileWatch.currentFileInfo.targetInterface;
                     //Process.Start(fi.filename);
 
                     string fullPath = fi.Filename;
@@ -73,14 +72,15 @@ namespace FileStub
                     Process.Start(psi);
                 }
                 else
+                    MessageBox.Show("Execution of multiple individual files currently unsupported.");
                     return;
                     
             }
-            else if (gh.rbExecuteWith.Checked)
+            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
                 if (otherProgram != null)
                 {
-                    var fi = (FileInterface)WFV_Core.currentMemoryInterface;
+                    var fi = (FileInterface)FileWatch.currentFileInfo.targetInterface;
                     //Process.Start(otherProgram, "\"" + fi.filename + "\"");
 
                     string fullPath = otherProgram;
@@ -92,9 +92,10 @@ namespace FileStub
 
                 }
                 else
-                    return;
+                    MessageBox.Show("You need to specify a file to execute with the Edit Exec button.");
+                return;
             }
-            else if (gh.rbExecuteOtherProgram.Checked)
+            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM)
             {
                 if (otherProgram != null)
                 {
@@ -104,16 +105,17 @@ namespace FileStub
                     psi.FileName = Path.GetFileName(fullPath);
                     psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
 
-                    if (!string.IsNullOrWhiteSpace(WFV_Core.ghForm.tbArgs.Text))
-                        psi.Arguments = WFV_Core.ghForm.tbArgs.Text.Trim(); ;
+                    if (!string.IsNullOrWhiteSpace(S.GET<MainForm>().tbArgs.Text))
+                        psi.Arguments = S.GET<MainForm>().tbArgs.Text.Trim();
 
                     Process.Start(psi);
 
                 }
                 else
-                    return;
+                    MessageBox.Show("You need to specify a file to execute with the Edit Exec button.");
+                return;
             }
-            else if (gh.rbExecuteScript.Checked)
+            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.SCRIPT)
             {
                 MessageBox.Show("UNIMPLEMENTED");
             }
@@ -121,16 +123,16 @@ namespace FileStub
 
         public static void RefreshLabel()
         {
-            var gh = WFV_Core.ghForm;
+            var gh = S.GET<MainForm>();
 
             gh.lbArgs.Visible = false;
             gh.tbArgs.Visible = false;
 
-            if (gh.rbNoExecution.Checked)
+            if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.NO_EXECUTION)
                 gh.lbExecution.Text = "No execution set";
-            else if (gh.rbExecuteCorruptedFile.Checked)
-                gh.lbExecution.Text = "The target file will be executed after corruption";
-            else if (gh.rbExecuteWith.Checked)
+            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
+                gh.lbExecution.Text = "The target file will be executed";
+            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
                 if (otherProgram == null)
                 {
@@ -141,7 +143,7 @@ namespace FileStub
                     gh.lbExecution.Text = "Target will be executed using " + otherProgram.Substring(otherProgram.LastIndexOf('\\') + 1);
                 }
             }
-            else if (gh.rbExecuteOtherProgram.Checked)
+            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM)
             {
                 gh.lbArgs.Visible = true;
                 gh.tbArgs.Visible = true;
@@ -155,7 +157,7 @@ namespace FileStub
                     gh.lbExecution.Text = otherProgram.Substring(otherProgram.LastIndexOf('\\') + 1) + " will be executed after corruption";
                 }
             }
-            else if (gh.rbExecuteScript.Checked)
+            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.SCRIPT)
             {
                 if (otherProgram == null)
                 {

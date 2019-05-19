@@ -11,38 +11,22 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.IO;
 using Ceras;
-
+using RTCV.CorruptCore;
 
 namespace FileStub
 {
 
     public class FileStubFileInfo
     {
-        internal string targetShortName;
-
-        /*
-public FileInfo gameRpxFileInfo = null;
-public FileInfo cemuExeFile = null;
-public FileInfo[] updateCodeFiles = null;
-public DirectoryInfo gameSaveFolder = null;
-public string rpxFile = null;
-public string gameRpxPath = null;
-public string updateRpxPath = null;
-public string updateCodePath = null;
-public string updateMetaPath = null;
-public string updateRpxLocation = null;
-public string updateRpxCompressed = null;
-public string updateRpxBackup = null;
-public string FirstID = null;
-public string SecondID = null;
-public string fileInterfaceTargetId = null;
-public string gameName = "Autodetect";
-public string updateRpxUncompressedToken = null;
-*/
-
-        public string selectedExecution = null;
-        public bool writeCopyMode = false;
-        internal object targetFullName;
+        internal string targetShortName = "No target";
+        internal string selectedExecution = null;
+        internal bool writeCopyMode = false;
+        internal string targetFullName = "No target";
+        internal FileMemoryInterface targetInterface;
+        internal string selectedTargetType = TargetType.SINGLE_FILE;
+        internal BlastLayer lastBlastLayerBackup = null;
+        internal bool AutoUncorrupt = false;
+        internal bool TerminateBeforeExecution = true;
 
         public override string ToString()
         {
@@ -62,8 +46,9 @@ public string updateRpxUncompressedToken = null;
     public static class TargetType
     {
         public const string SINGLE_FILE = "Single File";
-        public const string MULTIPLE_FILE_SINGLEDOMAIN = "Multiple files as one domain";
-        public const string MULTIPLE_FILE_MULTIDOMAIN = "Multiple files as many domains";
+        public const string MULTIPLE_FILE_SINGLEDOMAIN = "Multiple files (One domain)";
+        public const string MULTIPLE_FILE_MULTIDOMAIN = "Multiple files (Many domains)";
+        public const string MULTIPLE_FILE_MULTIDOMAIN_FULLPATH = "Multiple files (Many domains + Full path)";
     }
     public class LabelPassthrough : Label
     {

@@ -24,13 +24,11 @@ namespace FileStub
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
 
+        public static bool stubInterfaceEnabled = false;
+        public static ProgressForm progressForm;
 
 
-        static FileMemoryInterface targetInterface;
 
-        public static bool InterfaceEnabled = false;
-        internal static string selectedTarget = TargetType.SINGLE_FILE;
-        internal static ProgressForm progressForm;
 
         public static void Start()
         {
@@ -79,19 +77,39 @@ namespace FileStub
 
         private static void RemoveDomains()
         {
-            if(targetInterface != null)
+            if(currentFileInfo.targetInterface != null)
             {
-                targetInterface.CloseStream();
-                targetInterface = null;
+                currentFileInfo.targetInterface.CloseStream();
+                currentFileInfo.targetInterface = null;
             }
 
             UpdateDomains();
         }
 
+        public static void RestoreTarget()
+        {
+            if (FileWatch.currentFileInfo.AutoUncorrupt)
+            {
+                if (FileWatch.currentFileInfo.lastBlastLayerBackup != null)
+                    FileWatch.currentFileInfo.lastBlastLayerBackup.Apply(false);
+                else
+                {
+                    //CHECK CRC WITH BACKUP HERE AND SKIP BACKUP IF WORKING FILE = BACKUP FILE
+                    FileWatch.currentFileInfo.targetInterface.ResetWorkingFile();
+                }
+            }
+            else
+            {
+                FileWatch.currentFileInfo.targetInterface.ResetWorkingFile();
+            }
+        }
+
         internal static bool LoadTarget()
         {
-            if(selectedTarget == TargetType.SINGLE_FILE)
+            if(currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
             {
+                FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
+
                 string filename = null;
 
                 OpenFileDialog OpenFileDialog1;
@@ -109,14 +127,17 @@ namespace FileStub
                     }
 
                     filename = OpenFileDialog1.FileName;
-
-                    //currentTargetId = "File|" + OpenFileDialog1.FileName.ToString();
-                    //currentTargetFullName = OpenFileDialog1.FileName.ToString();
                 }
                 else
                     return false;
 
                 string targetId = "File|" + filename;
+
+                if (currentFileInfo.targetInterface != null)
+                {
+                    RestoreTarget();
+                    currentFileInfo.targetInterface.CloseStream();
+                }
 
                 //Disable caching of the previously loaded file if it was enabled
                 /*
@@ -142,14 +163,18 @@ namespace FileStub
                     if (fi == null || fi.lastMemorySize == null)
                     {
                         MessageBox.Show("Failed to load target");
+                        S.GET<MainForm>().DisableInterface();
                         return;
                     }
 
                     FileWatch.currentFileInfo.targetShortName = fi.ShortFilename;
                     FileWatch.currentFileInfo.targetFullName = fi.Filename;
 
-                    FileWatch.targetInterface = fi;
+                    FileWatch.currentFileInfo.targetInterface = fi;
                     S.GET<MainForm>().lbTarget.Text = targetId + "|MemorySize:" + fi.lastMemorySize.ToString();
+
+                    if(VanguardCore.vanguardConnected)
+                        UpdateDomains();
 
                     //Refresh the UI
                     //RefreshUIPostLoad();
@@ -160,12 +185,80 @@ namespace FileStub
             }
             else //MULTIPLE_FILE
             {
+                switch(currentFileInfo.selectedTargetType)
+                {
+                    case TargetType.MULTIPLE_FILE_SINGLEDOMAIN:
+                        FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
+                            break;
+                    case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
+                        FileInterface.identity = FileInterfaceIdentity.HASHED_PREFIX;
+                        break;
+                    case TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH:
+                        FileInterface.identity = FileInterfaceIdentity.FULL_PATH;
+                        break;
+                }
+
+
+                S.GET<SelectMultipleForm>().Close();
+                var smForm = new SelectMultipleForm();
+                S.SET(smForm);
+
+                if (smForm.ShowDialog() != DialogResult.OK)
+                    return false;
+
+
+
+
+                var mfi = (MultipleFileInterface)FileWatch.currentFileInfo.targetInterface;
+                //currentTargetName = mfi.ShortFilename;
+                S.GET<MainForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
 
             }
 
             return true;
         }
 
+        internal static void TerminateIfNeeded()
+        {
+            if (currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM || 
+                currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH || 
+                currentFileInfo.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
+                if (currentFileInfo.TerminateBeforeExecution && Executor.otherProgram != null)
+                {
+
+                    string otherProgramShortFilename = Path.GetFileName(Executor.otherProgram);
+
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = "taskkill";
+                    startInfo.Arguments = $"/IM \"{otherProgramShortFilename}\"";
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.RedirectStandardError = true;
+                    startInfo.UseShellExecute = false;
+                    startInfo.CreateNoWindow = true;
+
+                    Process processTemp = new Process();
+                    processTemp.StartInfo = startInfo;
+                    processTemp.EnableRaisingEvents = true;
+                    try
+                    {
+                        processTemp.Start();
+                        processTemp.WaitForExit();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+
+                    //Thread.Sleep(300);
+                }
+        }
+
+        internal static void CloseTarget()
+        {
+            currentFileInfo.targetInterface?.CloseStream();
+            currentFileInfo.targetInterface = null;
+            UpdateDomains();
+        }
 
         public static int IndexOf<T>(this T[] haystack, T[] needle)
         {
@@ -191,7 +284,7 @@ namespace FileStub
 
 
                 PartialSpec gameDone = new PartialSpec("VanguardSpec");
-                gameDone[VSPEC.SYSTEM] = "Windows File System";
+                gameDone[VSPEC.SYSTEM] = "FileSystem";
                 gameDone[VSPEC.GAMENAME] = FileWatch.currentFileInfo.targetShortName;
                 gameDone[VSPEC.SYSTEMPREFIX] = "FileStub";
                 gameDone[VSPEC.SYSTEMCORE] = "FileStub";
@@ -222,7 +315,7 @@ namespace FileStub
             try
             {
                 Console.WriteLine($" getInterfaces()");
-                if (targetInterface == null)
+                if (currentFileInfo.targetInterface == null)
                 {
                     Console.WriteLine($"rpxInterface was null!");
                     return new MemoryDomainProxy[] { };
@@ -230,11 +323,21 @@ namespace FileStub
 
                 List<MemoryDomainProxy> interfaces = new List<MemoryDomainProxy>();
 
-                if(selectedTarget != TargetType.MULTIPLE_FILE_MULTIDOMAIN)
-                    interfaces.Add(new MemoryDomainProxy(targetInterface));
-                else
-                    foreach(var fi in (targetInterface as MultipleFileInterface).FileInterfaces)
-                        interfaces.Add(new MemoryDomainProxy(fi));
+                switch (currentFileInfo.selectedTargetType)
+                {   //Checking if the FileInterface/MultiFileInterface is split in sub FileInterfaces 
+
+                    case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
+                    case TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH:
+                        foreach (var fi in (currentFileInfo.targetInterface as MultipleFileInterface).FileInterfaces)
+                            interfaces.Add(new MemoryDomainProxy(fi));
+                        break;
+                    case TargetType.SINGLE_FILE:
+                    case TargetType.MULTIPLE_FILE_SINGLEDOMAIN:
+                    default:
+                        interfaces.Add(new MemoryDomainProxy(currentFileInfo.targetInterface));
+                        break;
+                }
+
 
                 return interfaces.ToArray();
             }
@@ -280,14 +383,14 @@ namespace FileStub
         {
             S.GET<MainForm>().btnResetBackup.Enabled = true;
             S.GET<MainForm>().btnRestoreBackup.Enabled = true;
-            InterfaceEnabled = true;
+            stubInterfaceEnabled = true;
         }
 
         public static void DisableInterface()
         {
             S.GET<MainForm>().btnResetBackup.Enabled = false;
             S.GET<MainForm>().btnRestoreBackup.Enabled = false;
-            InterfaceEnabled = false;
+            stubInterfaceEnabled = false;
         }
 
     }
