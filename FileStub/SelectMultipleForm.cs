@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using static RTCV.CorruptCore.FileInterface;
+using RTCV.CorruptCore;
 
 namespace FileStub
 {
