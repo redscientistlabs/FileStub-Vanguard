@@ -1,6 +1,6 @@
 ﻿namespace FileStub
 {
-    partial class MainForm
+    partial class StubForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StubForm));
             this.label5 = new System.Windows.Forms.Label();
             this.pnTarget = new System.Windows.Forms.Panel();
             this.cbTargetType = new System.Windows.Forms.ComboBox();
@@ -48,7 +48,6 @@
             this.btnRestoreBackup = new System.Windows.Forms.Button();
             this.btnResetBackup = new System.Windows.Forms.Button();
             this.cbSelectedExecution = new System.Windows.Forms.ComboBox();
-            this.btnExecutionSettings = new System.Windows.Forms.Button();
             this.pnTargetExecution = new System.Windows.Forms.Panel();
             this.btnEditExec = new System.Windows.Forms.Button();
             this.lbTargetExecution = new System.Windows.Forms.Label();
@@ -79,7 +78,7 @@
             this.pnTarget.Controls.Add(this.lbTarget);
             this.pnTarget.Location = new System.Drawing.Point(129, 49);
             this.pnTarget.Name = "pnTarget";
-            this.pnTarget.Size = new System.Drawing.Size(359, 108);
+            this.pnTarget.Size = new System.Drawing.Size(359, 122);
             this.pnTarget.TabIndex = 13;
             // 
             // cbTargetType
@@ -146,7 +145,7 @@
             this.lbTarget.Location = new System.Drawing.Point(87, 39);
             this.lbTarget.Name = "lbTarget";
             this.lbTarget.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
-            this.lbTarget.Size = new System.Drawing.Size(260, 55);
+            this.lbTarget.Size = new System.Drawing.Size(260, 72);
             this.lbTarget.TabIndex = 36;
             this.lbTarget.Tag = "color:darker";
             this.lbTarget.Text = "No target selected";
@@ -169,6 +168,7 @@
             this.btnTargetSettings.TabStop = false;
             this.btnTargetSettings.Tag = "color:light1";
             this.btnTargetSettings.UseVisualStyleBackColor = false;
+            this.btnTargetSettings.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnTargetSettings_MouseDown);
             // 
             // btnKillProcess
             // 
@@ -368,26 +368,6 @@
             this.cbSelectedExecution.Tag = "color:normal";
             this.cbSelectedExecution.SelectedIndexChanged += new System.EventHandler(this.CbSelectedExecution_SelectedIndexChanged);
             // 
-            // btnExecutionSettings
-            // 
-            this.btnExecutionSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExecutionSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnExecutionSettings.Enabled = false;
-            this.btnExecutionSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnExecutionSettings.FlatAppearance.BorderSize = 0;
-            this.btnExecutionSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExecutionSettings.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnExecutionSettings.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnExecutionSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnExecutionSettings.Image")));
-            this.btnExecutionSettings.Location = new System.Drawing.Point(456, 168);
-            this.btnExecutionSettings.Name = "btnExecutionSettings";
-            this.btnExecutionSettings.Size = new System.Drawing.Size(32, 32);
-            this.btnExecutionSettings.TabIndex = 177;
-            this.btnExecutionSettings.TabStop = false;
-            this.btnExecutionSettings.Tag = "color:light1";
-            this.btnExecutionSettings.UseVisualStyleBackColor = false;
-            this.btnExecutionSettings.Visible = false;
-            // 
             // pnTargetExecution
             // 
             this.pnTargetExecution.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -442,7 +422,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.ClientSize = new System.Drawing.Size(500, 313);
-            this.Controls.Add(this.btnExecutionSettings);
             this.Controls.Add(this.pnTargetExecution);
             this.Controls.Add(this.lbTargetExecution);
             this.Controls.Add(this.pnSideBar);
@@ -454,7 +433,7 @@
             this.MinimumSize = new System.Drawing.Size(516, 352);
             this.Name = "MainForm";
             this.Text = "File Stub ";
-            this.Load += new System.EventHandler(this.CS_Core_Form_Load);
+            this.Load += new System.EventHandler(this.StubForm_Load);
             this.pnTarget.ResumeLayout(false);
             this.pnSideBar.ResumeLayout(false);
             this.pnSideBar.PerformLayout();
@@ -479,7 +458,6 @@
         public System.Windows.Forms.Button btnResetBackup;
         private System.Windows.Forms.Button btnKillProcess;
         public System.Windows.Forms.ComboBox cbSelectedExecution;
-        public System.Windows.Forms.Button btnExecutionSettings;
         private System.Windows.Forms.Panel pnTargetExecution;
         public System.Windows.Forms.Label lbTargetExecution;
         private System.Windows.Forms.Button btnBrowseTarget;

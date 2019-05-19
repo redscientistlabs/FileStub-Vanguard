@@ -14,10 +14,10 @@ using Vanguard;
 
 namespace FileStub
 {
-    public partial class MainForm : Form
+    public partial class StubForm : Form
     {
 
-        public MainForm()
+        public StubForm()
         {
             InitializeComponent();
 
@@ -49,7 +49,7 @@ namespace FileStub
         }
 
 
-        private void CS_Core_Form_Load(object sender, EventArgs e)
+        private void StubForm_Load(object sender, EventArgs e)
         {
             cbSelectedExecution.SelectedIndex = 0;
             cbTargetType.SelectedIndex = 0;
@@ -76,7 +76,6 @@ namespace FileStub
 
         private void CbSelectedExecution_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if(cbSelectedExecution.SelectedItem.ToString())
             string selected = cbSelectedExecution.SelectedItem.ToString();
 
             FileWatch.currentFileInfo.selectedExecution = selected;
@@ -139,7 +138,6 @@ namespace FileStub
 
             lbTargetExecution.Enabled = true;
             pnTargetExecution.Enabled = true;
-            btnExecutionSettings.Visible = true;
 
             btnRestoreBackup.Enabled = true;
             btnResetBackup.Enabled = true;
@@ -160,7 +158,6 @@ namespace FileStub
             cbSelectedExecution.SelectedIndex = 0;
             lbTargetExecution.Enabled = false;
             pnTargetExecution.Enabled = false;
-            btnExecutionSettings.Visible = false;
 
             btnRestoreBackup.Enabled = false;
             btnResetBackup.Enabled = false;
@@ -244,6 +241,16 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             FileWatch.currentFileInfo.targetInterface?.ResetBackup(false);
             FileInterface.SaveCompositeFilenameDico();
             MessageBox.Show("All the backups were cleared.");
+        }
+
+        private void BtnTargetSettings_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void BtnExecutionSettings_MouseDown(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }
