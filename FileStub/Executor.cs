@@ -52,6 +52,8 @@ namespace FileStub
 
         public static void Execute()
         {
+            string args = S.GET<MainForm>().tbArgs.Text;
+
             //Hijack no execution for the Netcore executor
             if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.NO_EXECUTION)
             {
@@ -68,32 +70,52 @@ namespace FileStub
                     ProcessStartInfo psi = new ProcessStartInfo();
                     psi.FileName = Path.GetFileName(fullPath);
                     psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
-                    //psi.Arguments = "p1=hardCodedv1 p2=" + MakeParameter();
+
+                    if (!string.IsNullOrWhiteSpace(args))
+                        psi.Arguments = args;
+
                     Process.Start(psi);
                 }
                 else
-                    MessageBox.Show("Execution of multiple individual files currently unsupported.");
+                {
+                    MessageBox.Show("Execution of multiple individual files currently unsupported. Use Execute other program.");
                     return;
+                }
                     
             }
             else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
                 if (otherProgram != null)
                 {
-                    var fi = (FileInterface)FileWatch.currentFileInfo.targetInterface;
-                    //Process.Start(otherProgram, "\"" + fi.filename + "\"");
+                    if (FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+                    {
+                        var fi = (FileInterface)FileWatch.currentFileInfo.targetInterface;
+                        //Process.Start(otherProgram, "\"" + fi.filename + "\"");
 
-                    string fullPath = otherProgram;
-                    ProcessStartInfo psi = new ProcessStartInfo();
-                    psi.FileName = Path.GetFileName(fullPath);
-                    psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
-                    psi.Arguments = "\"" + fi.Filename + "\"";
-                    Process.Start(psi);
+                        string fullPath = otherProgram;
+                        ProcessStartInfo psi = new ProcessStartInfo();
+                        psi.FileName = Path.GetFileName(fullPath);
+                        psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
+                        psi.Arguments = "\"" + fi.Filename + "\"";
+
+                        if (!string.IsNullOrWhiteSpace(args))
+                            psi.Arguments = " " + args;
+
+                        Process.Start(psi);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Execution of multiple individual files currently unsupported. Use Execute other program.");
+                        return;
+                    }
 
                 }
                 else
+                { 
                     MessageBox.Show("You need to specify a file to execute with the Edit Exec button.");
-                return;
+                    return;
+                }
+
             }
             else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM)
             {
@@ -105,8 +127,8 @@ namespace FileStub
                     psi.FileName = Path.GetFileName(fullPath);
                     psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
 
-                    if (!string.IsNullOrWhiteSpace(S.GET<MainForm>().tbArgs.Text))
-                        psi.Arguments = S.GET<MainForm>().tbArgs.Text.Trim();
+                    if (!string.IsNullOrWhiteSpace(args))
+                        psi.Arguments = args;
 
                     Process.Start(psi);
 

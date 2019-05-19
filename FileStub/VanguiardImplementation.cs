@@ -107,7 +107,7 @@ namespace Vanguard
 
                     case REMOTE_PRECORRUPTACTION:
                         //FileWatch.KillCemuProcess();
-                        FileWatch.TerminateIfNeeded();
+                        FileWatch.KillProcess();
                         FileWatch.RestoreTarget();
                         //FileWatch.targetInterface?.RestoreBackup();
                         break;
@@ -117,6 +117,7 @@ namespace Vanguard
                             //var fileName = advancedMessage.objectValue as String;
                             SyncObjectSingleton.FormExecute((o, ea) =>
                             {
+                                Executor.Execute();
                                 //FileWatch.StartRpx();
                                 //VanguardCore.LoadRom_NET(fileName);
                             });
@@ -128,6 +129,7 @@ namespace Vanguard
                         {
                             SyncObjectSingleton.FormExecute((o, ea) =>
                             {
+                                FileWatch.KillProcess();
                                 //FileWatch.KillCemuProcess();
                             });
                         }

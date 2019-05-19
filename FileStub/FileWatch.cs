@@ -218,7 +218,7 @@ namespace FileStub
             return true;
         }
 
-        internal static void TerminateIfNeeded()
+        internal static void KillProcess()
         {
             if (currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM || 
                 currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH || 

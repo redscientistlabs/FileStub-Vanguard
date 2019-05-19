@@ -194,7 +194,7 @@ namespace FileStub
 
         private void BtnKillProcess_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("NOT IMPLEMENTED");
+            FileWatch.KillProcess();
         }
 
         private void BtnRestoreBackup_Click(object sender, EventArgs e)
