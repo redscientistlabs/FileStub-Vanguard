@@ -69,7 +69,7 @@ namespace Vanguard
                     case REMOTE_ALLSPECSSENT:
                         {
                             //We still need to set the emulator's path
-                            AllSpec.VanguardSpec.Update(VSPEC.EMUDIR, FileWatch.currentFileInfo.targetFullName);
+                            AllSpec.VanguardSpec.Update(VSPEC.EMUDIR, FileWatch.currentDir);
                             SyncObjectSingleton.FormExecute((o, ea) =>
                             {
                                 FileWatch.UpdateDomains();
@@ -108,6 +108,7 @@ namespace Vanguard
                     case REMOTE_PRECORRUPTACTION:
                         //FileWatch.KillCemuProcess();
                         FileWatch.KillProcess();
+                        FileWatch.currentFileInfo.targetInterface.CloseStream();
                         FileWatch.RestoreTarget();
                         //FileWatch.targetInterface?.RestoreBackup();
                         break;

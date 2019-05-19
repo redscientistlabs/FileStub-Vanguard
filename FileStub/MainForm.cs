@@ -53,6 +53,8 @@ namespace FileStub
         {
             cbSelectedExecution.SelectedIndex = 0;
             cbTargetType.SelectedIndex = 0;
+
+            FileWatch.Start();
         }
 
         public void RunProgressBar(string progressLabel, int maxProgress, Action<object, EventArgs> action, Action<object, EventArgs> postAction = null)
@@ -169,6 +171,7 @@ namespace FileStub
 
         private void BtnBrowseTarget_Click(object sender, EventArgs e)
         {
+
             if (!FileWatch.LoadTarget())
                 return;
 
@@ -199,6 +202,7 @@ namespace FileStub
 
         private void BtnRestoreBackup_Click(object sender, EventArgs e)
         {
+            FileWatch.currentFileInfo.targetInterface?.CloseStream();
             FileWatch.currentFileInfo.targetInterface?.RestoreBackup();
         }
 

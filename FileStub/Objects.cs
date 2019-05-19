@@ -27,6 +27,7 @@ namespace FileStub
         internal BlastLayer lastBlastLayerBackup = null;
         internal bool AutoUncorrupt = false;
         internal bool TerminateBeforeExecution = true;
+        internal bool useAutomaticBackups = true;
 
         public override string ToString()
         {

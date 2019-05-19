@@ -18,8 +18,7 @@ namespace FileStub
 {
     public static class FileWatch
     {
-        static Timer watch = null;
-        public static string FileStubVersion = "0.01";
+        public static string FileStubVersion = "0.02";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
@@ -32,11 +31,6 @@ namespace FileStub
 
         public static void Start()
         {
-            if (watch != null)
-            {
-                watch.Stop();
-                watch = null;
-            }
 
             if (VanguardCore.vanguardConnected)
                 RemoveDomains();
@@ -45,6 +39,8 @@ namespace FileStub
 
             DisableInterface();
             //state = TargetType.UNFOUND;
+
+            CorruptCore.EmuDirOverride = true; //allows the use of this value before vanguard is connected
 
 
             string tempPath = Path.Combine(FileWatch.currentDir, "TEMP");
@@ -70,7 +66,7 @@ namespace FileStub
             }
 
             //If we can't load the dictionary, quit the wgh to prevent the loss of backups
-            if (!LoadCompositeFilenameDico())
+            if (!FileInterface.LoadCompositeFilenameDico(FileWatch.currentDir))
                 Application.Exit();
 
         }
@@ -349,33 +345,6 @@ namespace FileStub
                 return new MemoryDomainProxy[] { };
             }
 
-        }
-
-
-        public static bool LoadCompositeFilenameDico()
-        {
-            JsonSerializer serializer = new JsonSerializer();
-            string filemapPath = Path.Combine(FileWatch.currentDir, "TEMP", "filemap.json");
-            if (!File.Exists(filemapPath))
-            {
-                FileInterface.CompositeFilenameDico = new Dictionary<string, string>();
-                return true;
-            }
-            try
-            {
-
-                using (StreamReader sw = new StreamReader(filemapPath))
-                using (JsonTextReader reader = new JsonTextReader(sw))
-                {
-                    FileInterface.CompositeFilenameDico = serializer.Deserialize<Dictionary<string, string>>(reader);
-                }
-            }
-            catch (IOException e)
-            {
-                MessageBox.Show("Unable to access the filemap! Figure out what's locking it and then restart the WGH.\n" + e.ToString());
-                return false;
-            }
-            return true;
         }
 
 
