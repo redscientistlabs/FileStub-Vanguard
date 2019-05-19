@@ -52,7 +52,7 @@ namespace FileStub
 
         public static void Execute()
         {
-            string args = S.GET<MainForm>().tbArgs.Text;
+            string args = S.GET<StubForm>().tbArgs.Text;
 
             //Hijack no execution for the Netcore executor
             if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.NO_EXECUTION)
@@ -145,7 +145,7 @@ namespace FileStub
 
         public static void RefreshLabel()
         {
-            var gh = S.GET<MainForm>();
+            var gh = S.GET<StubForm>();
 
             gh.lbArgs.Visible = false;
             gh.tbArgs.Visible = false;

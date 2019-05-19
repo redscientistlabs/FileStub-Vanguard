@@ -159,7 +159,7 @@ namespace FileStub
                     if (fi == null || fi.lastMemorySize == null)
                     {
                         MessageBox.Show("Failed to load target");
-                        S.GET<MainForm>().DisableInterface();
+                        S.GET<StubForm>().DisableInterface();
                         return;
                     }
 
@@ -167,7 +167,7 @@ namespace FileStub
                     FileWatch.currentFileInfo.targetFullName = fi.Filename;
 
                     FileWatch.currentFileInfo.targetInterface = fi;
-                    S.GET<MainForm>().lbTarget.Text = targetId + "|MemorySize:" + fi.lastMemorySize.ToString();
+                    S.GET<StubForm>().lbTarget.Text = targetId + "|MemorySize:" + fi.lastMemorySize.ToString();
 
                     if(VanguardCore.vanguardConnected)
                         UpdateDomains();
@@ -176,7 +176,7 @@ namespace FileStub
                     //RefreshUIPostLoad();
                 };
 
-                S.GET<MainForm>().RunProgressBar($"Loading target...", 0, action, postAction);
+                S.GET<StubForm>().RunProgressBar($"Loading target...", 0, action, postAction);
 
             }
             else //MULTIPLE_FILE
@@ -207,7 +207,7 @@ namespace FileStub
 
                 var mfi = (MultipleFileInterface)FileWatch.currentFileInfo.targetInterface;
                 //currentTargetName = mfi.ShortFilename;
-                S.GET<MainForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
+                S.GET<StubForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
 
             }
 
@@ -350,15 +350,15 @@ namespace FileStub
 
         public static void EnableInterface()
         {
-            S.GET<MainForm>().btnResetBackup.Enabled = true;
-            S.GET<MainForm>().btnRestoreBackup.Enabled = true;
+            S.GET<StubForm>().btnResetBackup.Enabled = true;
+            S.GET<StubForm>().btnRestoreBackup.Enabled = true;
             stubInterfaceEnabled = true;
         }
 
         public static void DisableInterface()
         {
-            S.GET<MainForm>().btnResetBackup.Enabled = false;
-            S.GET<MainForm>().btnRestoreBackup.Enabled = false;
+            S.GET<StubForm>().btnResetBackup.Enabled = false;
+            S.GET<StubForm>().btnRestoreBackup.Enabled = false;
             stubInterfaceEnabled = false;
         }
 

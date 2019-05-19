@@ -77,152 +77,49 @@ namespace Vanguard
                         }
                         break;
                     case SAVESAVESTATE:
-                        SyncObjectSingleton.FormExecute((o, ea) =>
-                        {
-                            //e.setReturnValue(VanguardCore.SaveSavestate_NET(advancedMessage.objectValue as string));
-                            e.setReturnValue("");
-                        });
+                        e.setReturnValue("");
                         break;
 
                     case LOADSAVESTATE:
-                        {
-                            
-                            /*
-                            var cmd = advancedMessage.objectValue as object[];
-                            var path = cmd[0] as string;
-                            var location = (StashKeySavestateLocation)cmd[1];
-                            SyncObjectSingleton.FormExecute((o, ea) =>
-                            {
-                                e.setReturnValue(VanguardCore.LoadSavestate_NET(path, location));
-                            });
-                            */
-
-                            e.setReturnValue(true);
-                            break;
-                        }
-
-                    case REMOTE_LOADROM:
-                            //skip
+                        e.setReturnValue(true);
                         break;
 
                     case REMOTE_PRECORRUPTACTION:
-                        //FileWatch.KillCemuProcess();
                         FileWatch.KillProcess();
                         FileWatch.currentFileInfo.targetInterface.CloseStream();
                         FileWatch.RestoreTarget();
-                        //FileWatch.targetInterface?.RestoreBackup();
                         break;
 
                     case REMOTE_POSTCORRUPTACTION:
+                        //var fileName = advancedMessage.objectValue as String;
+                        SyncObjectSingleton.FormExecute((o, ea) =>
                         {
-                            //var fileName = advancedMessage.objectValue as String;
-                            SyncObjectSingleton.FormExecute((o, ea) =>
-                            {
-                                Executor.Execute();
-                                //FileWatch.StartRpx();
-                                //VanguardCore.LoadRom_NET(fileName);
-                            });
-
-                        }
+                            Executor.Execute();
+                        });
                         break;
 
                     case REMOTE_CLOSEGAME:
+                        SyncObjectSingleton.FormExecute((o, ea) =>
                         {
-                            SyncObjectSingleton.FormExecute((o, ea) =>
-                            {
-                                FileWatch.KillProcess();
-                                //FileWatch.KillCemuProcess();
-                            });
-                        }
+                            FileWatch.KillProcess();
+                        });
                         break;
 
                     case REMOTE_DOMAIN_GETDOMAINS:
                         SyncObjectSingleton.FormExecute((o, ea) =>
                         {
                             e.setReturnValue(FileWatch.GetInterfaces());
-                            
                         });
                         break;
 
-                    case REMOTE_KEY_SETSYNCSETTINGS:
-                        SyncObjectSingleton.FormExecute((o, ea) =>
-                        {
-                            //Hooks.BIZHAWK_GETSET_SYNCSETTINGS = (string)advancedMessage.objectValue;
-                        });
-                        break;
-
-                    case REMOTE_KEY_SETSYSTEMCORE:
-                        {
-                            /*
-                            var cmd = advancedMessage.objectValue as object[];
-                            var systemName = (string)cmd[0];
-                            var systemCore = (string)cmd[1];
-                            SyncObjectSingleton.FormExecute((o, ea) =>
-                            {
-                                Hooks.BIZHAWK_SET_SYSTEMCORE(systemName, systemCore);
-                            });
-                            */
-                        }
-                        break;
-
-                    case EMU_OPEN_HEXEDITOR_ADDRESS:
-                        {
-                            /*
-                            var temp = advancedMessage.objectValue as object[];
-                            string domain = (string)temp[0];
-                            long address = (long)temp[1];
-
-                            MemoryDomainProxy mdp = MemoryDomains.GetProxy(domain, address);
-                            long realAddress = MemoryDomains.GetRealAddress(domain, address);
-
-                            SyncObjectSingleton.FormExecute((o, ea) =>
-                            {
-                                Hooks.BIZHAWK_OPEN_HEXEDITOR_ADDRESS(mdp, realAddress);
-                            });
-                            */
-                            break;
-                            
-                        }
                     case REMOTE_EVENT_EMU_MAINFORM_CLOSE:
                         SyncObjectSingleton.FormExecute((o, ea) =>
                         {
                             Environment.Exit(0);
                         });
                         break;
-                    case REMOTE_RENDER_START:
-                        SyncObjectSingleton.FormExecute((o, ea) =>
-                        {
-                            //Render.StartRender_NET();
-                        });
-                        break;
-
-                    case REMOTE_RENDER_STOP:
-                        SyncObjectSingleton.FormExecute((o, ea) =>
-                        {
-                            //Render.StopRender_NET();
-                        });
-                        break;
-
-                    case REMOTE_EVENT_EMUSTARTED:
-                        //if (RTC_StockpileManager.BackupedState == null)
-                        //S.GET<RTC_Core_Form>().AutoCorrupt = false;
-
-
-                        //Todo
-                        //RTC_NetcoreImplementation.SendCommandToBizhawk(new RTC_Command("REMOTE_PUSHVMDS) { objectValue = MemoryDomains.VmdPool.Values.Select(it => (it as VirtualMemoryDomain).Proto).ToArray() }, true, true);
-
-                        //Thread.Sleep(100);
-
-                        //		if (RTC_StockpileManager.BackupedState != null)
-                        //			S.GET<RTC_MemoryDomains_Form>().RefreshDomainsAndKeepSelected(RTC_StockpileManager.BackupedState.SelectedDomains.ToArray());
-
-                        //		if (S.GET<RTC_Core_Form>().cbUseGameProtection.Checked)
-                        //			RTC_GameProtection.Start();
-
-                        break;
                     case REMOTE_ISNORMALADVANCE:
                         e.setReturnValue(true);
-                        //e.setReturnValue(Hooks.isNormalAdvance);
                         break;
 
                     case REMOTE_EVENT_CLOSEEMULATOR:
@@ -236,52 +133,6 @@ namespace Vanguard
                     throw new RTCV.NetCore.AbortEverythingException();
             }
         }
-
-        /*
-        public class BizhawkMemoryDomain : IMemoryDomain
-        {
-            public MemoryDomain MD;
-            public string Name => MD.Name;
-            private long size => MD.Size;
-
-            public long Size
-            {
-                get
-                {
-                    //Bizhawk always displays 8MB of ram even if only 4 are in use.
-                    if (Global.Emulator is N64 && !(Global.Emulator as N64).UsingExpansionSlot && Name == "RDRAM")
-                        return size / 2;
-                    return size;
-                }
-            }
-
-            public int WordSize => MD.WordSize;
-            public bool BigEndian => MD.EndianType == MemoryDomain.Endian.Big;
-
-            public BizhawkMemoryDomain(MemoryDomain md)
-            {
-                MD = md;
-            }
-
-            public byte PeekByte(long addr)
-            {
-                //Ensure we stay within range
-                return addr <= MD.Size - 1 ? MD.PeekByte(addr) : (byte)0;
-            }
-
-            public void PokeByte(long addr, byte val)
-            {
-                if (addr <= MD.Size - 1)
-                    MD.PokeByte(addr, val);
-            }
-
-            public override string ToString()
-            {
-                return MD.Name;
-            }
-
-        }
-        */
 
     }
 }

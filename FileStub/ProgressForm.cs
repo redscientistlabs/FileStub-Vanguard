@@ -23,7 +23,7 @@ namespace FileStub
         {
             InitializeComponent();
 
-            BackColor = S.GET<MainForm>().BackColor;
+            BackColor = S.GET<StubForm>().BackColor;
 
             bw.WorkerReportsProgress = true;
             bw.WorkerSupportsCancellation = true;
@@ -42,9 +42,9 @@ namespace FileStub
             postAction = postActionRegistrant;
 
             TopLevel = false;
-            Size = S.GET<MainForm>().Size;
+            Size = S.GET<StubForm>().Size;
 
-            S.GET<MainForm>().Controls.Add(this);
+            S.GET<StubForm>().Controls.Add(this);
             Anchor = (AnchorStyles)(AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom);
             Show();
             BringToFront();

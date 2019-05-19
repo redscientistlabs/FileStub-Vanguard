@@ -177,7 +177,7 @@ namespace Vanguard
             vanguardStarted = true;
 
             //Grab an object on the main thread to use for netcore invokes
-            SyncObjectSingleton.SyncObject = S.GET<MainForm>();
+            SyncObjectSingleton.SyncObject = S.GET<StubForm>();
             SyncObjectSingleton.EmuThreadIsMainThread = true;
 
             //Start everything
@@ -186,7 +186,7 @@ namespace Vanguard
             CorruptCore.StartEmuSide();
 
             //Refocus on Bizhawk
-            S.GET<MainForm>().Focus();
+            S.GET<StubForm>().Focus();
 
             //If it's attached, lie to vanguard
             if (VanguardCore.attached)

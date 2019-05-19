@@ -1,5 +1,4 @@
-!*
-WindowsGlitchHarvester/bin/*
-WindowsGlitchHarvester/obj/*
 .vs/*
+CemuStub/bin/*
+CemuStub/obj/*
 packages/*
