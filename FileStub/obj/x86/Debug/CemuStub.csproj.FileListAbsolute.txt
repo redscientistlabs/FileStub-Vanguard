@@ -1,4 +1,0 @@
-C:\Users\philt\Documents\PROJECTS\CemuStub-Vanguard\CemuStub\obj\x86\Debug\CemuStub.CS_Core_Form.resources
-C:\Users\philt\Documents\PROJECTS\CemuStub-Vanguard\CemuStub\obj\x86\Debug\CemuStub.Properties.Resources.resources
-C:\Users\philt\Documents\PROJECTS\CemuStub-Vanguard\CemuStub\obj\x86\Debug\CemuStub.csproj.GenerateResource.cache
-C:\Users\philt\Documents\PROJECTS\CemuStub-Vanguard\CemuStub\obj\x86\Debug\CemuStub.csproj.CoreCompileInputs.cache
