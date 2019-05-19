@@ -20,7 +20,6 @@ namespace FileStub
     {
         static Timer watch = null;
         public static string CemuStubVersion = "0.01";
-        public static string expectedCemuTitle = "Cemu 1.15.6c";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public static Dictionary<string, CemuGameInfo> knownGamesDico = new Dictionary<string, CemuGameInfo>();
@@ -28,16 +27,16 @@ namespace FileStub
 
         public static bool DontSelectGame = false;
 
-        static CemuState state = CemuState.UNFOUND;
+        public static string selectedExecution;
 
         static Process cemuProcess = null;
         internal static bool writeCopyMode = false;
-
-        static FileInterface rpxInterface;
+        private static string targetName;
+        static FileInterface targetInterface;
 
         public static bool InterfaceEnabled = false;
-
-
+        internal static string selectedTarget = TargetType.SINGLE_FILE;
+        internal static ProgressForm progressForm;
 
         public static void Start()
         {
@@ -53,7 +52,7 @@ namespace FileStub
             FileWatch.currentGameInfo = new CemuGameInfo();
 
             DisableInterface();
-            state = CemuState.UNFOUND;
+            //state = TargetType.UNFOUND;
 
 
             string tempPath = Path.Combine(FileWatch.currentDir, "TEMP");
@@ -82,10 +81,6 @@ namespace FileStub
             if (!LoadCompositeFilenameDico())
                 Application.Exit();
 
-            watch = new Timer();
-            watch.Interval = 1000;
-            watch.Tick += Watch_Tick;
-            watch.Start();
         }
 
         internal static void ChangeCemuLocation()
@@ -117,10 +112,10 @@ namespace FileStub
 
         private static void RemoveDomains()
         {
-            if(rpxInterface != null)
+            if(targetInterface != null)
             {
-                rpxInterface.CloseStream();
-                rpxInterface = null;
+                targetInterface.CloseStream();
+                targetInterface = null;
             }
 
             UpdateDomains();
@@ -218,50 +213,87 @@ namespace FileStub
             if (!LoadRpxFileInterface())
                 return false;
 
-            state = CemuState.READY;
+            //state = TargetType.READY;
             EnableInterface();
 
             return true;
         }
 
-        private static void Watch_Tick(object sender, EventArgs e)
+        internal static bool LoadTarget()
         {
-            ScanCemu();
-
-            if (state == CemuState.RUNNING && cemuProcess.MainWindowTitle.Contains("[TitleId:"))
-                state = CemuState.GAMELOADED;
-
-            if(state == CemuState.GAMELOADED)
+            if(selectedTarget == TargetType.SINGLE_FILE)
             {
-                state = CemuState.PREPARING; // this prevents the ticker to call this method again
+                string filename = null;
 
-                //Game is loaded in cemu, let's gather all the info we need
+                OpenFileDialog OpenFileDialog1;
+                OpenFileDialog1 = new OpenFileDialog();
 
-                FetchBaseInfoFromCemuProcess();
-                KillCemuProcess();
+                OpenFileDialog1.Title = "Open File";
+                OpenFileDialog1.Filter = "files|*.*";
+                OpenFileDialog1.RestoreDirectory = true;
+                if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    if (OpenFileDialog1.FileName.ToString().Contains('^'))
+                    {
+                        MessageBox.Show("You can't use a file that contains the character ^ ");
+                        return false;
+                    }
 
-                if (!LoadDataFromCemuFiles())
-                    return; //Could not get the rpx file location
+                    filename = OpenFileDialog1.FileName;
 
-                // Prepare fake update and backup
-                PrepareUpdateFolder();
-                CreateRpxBackup();
+                    //currentTargetId = "File|" + OpenFileDialog1.FileName.ToString();
+                    //currentTargetFullName = OpenFileDialog1.FileName.ToString();
+                }
+                else
+                    return false;
 
-                knownGamesDico[currentGameInfo.gameName] = currentGameInfo;
+                string targetId = "File|" + filename;
 
-                if(!SelectGame())
-                    return;
+                //Disable caching of the previously loaded file if it was enabled
+                /*
+                if (ghForm.btnEnableCaching.Text.Contains("Disable"))
+                    ghForm.btnEnableCaching.PerformClick();
 
+                if (currentMemoryInterface != null && (currentTargetType == "Dolphin" || currentTargetType == "File" || currentTargetType == "MultipleFiles"))
+                {
+                    WGH_Core.RestoreTarget();
+                    currentMemoryInterface.stream?.Dispose();
+                }
+                */
 
-                foreach (CemuGameInfo cgi in knownGamesDico.Values)
-                    cgi.cemuExeFile = currentGameInfo.cemuExeFile;
+                FileInterface fi = null;
 
-                SaveKnownGames();
+                Action<object, EventArgs> action = (ob, ea) =>
+                {
+                    fi = new FileInterface(targetId);
+                };
 
-                VanguardCore.Start();
+                Action<object, EventArgs> postAction = (ob, ea) =>
+                {
+                    if (fi == null || fi.lastMemorySize == null)
+                    {
+                        MessageBox.Show("Failed to load target");
+                        return;
+                    }
+
+                    FileWatch.targetName = fi.ShortFilename;
+
+                    FileWatch.targetInterface = fi;
+                    S.GET<MainForm>().lbTarget.Text = targetId + "|MemorySize:" + fi.lastMemorySize.ToString();
+
+                    //Refresh the UI
+                    //RefreshUIPostLoad();
+                };
+
+                WGH_Core.ghForm.RunProgressBar($"Loading target...", 0, action, postAction);
+
+            }
+            else //MULTIPLE_FILE
+            {
 
             }
 
+            return true;
         }
 
         public static bool LoadKnownGames()
@@ -315,7 +347,7 @@ namespace FileStub
             try
             {
                 currentGameInfo.fileInterfaceTargetId = "File|" + currentGameInfo.updateRpxLocation;
-                rpxInterface = new FileInterface(currentGameInfo.fileInterfaceTargetId);
+                targetInterface = new FileInterface(currentGameInfo.fileInterfaceTargetId);
 
                 return true;
             }
@@ -421,7 +453,7 @@ namespace FileStub
                     "Could not find an rpx file to corrupt.\n\n" +
                     "If the game you are trying to corrupt is in Wud format, you must extract it for it to be corruptible\n\n" +
                     "Loading aborted.", "Error finding game");
-                FileWatch.state = CemuState.UNFOUND;
+                //FileWatch.state = TargetType.UNFOUND;
                 return false;
             }
 
@@ -498,14 +530,14 @@ namespace FileStub
             try
             {
                 Console.WriteLine($" getInterfaces()");
-                if (rpxInterface == null)
+                if (targetInterface == null)
                 {
                     Console.WriteLine($"rpxInterface was null!");
                     return new MemoryDomainProxy[] { };
                 }
 
                 List<MemoryDomainProxy> interfaces = new List<MemoryDomainProxy>();
-                interfaces.Add(new MemoryDomainProxy(rpxInterface));
+                interfaces.Add(new MemoryDomainProxy(targetInterface));
 
                 return interfaces.ToArray();
             }
@@ -617,7 +649,7 @@ namespace FileStub
         }
         internal static void StartCemu(string rpxFile = null)
         {
-            rpxInterface?.ApplyWorkingFile();
+            targetInterface?.ApplyWorkingFile();
 
             ProcessStartInfo psi = new ProcessStartInfo();
 
@@ -648,29 +680,10 @@ namespace FileStub
 
         internal static void StartRpx() => StartCemu(currentGameInfo.gameRpxPath);
 
-        private static void ScanCemu()
-        {
-            Process p = getCemuProcess();
-
-            if (state == CemuState.UNFOUND && p != null)
-            {
-                state = CemuState.RUNNING;
-            }
-            else if (
-                state != CemuState.UNFOUND && 
-                state != CemuState.GAMELOADED && 
-                state != CemuState.READY && 
-                p == null)
-            {
-                state = CemuState.UNFOUND;
-                DisableInterface();
-            }
-
-        }
 
         internal static void RestoreBackup()
         {
-            rpxInterface.CloseStream();
+            targetInterface.CloseStream();
 
             if (File.Exists(currentGameInfo.updateRpxBackup))
             {
@@ -678,47 +691,6 @@ namespace FileStub
             }
             else
                 MessageBox.Show("Backup could not be found");
-        }
-
-        private static Process getCemuProcess()
-        {
-            if (cemuProcess == null)
-            {
-                RefreshCemuProcess();
-            }
-            //Get a new process object from then pid we have. 
-            try
-            {
-                if(cemuProcess?.Id != null)
-                    cemuProcess = Process.GetProcessById(cemuProcess.Id);
-            }
-            catch (Exception e)
-            {
-                cemuProcess = null;
-                Console.WriteLine(e);
-            }
-            //If the title is still expectedCemuTitle, we know something else didn't eat the pid 
-            if (!(cemuProcess?.MainWindowTitle.Contains(expectedCemuTitle) ?? false))
-                RefreshCemuProcess();
-
-            return cemuProcess;
-        }
-
-        public static void RefreshCemuProcess(Process p = null)
-        {
-            if (p == null)
-                p = Process.GetProcessesByName("Cemu").FirstOrDefault(it => it?.MainWindowTitle?.Contains(expectedCemuTitle) ?? false);
-
-            cemuProcess = p;
-
-            if (cemuProcess != null)
-            {
-                cemuProcess.EnableRaisingEvents = true;
-                cemuProcess.Exited += (o, e) =>
-                {
-                    cemuProcess = null;
-                };
-            }
         }
 
 
@@ -738,12 +710,5 @@ namespace FileStub
 
     }
 
-    enum CemuState
-    {
-        UNFOUND,
-        RUNNING,
-        GAMELOADED,
-        PREPARING,
-        READY
-    }
+
 }

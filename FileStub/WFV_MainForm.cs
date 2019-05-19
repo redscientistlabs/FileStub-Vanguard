@@ -275,5 +275,9 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             TerminateIfNeeded();
         }
 
+        private void BtnBrowseTarget_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

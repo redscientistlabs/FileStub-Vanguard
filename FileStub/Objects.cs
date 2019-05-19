@@ -41,6 +41,22 @@ namespace FileStub
             return gameName;
         }
     }
+
+    public static class ExecutionType
+    {
+        public const string EXECUTE_CORRUPTED_FILE = "Execute corrupted file";
+        public const string EXECUTE_WITH = "Execute with";
+        public const string EXECUTE_OTHER_PROGRAM = "Execute other program";
+        public const string NO_EXECUTION = "No execution";
+        public const string SCRIPT = "Script";
+    }
+
+    public static class TargetType
+    {
+        public const string SINGLE_FILE = "Single File";
+        public const string MULTIPLE_FILE_SINGLEDOMAIN = "Multiple files as one domain";
+        public const string MULTIPLE_FILE_MULTIDOMAIN = "Multiple files as many domains";
+    }
     public class LabelPassthrough : Label
     {
 

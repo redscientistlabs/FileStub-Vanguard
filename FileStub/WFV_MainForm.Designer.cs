@@ -76,6 +76,7 @@
             this.btnBrowseTarget.Tag = "color:darker";
             this.btnBrowseTarget.Text = "Browse";
             this.btnBrowseTarget.UseVisualStyleBackColor = false;
+            this.btnBrowseTarget.Click += new System.EventHandler(this.BtnBrowseTarget_Click);
             // 
             // lbTarget
             // 
