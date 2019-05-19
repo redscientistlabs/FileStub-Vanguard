@@ -16,29 +16,37 @@ using Ceras;
 namespace FileStub
 {
 
-    public class CemuGameInfo
+    public class FileStubFileInfo
     {
-        public FileInfo gameRpxFileInfo = null;
-        public FileInfo cemuExeFile = null;
-        public FileInfo[] updateCodeFiles = null;
-        public DirectoryInfo gameSaveFolder = null;
-        public string rpxFile = null;
-        public string gameRpxPath = null;
-        public string updateRpxPath = null;
-        public string updateCodePath = null;
-        public string updateMetaPath = null;
-        public string updateRpxLocation = null;
-        public string updateRpxCompressed = null;
-        public string updateRpxBackup = null;
-        public string FirstID = null;
-        public string SecondID = null;
-        public string fileInterfaceTargetId = null;
-        public string gameName = "Autodetect";
-        public string updateRpxUncompressedToken = null;
+        internal string targetShortName;
+
+        /*
+public FileInfo gameRpxFileInfo = null;
+public FileInfo cemuExeFile = null;
+public FileInfo[] updateCodeFiles = null;
+public DirectoryInfo gameSaveFolder = null;
+public string rpxFile = null;
+public string gameRpxPath = null;
+public string updateRpxPath = null;
+public string updateCodePath = null;
+public string updateMetaPath = null;
+public string updateRpxLocation = null;
+public string updateRpxCompressed = null;
+public string updateRpxBackup = null;
+public string FirstID = null;
+public string SecondID = null;
+public string fileInterfaceTargetId = null;
+public string gameName = "Autodetect";
+public string updateRpxUncompressedToken = null;
+*/
+
+        public string selectedExecution = null;
+        public bool writeCopyMode = false;
+        internal object targetFullName;
 
         public override string ToString()
         {
-            return gameName;
+            return targetShortName;
         }
     }
 

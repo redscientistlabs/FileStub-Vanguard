@@ -69,7 +69,7 @@ namespace Vanguard
                     case REMOTE_ALLSPECSSENT:
                         {
                             //We still need to set the emulator's path
-                            AllSpec.VanguardSpec.Update(VSPEC.EMUDIR, FileWatch.currentGameInfo.cemuExeFile.Directory.FullName);
+                            AllSpec.VanguardSpec.Update(VSPEC.EMUDIR, FileWatch.currentFileInfo.targetFullName);
                             SyncObjectSingleton.FormExecute((o, ea) =>
                             {
                                 FileWatch.UpdateDomains();
@@ -79,14 +79,15 @@ namespace Vanguard
                     case SAVESAVESTATE:
                         SyncObjectSingleton.FormExecute((o, ea) =>
                         {
-                            e.setReturnValue(VanguardCore.SaveSavestate_NET(advancedMessage.objectValue as string));
-                            //e.setReturnValue("");
+                            //e.setReturnValue(VanguardCore.SaveSavestate_NET(advancedMessage.objectValue as string));
+                            e.setReturnValue("");
                         });
                         break;
 
                     case LOADSAVESTATE:
                         {
                             
+                            /*
                             var cmd = advancedMessage.objectValue as object[];
                             var path = cmd[0] as string;
                             var location = (StashKeySavestateLocation)cmd[1];
@@ -94,7 +95,7 @@ namespace Vanguard
                             {
                                 e.setReturnValue(VanguardCore.LoadSavestate_NET(path, location));
                             });
-                            
+                            */
 
                             e.setReturnValue(true);
                             break;
@@ -105,8 +106,8 @@ namespace Vanguard
                         break;
 
                     case REMOTE_PRECORRUPTACTION:
-                        FileWatch.KillCemuProcess();
-                        FileWatch.RestoreBackup();
+                        //FileWatch.KillCemuProcess();
+                        //FileWatch.RestoreBackup();
                         break;
 
                     case REMOTE_POSTCORRUPTACTION:
@@ -114,7 +115,7 @@ namespace Vanguard
                             //var fileName = advancedMessage.objectValue as String;
                             SyncObjectSingleton.FormExecute((o, ea) =>
                             {
-                                FileWatch.StartRpx();
+                                //FileWatch.StartRpx();
                                 //VanguardCore.LoadRom_NET(fileName);
                             });
 
@@ -125,7 +126,7 @@ namespace Vanguard
                         {
                             SyncObjectSingleton.FormExecute((o, ea) =>
                             {
-                                FileWatch.KillCemuProcess();
+                                //FileWatch.KillCemuProcess();
                             });
                         }
                         break;

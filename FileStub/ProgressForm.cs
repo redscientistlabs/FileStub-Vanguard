@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RTCV.NetCore;
+using RTCV.NetCore.StaticTools;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,7 +23,7 @@ namespace FileStub
         {
             InitializeComponent();
 
-            BackColor = WFV_Core.ghForm.BackColor;
+            BackColor = S.GET<MainForm>().BackColor;
 
             bw.WorkerReportsProgress = true;
             bw.WorkerSupportsCancellation = true;
@@ -40,9 +42,9 @@ namespace FileStub
             postAction = postActionRegistrant;
 
             TopLevel = false;
-            Size = WFV_Core.ghForm.Size;
+            Size = S.GET<MainForm>().Size;
 
-            WFV_Core.ghForm.Controls.Add(this);
+            S.GET<MainForm>().Controls.Add(this);
             Anchor = (AnchorStyles)(AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom);
             Show();
             BringToFront();
@@ -60,11 +62,11 @@ namespace FileStub
         {
             bw.Dispose();
             this.Hide();
-            WFV_Core.progressForm = null;
+            FileWatch.progressForm = null;
 
             if (postAction != null)
             {
-                WFV_Core.FormExecute((o, ea) => {
+                SyncObjectSingleton.FormExecute((o, ea) => {
                     postAction.Invoke(null, null);
                 });
             }

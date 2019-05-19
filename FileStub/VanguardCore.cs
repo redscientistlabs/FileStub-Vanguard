@@ -119,8 +119,8 @@ namespace Vanguard
         {
             var partial = new PartialSpec("VanguardSpec");
 
-            partial[VSPEC.NAME] = "Cemu";
-            partial[VSPEC.SYSTEM] = "Wii U";
+            partial[VSPEC.NAME] = "FileStub";
+            partial[VSPEC.SYSTEM] = "Windows File System";
             partial[VSPEC.GAMENAME] = String.Empty;
             partial[VSPEC.SYSTEMPREFIX] = String.Empty;
             partial[VSPEC.OPENROMFILENAME] = String.Empty;
@@ -131,8 +131,7 @@ namespace Vanguard
             partial[VSPEC.SUPPORTS_RENDERING] = false;
             partial[VSPEC.SUPPORTS_CONFIG_MANAGEMENT] = false;
             partial[VSPEC.SUPPORTS_CONFIG_HANDOFF] = false;
-            partial[VSPEC.SUPPORTS_SAVESTATES] = true;
-            partial[VSPEC.RENAME_SAVESTATE] = "Game Save";
+            partial[VSPEC.SUPPORTS_SAVESTATES] = false;
             partial[VSPEC.OVERRIDE_DEFAULTMAXINTENSITY] = 655350;
             partial[VSPEC.SUPPORTS_GAMEPROTECTION] = false;
             partial[VSPEC.SUPPORTS_REALTIME] = false;
@@ -192,76 +191,6 @@ namespace Vanguard
             //If it's attached, lie to vanguard
             if (VanguardCore.attached)
                 VanguardConnector.ImplyClientConnected();
-        }
-
-        /// <summary>
-        /// Creates a savestate using a key as the filename and returns the path.
-        /// Bizhawk process only.
-        /// </summary>
-        /// <param name="Key"></param>
-        /// <param name="threadSave"></param>
-        /// <returns></returns>
-        public static string SaveSavestate_NET(string Key, bool threadSave = false)
-        {
-            if(!FileWatch.currentGameInfo.gameSaveFolder.Exists)
-            {
-                MessageBox.Show("No Game Save could be found for this game. Cancelling operation.");
-                return null;
-            }
-
-            string quickSlotName = Key + ".timejump";
-
-            //Build up our path
-            var targetZipfilePath = Path.Combine(CorruptCore.workingDir, "SESSION", FileWatch.currentGameInfo.gameName + "." + quickSlotName + ".State");
-
-            //If the path doesn't exist, make it
-            var file = new FileInfo(targetZipfilePath);
-
-            if (file.Exists)
-                file.Delete();
-
-            if (file.Directory != null && file.Directory.Exists == false)
-                file.Directory.Create();
-
-            //zip here -----------------------------
-            CompressionLevel comp = CompressionLevel.NoCompression;
-            ZipFile.CreateFromDirectory(FileWatch.currentGameInfo.gameSaveFolder.FullName, targetZipfilePath, comp, false);
-
-            return targetZipfilePath;
-        }
-
-        /// <summary>
-        /// Loads a savestate from a path. 
-        /// </summary>
-        /// <param name="path">The path of the state</param>
-        /// <param name="stateLocation">Where the state is located in a stashkey (used for errors, not required)</param>
-        /// <returns></returns>
-        public static bool LoadSavestate_NET(string path, StashKeySavestateLocation stateLocation = StashKeySavestateLocation.DEFAULTVALUE)
-        {
-            try
-            {
-
-                //If we can't find the file, throw a message
-                if (File.Exists(path) == false)
-                {
-                    MessageBox.Show("Unable to load " + Path.GetFileName(path) + " from " + stateLocation);
-                    return false;
-                }
-
-                if (FileWatch.currentGameInfo.gameSaveFolder.Exists)
-                    Stockpile.EmptyFolder(FileWatch.currentGameInfo.gameSaveFolder.FullName);
-
-                ZipFile.ExtractToDirectory(path, FileWatch.currentGameInfo.gameSaveFolder.FullName);
-
-                RTCV.NetCore.AllSpec.CorruptCoreSpec.Update(RTCSPEC.STEP_RUNBEFORE.ToString(), true);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-                return false;
-            }
         }
 
 

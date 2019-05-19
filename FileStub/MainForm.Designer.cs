@@ -126,7 +126,6 @@
             this.btnTargetSettings.TabStop = false;
             this.btnTargetSettings.Tag = "color:light1";
             this.btnTargetSettings.UseVisualStyleBackColor = false;
-            this.btnTargetSettings.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnTargetSettings_MouseDown);
             // 
             // btnKillProcess
             // 
