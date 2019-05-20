@@ -282,5 +282,10 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         {
 
         }
+
+        private void StubForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            FileWatch.CloseTarget(false);
+        }
     }
 }

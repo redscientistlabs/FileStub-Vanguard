@@ -118,6 +118,8 @@ namespace FileStub
                 return;
             }
 
+            FileWatch.CloseTarget(false);
+
             List<string> allFiles = new List<string>();
 
             for (int i = 0; i < lbMultipleFiles.Items.Count; i++)

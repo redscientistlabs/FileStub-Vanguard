@@ -131,11 +131,7 @@ namespace FileStub
 
                 string targetId = "File|" + filename;
 
-                if (currentFileInfo.targetInterface != null)
-                {
-                    RestoreTarget();
-                    currentFileInfo.targetInterface.CloseStream();
-                }
+                CloseTarget(false);
 
                 //Disable caching of the previously loaded file if it was enabled
                 /*
@@ -251,10 +247,16 @@ namespace FileStub
                 }
         }
 
-        internal static void CloseTarget()
+        internal static void CloseTarget(bool updateDomains = true)
         {
-            currentFileInfo.targetInterface?.CloseStream();
-            currentFileInfo.targetInterface = null;
+            if (FileWatch.currentFileInfo.targetInterface != null)
+            {
+                FileWatch.RestoreTarget();
+                FileWatch.currentFileInfo.targetInterface.CloseStream();
+                FileWatch.currentFileInfo.targetInterface = null;
+            }
+
+            if(updateDomains)
             UpdateDomains();
         }
 
