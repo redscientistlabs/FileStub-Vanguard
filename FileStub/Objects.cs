@@ -24,8 +24,7 @@ namespace FileStub
         internal string targetFullName = "No target";
         internal FileMemoryInterface targetInterface;
         internal string selectedTargetType = TargetType.SINGLE_FILE;
-        internal BlastLayer lastBlastLayerBackup = null;
-        internal bool autoUncorrupt = false;
+        internal bool autoUncorrupt = true;
         internal bool TerminateBeforeExecution = true;
         internal bool useAutomaticBackups = true;
         internal bool bigEndian = false;

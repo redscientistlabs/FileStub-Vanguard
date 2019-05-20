@@ -112,6 +112,12 @@ namespace FileStub
 
         private void btnSendList_Click(object sender, EventArgs e)
         {
+            if(lbMultipleFiles.Items.Count == 0)
+            {
+                MessageBox.Show("No files are selected");
+                return;
+            }
+
             List<string> allFiles = new List<string>();
 
             for (int i = 0; i < lbMultipleFiles.Items.Count; i++)

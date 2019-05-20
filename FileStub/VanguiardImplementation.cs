@@ -92,6 +92,7 @@ namespace Vanguard
 
                     case REMOTE_POSTCORRUPTACTION:
                         //var fileName = advancedMessage.objectValue as String;
+                        FileWatch.currentFileInfo.targetInterface.CloseStream();
                         SyncObjectSingleton.FormExecute((o, ea) =>
                         {
                             Executor.Execute();

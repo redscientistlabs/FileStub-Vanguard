@@ -35,7 +35,7 @@ namespace FileStub
             if (VanguardCore.vanguardConnected)
                 RemoveDomains();
 
-            FileWatch.currentFileInfo = new FileStubFileInfo();
+            //FileWatch.currentFileInfo = new FileStubFileInfo();
 
             DisableInterface();
             //state = TargetType.UNFOUND;
@@ -86,8 +86,8 @@ namespace FileStub
         {
             if (FileWatch.currentFileInfo.autoUncorrupt)
             {
-                if (FileWatch.currentFileInfo.lastBlastLayerBackup != null)
-                    FileWatch.currentFileInfo.lastBlastLayerBackup.Apply(false);
+                if (StockpileManager_EmuSide.UnCorruptBL != null)
+                    StockpileManager_EmuSide.UnCorruptBL.Apply(false);
                 else
                 {
                     //CHECK CRC WITH BACKUP HERE AND SKIP BACKUP IF WORKING FILE = BACKUP FILE
@@ -102,6 +102,8 @@ namespace FileStub
 
         internal static bool LoadTarget()
         {
+
+
             if(currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
             {
                 FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
