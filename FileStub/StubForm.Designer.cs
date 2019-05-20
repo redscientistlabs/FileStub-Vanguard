@@ -232,6 +232,7 @@
             this.lbExecution.TabIndex = 42;
             this.lbExecution.Tag = "color:darker";
             this.lbExecution.Text = "No execution set";
+            this.lbExecution.Visible = false;
             // 
             // pnSideBar
             // 
@@ -366,6 +367,7 @@
             this.cbSelectedExecution.TabIndex = 117;
             this.cbSelectedExecution.TabStop = false;
             this.cbSelectedExecution.Tag = "color:normal";
+            this.cbSelectedExecution.Visible = false;
             this.cbSelectedExecution.SelectedIndexChanged += new System.EventHandler(this.CbSelectedExecution_SelectedIndexChanged);
             // 
             // pnTargetExecution
@@ -380,7 +382,6 @@
             this.pnTargetExecution.Controls.Add(this.btnKillProcess);
             this.pnTargetExecution.Controls.Add(this.tbArgs);
             this.pnTargetExecution.Controls.Add(this.lbArgs);
-            this.pnTargetExecution.Enabled = false;
             this.pnTargetExecution.Location = new System.Drawing.Point(129, 204);
             this.pnTargetExecution.Name = "pnTargetExecution";
             this.pnTargetExecution.Size = new System.Drawing.Size(359, 92);
@@ -407,7 +408,6 @@
             // lbTargetExecution
             // 
             this.lbTargetExecution.AutoSize = true;
-            this.lbTargetExecution.Enabled = false;
             this.lbTargetExecution.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
             this.lbTargetExecution.ForeColor = System.Drawing.Color.White;
             this.lbTargetExecution.Location = new System.Drawing.Point(131, 182);
@@ -416,7 +416,7 @@
             this.lbTargetExecution.TabIndex = 175;
             this.lbTargetExecution.Text = "Target execution";
             // 
-            // MainForm
+            // StubForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -431,7 +431,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(516, 352);
-            this.Name = "MainForm";
+            this.Name = "StubForm";
             this.Text = "File Stub ";
             this.Load += new System.EventHandler(this.StubForm_Load);
             this.pnTarget.ResumeLayout(false);

@@ -18,7 +18,7 @@ namespace FileStub
 {
     public static class FileWatch
     {
-        public static string FileStubVersion = "0.02";
+        public static string FileStubVersion = "0.04";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
@@ -84,7 +84,7 @@ namespace FileStub
 
         public static void RestoreTarget()
         {
-            if (FileWatch.currentFileInfo.AutoUncorrupt)
+            if (FileWatch.currentFileInfo.autoUncorrupt)
             {
                 if (FileWatch.currentFileInfo.lastBlastLayerBackup != null)
                     FileWatch.currentFileInfo.lastBlastLayerBackup.Apply(false);
@@ -151,7 +151,7 @@ namespace FileStub
 
                 Action<object, EventArgs> action = (ob, ea) =>
                 {
-                    fi = new FileInterface(targetId);
+                    fi = new FileInterface(targetId, true);
                 };
 
                 Action<object, EventArgs> postAction = (ob, ea) =>
@@ -334,6 +334,8 @@ namespace FileStub
                         break;
                 }
 
+                foreach (MemoryDomainProxy mdp in interfaces)
+                    mdp.BigEndian = currentFileInfo.bigEndian;
 
                 return interfaces.ToArray();
             }

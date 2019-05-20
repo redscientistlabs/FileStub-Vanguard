@@ -25,9 +25,10 @@ namespace FileStub
         internal FileMemoryInterface targetInterface;
         internal string selectedTargetType = TargetType.SINGLE_FILE;
         internal BlastLayer lastBlastLayerBackup = null;
-        internal bool AutoUncorrupt = false;
+        internal bool autoUncorrupt = false;
         internal bool TerminateBeforeExecution = true;
         internal bool useAutomaticBackups = true;
+        internal bool bigEndian = false;
 
         public override string ToString()
         {

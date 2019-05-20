@@ -136,12 +136,15 @@ namespace FileStub
             btnUnloadTarget.Visible = true;
             cbTargetType.Enabled = false;
 
-            lbTargetExecution.Enabled = true;
-            pnTargetExecution.Enabled = true;
+            //lbTargetExecution.Enabled = true;
+            //pnTargetExecution.Enabled = true;
 
             btnRestoreBackup.Enabled = true;
             btnResetBackup.Enabled = true;
             btnClearAllBackups.Enabled = true;
+
+            lbExecution.Visible = true;
+            cbSelectedExecution.Visible = true;
 
             lbTargetStatus.Text = FileWatch.currentFileInfo.selectedTargetType.ToString() + " target loaded";
         }
@@ -156,8 +159,11 @@ namespace FileStub
             cbTargetType.Enabled = true;
 
             cbSelectedExecution.SelectedIndex = 0;
-            lbTargetExecution.Enabled = false;
-            pnTargetExecution.Enabled = false;
+            //lbTargetExecution.Enabled = false;
+            //pnTargetExecution.Enabled = false;
+
+            lbExecution.Visible = false;
+            cbSelectedExecution.Visible = false;
 
             btnRestoreBackup.Enabled = false;
             btnResetBackup.Enabled = false;
@@ -245,7 +251,31 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void BtnTargetSettings_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Left)
+            {
+                Control c = (Control)sender;
+                Point locate = new Point(c.Location.X + e.Location.X, ((Control)sender).Location.Y + e.Location.Y);
 
+                ContextMenuStrip columnsMenu = new ContextMenuStrip();
+
+
+                ((ToolStripMenuItem)columnsMenu.Items.Add("Big endian", null, new EventHandler((ob, ev) => {
+
+                    FileWatch.currentFileInfo.bigEndian = !FileStub.FileWatch.currentFileInfo.bigEndian;
+
+                    if (VanguardCore.vanguardConnected)
+                        FileWatch.UpdateDomains();
+
+                }))).Checked = FileWatch.currentFileInfo.bigEndian;
+
+                ((ToolStripMenuItem)columnsMenu.Items.Add("Auto-Uncorrupt", null, new EventHandler((ob, ev) => {
+
+                    FileWatch.currentFileInfo.autoUncorrupt = !FileWatch.currentFileInfo.autoUncorrupt;
+
+                }))).Checked = FileWatch.currentFileInfo.autoUncorrupt;
+
+                columnsMenu.Show(this, locate);
+            }
         }
 
         private void BtnExecutionSettings_MouseDown(object sender, MouseEventArgs e)
