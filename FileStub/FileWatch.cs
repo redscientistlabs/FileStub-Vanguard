@@ -18,7 +18,7 @@ namespace FileStub
 {
     public static class FileWatch
     {
-        public static string FileStubVersion = "0.04";
+        public static string FileStubVersion = "0.05";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
