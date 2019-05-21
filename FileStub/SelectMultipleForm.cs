@@ -129,7 +129,7 @@ namespace FileStub
                     multipleFiles += "|";
             }
 
-            FileWatch.currentFileInfo.targetInterface = new MultipleFileInterface(multipleFiles, FileWatch.currentFileInfo.useAutomaticBackups);
+            FileWatch.currentFileInfo.targetInterface = new MultipleFileInterface(multipleFiles, FileWatch.currentFileInfo.bigEndian, FileWatch.currentFileInfo.useAutomaticBackups);
 
             if (VanguardCore.vanguardConnected)
                 FileWatch.UpdateDomains();

@@ -151,7 +151,7 @@ namespace FileStub
 
                 Action<object, EventArgs> action = (ob, ea) =>
                 {
-                    fi = new FileInterface(targetId, true);
+                    fi = new FileInterface(targetId, FileWatch.currentFileInfo.bigEndian, true);
                 };
 
                 Action<object, EventArgs> postAction = (ob, ea) =>
@@ -277,8 +277,6 @@ namespace FileStub
         {
             try
             {
-
-
                 PartialSpec gameDone = new PartialSpec("VanguardSpec");
                 gameDone[VSPEC.SYSTEM] = "FileSystem";
                 gameDone[VSPEC.GAMENAME] = FileWatch.currentFileInfo.targetShortName;
@@ -334,8 +332,6 @@ namespace FileStub
                         break;
                 }
 
-                foreach (MemoryDomainProxy mdp in interfaces)
-                    mdp.BigEndian = currentFileInfo.bigEndian;
 
                 return interfaces.ToArray();
             }
