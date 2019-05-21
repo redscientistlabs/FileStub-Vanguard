@@ -63,11 +63,11 @@
             this.btnSendList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendList.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnSendList.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnSendList.Location = new System.Drawing.Point(126, 509);
+            this.btnSendList.Location = new System.Drawing.Point(105, 509);
             this.btnSendList.Name = "btnSendList";
-            this.btnSendList.Size = new System.Drawing.Size(176, 23);
+            this.btnSendList.Size = new System.Drawing.Size(197, 23);
             this.btnSendList.TabIndex = 1;
-            this.btnSendList.Text = "Send File List to Glitch Harvester";
+            this.btnSendList.Text = "Load Multiple Files in FileStub";
             this.btnSendList.UseVisualStyleBackColor = false;
             this.btnSendList.Click += new System.EventHandler(this.btnSendList_Click);
             // 

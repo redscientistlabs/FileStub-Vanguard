@@ -18,7 +18,7 @@ namespace FileStub
 {
     public static class FileWatch
     {
-        public static string FileStubVersion = "0.04";
+        public static string FileStubVersion = "0.05";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
@@ -35,7 +35,7 @@ namespace FileStub
             if (VanguardCore.vanguardConnected)
                 RemoveDomains();
 
-            FileWatch.currentFileInfo = new FileStubFileInfo();
+            //FileWatch.currentFileInfo = new FileStubFileInfo();
 
             DisableInterface();
             //state = TargetType.UNFOUND;
@@ -86,8 +86,8 @@ namespace FileStub
         {
             if (FileWatch.currentFileInfo.autoUncorrupt)
             {
-                if (FileWatch.currentFileInfo.lastBlastLayerBackup != null)
-                    FileWatch.currentFileInfo.lastBlastLayerBackup.Apply(false);
+                if (StockpileManager_EmuSide.UnCorruptBL != null)
+                    StockpileManager_EmuSide.UnCorruptBL.Apply(false);
                 else
                 {
                     //CHECK CRC WITH BACKUP HERE AND SKIP BACKUP IF WORKING FILE = BACKUP FILE
@@ -102,6 +102,8 @@ namespace FileStub
 
         internal static bool LoadTarget()
         {
+
+
             if(currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
             {
                 FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
@@ -129,11 +131,7 @@ namespace FileStub
 
                 string targetId = "File|" + filename;
 
-                if (currentFileInfo.targetInterface != null)
-                {
-                    RestoreTarget();
-                    currentFileInfo.targetInterface.CloseStream();
-                }
+                CloseTarget(false);
 
                 //Disable caching of the previously loaded file if it was enabled
                 /*
@@ -152,6 +150,9 @@ namespace FileStub
                 Action<object, EventArgs> action = (ob, ea) =>
                 {
                     fi = new FileInterface(targetId, FileWatch.currentFileInfo.bigEndian, true);
+
+                    if (FileWatch.currentFileInfo.useCacheAndMultithread)
+                        fi.getMemoryDump();
                 };
 
                 Action<object, EventArgs> postAction = (ob, ea) =>
@@ -249,10 +250,16 @@ namespace FileStub
                 }
         }
 
-        internal static void CloseTarget()
+        internal static void CloseTarget(bool updateDomains = true)
         {
-            currentFileInfo.targetInterface?.CloseStream();
-            currentFileInfo.targetInterface = null;
+            if (FileWatch.currentFileInfo.targetInterface != null)
+            {
+                FileWatch.RestoreTarget();
+                FileWatch.currentFileInfo.targetInterface.CloseStream();
+                FileWatch.currentFileInfo.targetInterface = null;
+            }
+
+            if(updateDomains)
             UpdateDomains();
         }
 
@@ -277,6 +284,8 @@ namespace FileStub
         {
             try
             {
+
+
                 PartialSpec gameDone = new PartialSpec("VanguardSpec");
                 gameDone[VSPEC.SYSTEM] = "FileSystem";
                 gameDone[VSPEC.GAMENAME] = FileWatch.currentFileInfo.targetShortName;
@@ -332,6 +341,8 @@ namespace FileStub
                         break;
                 }
 
+                foreach (MemoryDomainProxy mdp in interfaces)
+                    mdp.BigEndian = currentFileInfo.bigEndian;
 
                 return interfaces.ToArray();
             }

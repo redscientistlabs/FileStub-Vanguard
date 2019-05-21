@@ -130,6 +130,8 @@ namespace FileStub
             lbTarget.Location = btnBrowseTarget.Location;
             lbTarget.Visible = true;
 
+            btnTargetSettings.Visible = false;
+
             btnBrowseTarget.Visible = false;
             originalLbTargetSize = lbTarget.Size;
             lbTarget.Size = new Size(lbTarget.Size.Width + diff, lbTarget.Size.Height);
@@ -157,6 +159,8 @@ namespace FileStub
             lbTarget.Location = originalLbTargetLocation;
             lbTarget.Visible = false;
             cbTargetType.Enabled = true;
+
+            btnTargetSettings.Visible = true;
 
             cbSelectedExecution.SelectedIndex = 0;
             //lbTargetExecution.Enabled = false;
@@ -274,6 +278,12 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
                 }))).Checked = FileWatch.currentFileInfo.autoUncorrupt;
 
+                ((ToolStripMenuItem)columnsMenu.Items.Add("Use Caching + Multithreading", null, new EventHandler((ob, ev) => {
+
+                    FileWatch.currentFileInfo.useCacheAndMultithread = !FileWatch.currentFileInfo.useCacheAndMultithread;
+
+                }))).Checked = FileWatch.currentFileInfo.useCacheAndMultithread;
+
                 columnsMenu.Show(this, locate);
             }
         }
@@ -281,6 +291,11 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         private void BtnExecutionSettings_MouseDown(object sender, MouseEventArgs e)
         {
 
+        }
+
+        private void StubForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            FileWatch.CloseTarget(false);
         }
     }
 }

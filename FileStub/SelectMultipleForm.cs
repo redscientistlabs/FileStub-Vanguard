@@ -112,6 +112,14 @@ namespace FileStub
 
         private void btnSendList_Click(object sender, EventArgs e)
         {
+            if(lbMultipleFiles.Items.Count == 0)
+            {
+                MessageBox.Show("No files are selected");
+                return;
+            }
+
+            FileWatch.CloseTarget(false);
+
             List<string> allFiles = new List<string>();
 
             for (int i = 0; i < lbMultipleFiles.Items.Count; i++)
@@ -129,7 +137,12 @@ namespace FileStub
                     multipleFiles += "|";
             }
 
-            FileWatch.currentFileInfo.targetInterface = new MultipleFileInterface(multipleFiles, FileWatch.currentFileInfo.bigEndian, FileWatch.currentFileInfo.useAutomaticBackups);
+            var mfi = new MultipleFileInterface(multipleFiles, FileWatch.currentFileInfo.bigEndian, FileWatch.currentFileInfo.useAutomaticBackups);
+
+            if (FileWatch.currentFileInfo.useCacheAndMultithread)
+                mfi.getMemoryDump();
+
+            FileWatch.currentFileInfo.targetInterface = mfi;
 
             if (VanguardCore.vanguardConnected)
                 FileWatch.UpdateDomains();
