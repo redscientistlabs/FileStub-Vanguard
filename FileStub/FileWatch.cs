@@ -150,6 +150,9 @@ namespace FileStub
                 Action<object, EventArgs> action = (ob, ea) =>
                 {
                     fi = new FileInterface(targetId, true);
+
+                    if (FileWatch.currentFileInfo.useCacheAndMultithread)
+                        fi.getMemoryDump();
                 };
 
                 Action<object, EventArgs> postAction = (ob, ea) =>

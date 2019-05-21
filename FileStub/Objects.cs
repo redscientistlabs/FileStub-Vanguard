@@ -28,6 +28,7 @@ namespace FileStub
         internal bool TerminateBeforeExecution = true;
         internal bool useAutomaticBackups = true;
         internal bool bigEndian = false;
+        internal bool useCacheAndMultithread = true;
 
         public override string ToString()
         {
