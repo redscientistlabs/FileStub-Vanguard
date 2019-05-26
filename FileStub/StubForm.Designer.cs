@@ -274,7 +274,6 @@
             // btnClearAllBackups
             // 
             this.btnClearAllBackups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.btnClearAllBackups.Enabled = false;
             this.btnClearAllBackups.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.btnClearAllBackups.FlatAppearance.BorderSize = 0;
             this.btnClearAllBackups.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

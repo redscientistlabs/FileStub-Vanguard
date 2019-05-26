@@ -62,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Executor.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="FileWatch.cs" />
     <Compile Include="StubForm.cs">
       <SubType>Form</SubType>

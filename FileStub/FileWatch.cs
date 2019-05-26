@@ -23,7 +23,6 @@ namespace FileStub
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
 
-        public static bool stubInterfaceEnabled = false;
         public static ProgressForm progressForm;
 
 
@@ -133,17 +132,6 @@ namespace FileStub
 
                 CloseTarget(false);
 
-                //Disable caching of the previously loaded file if it was enabled
-                /*
-                if (ghForm.btnEnableCaching.Text.Contains("Disable"))
-                    ghForm.btnEnableCaching.PerformClick();
-
-                if (currentMemoryInterface != null && (currentTargetType == "Dolphin" || currentTargetType == "File" || currentTargetType == "MultipleFiles"))
-                {
-                    WGH_Core.RestoreTarget();
-                    currentMemoryInterface.stream?.Dispose();
-                }
-                */
 
                 FileInterface fi = null;
 
@@ -160,7 +148,7 @@ namespace FileStub
                     if (fi == null || fi.lastMemorySize == null)
                     {
                         MessageBox.Show("Failed to load target");
-                        S.GET<StubForm>().DisableInterface();
+                        S.GET<StubForm>().DisableTargetInterface();
                         return;
                     }
 
@@ -263,23 +251,6 @@ namespace FileStub
             UpdateDomains();
         }
 
-        public static int IndexOf<T>(this T[] haystack, T[] needle)
-        {
-            if ((needle != null) && (haystack.Length >= needle.Length))
-            {
-                for (int l = 0; l < haystack.Length - needle.Length + 1; l++)
-                {
-                    if (!needle.Where((data, index) => !haystack[l + index].Equals(data)).Any())
-                    {
-                        return l;
-                    }
-                }
-            }
-
-            return -1;
-        }
-
-
         public static void UpdateDomains()
         {
             try
@@ -311,7 +282,6 @@ namespace FileStub
                     throw new RTCV.NetCore.AbortEverythingException();
             }
         }
-
 
         public static MemoryDomainProxy[] GetInterfaces()
         {
@@ -356,19 +326,16 @@ namespace FileStub
 
         }
 
-
         public static void EnableInterface()
         {
             S.GET<StubForm>().btnResetBackup.Enabled = true;
             S.GET<StubForm>().btnRestoreBackup.Enabled = true;
-            stubInterfaceEnabled = true;
         }
 
         public static void DisableInterface()
         {
             S.GET<StubForm>().btnResetBackup.Enabled = false;
             S.GET<StubForm>().btnRestoreBackup.Enabled = false;
-            stubInterfaceEnabled = false;
         }
 
     }

@@ -43,12 +43,6 @@ namespace FileStub
 
         }
 
-        private void BtnRestartStub_Click(object sender, EventArgs e)
-        {
-            Application.Restart();
-        }
-
-
         private void StubForm_Load(object sender, EventArgs e)
         {
             cbSelectedExecution.SelectedIndex = 0;
@@ -71,8 +65,6 @@ namespace FileStub
             FileWatch.progressForm.Run();
 
         }
-
-
 
         private void CbSelectedExecution_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -123,7 +115,7 @@ namespace FileStub
 
         Size originalLbTargetSize;
         Point originalLbTargetLocation;
-        public void EnableInterface()
+        public void EnableTargetInterface()
         {
             var diff = lbTarget.Location.X - btnBrowseTarget.Location.X;
             originalLbTargetLocation = lbTarget.Location;
@@ -138,12 +130,9 @@ namespace FileStub
             btnUnloadTarget.Visible = true;
             cbTargetType.Enabled = false;
 
-            //lbTargetExecution.Enabled = true;
-            //pnTargetExecution.Enabled = true;
 
-            btnRestoreBackup.Enabled = true;
-            btnResetBackup.Enabled = true;
-            btnClearAllBackups.Enabled = true;
+
+            FileWatch.EnableInterface();
 
             lbExecution.Visible = true;
             cbSelectedExecution.Visible = true;
@@ -151,7 +140,7 @@ namespace FileStub
             lbTargetStatus.Text = FileWatch.currentFileInfo.selectedTargetType.ToString() + " target loaded";
         }
 
-        public void DisableInterface()
+        public void DisableTargetInterface()
         {
             btnUnloadTarget.Visible = false;
             btnBrowseTarget.Visible = true;
@@ -163,8 +152,7 @@ namespace FileStub
             btnTargetSettings.Visible = true;
 
             cbSelectedExecution.SelectedIndex = 0;
-            //lbTargetExecution.Enabled = false;
-            //pnTargetExecution.Enabled = false;
+
 
             lbExecution.Visible = false;
             cbSelectedExecution.Visible = false;
@@ -185,14 +173,14 @@ namespace FileStub
             if (!VanguardCore.vanguardConnected)
                 VanguardCore.Start();
 
-            EnableInterface();
+            EnableTargetInterface();
 
         }
 
         private void BtnReleaseTarget_Click(object sender, EventArgs e)
         {
             FileWatch.CloseTarget();
-            DisableInterface();
+            DisableTargetInterface();
         }
 
         private void CbTargetType_SelectedIndexChanged(object sender, EventArgs e)
@@ -286,11 +274,6 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
                 columnsMenu.Show(this, locate);
             }
-        }
-
-        private void BtnExecutionSettings_MouseDown(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void StubForm_FormClosing(object sender, FormClosingEventArgs e)
