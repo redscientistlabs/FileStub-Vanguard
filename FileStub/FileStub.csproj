@@ -139,7 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FileStubIcon.ico" />
-    <Content Include="logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
