@@ -80,6 +80,7 @@
             this.pnTarget.Name = "pnTarget";
             this.pnTarget.Size = new System.Drawing.Size(359, 122);
             this.pnTarget.TabIndex = 13;
+            this.pnTarget.Tag = "color:dark1";
             // 
             // cbTargetType
             // 
@@ -96,7 +97,7 @@
             this.cbTargetType.Size = new System.Drawing.Size(248, 21);
             this.cbTargetType.TabIndex = 118;
             this.cbTargetType.TabStop = false;
-            this.cbTargetType.Tag = "color:normal";
+            this.cbTargetType.Tag = "color:dark2";
             this.cbTargetType.SelectedIndexChanged += new System.EventHandler(this.CbTargetType_SelectedIndexChanged);
             // 
             // btnUnloadTarget
@@ -112,7 +113,7 @@
             this.btnUnloadTarget.Size = new System.Drawing.Size(84, 23);
             this.btnUnloadTarget.TabIndex = 42;
             this.btnUnloadTarget.TabStop = false;
-            this.btnUnloadTarget.Tag = "color:darker";
+            this.btnUnloadTarget.Tag = "color:dark2";
             this.btnUnloadTarget.Text = "Unload";
             this.btnUnloadTarget.UseVisualStyleBackColor = false;
             this.btnUnloadTarget.Visible = false;
@@ -130,7 +131,7 @@
             this.btnBrowseTarget.Size = new System.Drawing.Size(72, 23);
             this.btnBrowseTarget.TabIndex = 35;
             this.btnBrowseTarget.TabStop = false;
-            this.btnBrowseTarget.Tag = "color:darker";
+            this.btnBrowseTarget.Tag = "color:dark2";
             this.btnBrowseTarget.Text = "Browse";
             this.btnBrowseTarget.UseVisualStyleBackColor = false;
             this.btnBrowseTarget.Click += new System.EventHandler(this.BtnBrowseTarget_Click);
@@ -139,7 +140,7 @@
             // 
             this.lbTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.lbTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(31)))), ((int)(((byte)(32)))));
             this.lbTarget.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbTarget.ForeColor = System.Drawing.Color.PaleGoldenrod;
             this.lbTarget.Location = new System.Drawing.Point(87, 39);
@@ -147,7 +148,7 @@
             this.lbTarget.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
             this.lbTarget.Size = new System.Drawing.Size(260, 72);
             this.lbTarget.TabIndex = 36;
-            this.lbTarget.Tag = "color:darker";
+            this.lbTarget.Tag = "color:dark2";
             this.lbTarget.Text = "No target selected";
             this.lbTarget.Visible = false;
             // 
@@ -166,7 +167,7 @@
             this.btnTargetSettings.Size = new System.Drawing.Size(32, 32);
             this.btnTargetSettings.TabIndex = 172;
             this.btnTargetSettings.TabStop = false;
-            this.btnTargetSettings.Tag = "color:light1";
+            this.btnTargetSettings.Tag = "color:dark1";
             this.btnTargetSettings.UseVisualStyleBackColor = false;
             this.btnTargetSettings.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnTargetSettings_MouseDown);
             // 
@@ -183,7 +184,7 @@
             this.btnKillProcess.Size = new System.Drawing.Size(81, 21);
             this.btnKillProcess.TabIndex = 55;
             this.btnKillProcess.TabStop = false;
-            this.btnKillProcess.Tag = "color:darker";
+            this.btnKillProcess.Tag = "color:dark2";
             this.btnKillProcess.Text = "Kill Process";
             this.btnKillProcess.UseVisualStyleBackColor = false;
             this.btnKillProcess.Click += new System.EventHandler(this.BtnKillProcess_Click);
@@ -213,7 +214,7 @@
             this.tbArgs.Name = "tbArgs";
             this.tbArgs.Size = new System.Drawing.Size(303, 15);
             this.tbArgs.TabIndex = 53;
-            this.tbArgs.Tag = "color:darker";
+            this.tbArgs.Tag = "color:dark2";
             this.tbArgs.Visible = false;
             // 
             // lbExecution
@@ -221,7 +222,7 @@
             this.lbExecution.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbExecution.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.lbExecution.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(31)))), ((int)(((byte)(32)))));
             this.lbExecution.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbExecution.ForeColor = System.Drawing.Color.PaleGoldenrod;
             this.lbExecution.Location = new System.Drawing.Point(14, 38);
@@ -230,7 +231,7 @@
             this.lbExecution.Padding = new System.Windows.Forms.Padding(2, 2, 1, 1);
             this.lbExecution.Size = new System.Drawing.Size(246, 21);
             this.lbExecution.TabIndex = 42;
-            this.lbExecution.Tag = "color:darker";
+            this.lbExecution.Tag = "color:dark2";
             this.lbExecution.Text = "No execution set";
             this.lbExecution.Visible = false;
             // 
@@ -365,7 +366,7 @@
             this.cbSelectedExecution.Size = new System.Drawing.Size(246, 21);
             this.cbSelectedExecution.TabIndex = 117;
             this.cbSelectedExecution.TabStop = false;
-            this.cbSelectedExecution.Tag = "color:normal";
+            this.cbSelectedExecution.Tag = "color:dark2";
             this.cbSelectedExecution.Visible = false;
             this.cbSelectedExecution.SelectedIndexChanged += new System.EventHandler(this.CbSelectedExecution_SelectedIndexChanged);
             // 
@@ -385,6 +386,7 @@
             this.pnTargetExecution.Name = "pnTargetExecution";
             this.pnTargetExecution.Size = new System.Drawing.Size(359, 92);
             this.pnTargetExecution.TabIndex = 176;
+            this.pnTargetExecution.Tag = "color:dark1";
             // 
             // btnEditExec
             // 
@@ -399,7 +401,7 @@
             this.btnEditExec.Size = new System.Drawing.Size(81, 21);
             this.btnEditExec.TabIndex = 118;
             this.btnEditExec.TabStop = false;
-            this.btnEditExec.Tag = "color:darker";
+            this.btnEditExec.Tag = "color:dark2";
             this.btnEditExec.Text = "Edit Exec";
             this.btnEditExec.UseVisualStyleBackColor = false;
             this.btnEditExec.Click += new System.EventHandler(this.BtnEditExec_Click);
@@ -431,6 +433,7 @@
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(516, 352);
             this.Name = "StubForm";
+            this.Tag = "color:dark2";
             this.Text = "File Stub ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StubForm_FormClosing);
             this.Load += new System.EventHandler(this.StubForm_Load);

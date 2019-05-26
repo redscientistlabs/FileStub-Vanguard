@@ -1,5 +1,6 @@
 ﻿using RTCV.CorruptCore;
 using RTCV.NetCore;
+using RTCV.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -47,6 +48,8 @@ namespace FileStub
         {
             cbSelectedExecution.SelectedIndex = 0;
             cbTargetType.SelectedIndex = 0;
+
+            UICore.SetRTCColor(Color.Plum, this);
 
             FileWatch.Start();
         }
