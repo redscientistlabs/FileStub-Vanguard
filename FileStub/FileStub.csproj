@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}</ProjectGuid>
+    <ProjectGuid>{3E02B2BA-0900-4BCF-A416-821C949E6C85}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>FileStub</RootNamespace>
     <AssemblyName>FileStub</AssemblyName>
@@ -39,13 +39,16 @@
   <ItemGroup>
     <Reference Include="Ceras, Version=4.0.38.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ceras.4.0.38\lib\net47\Ceras.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
