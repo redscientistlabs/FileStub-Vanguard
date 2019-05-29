@@ -39,7 +39,7 @@ namespace FileStub
             DisableInterface();
             //state = TargetType.UNFOUND;
 
-            CorruptCore.EmuDirOverride = true; //allows the use of this value before vanguard is connected
+            RtcCore.EmuDirOverride = true; //allows the use of this value before vanguard is connected
 
 
             string tempPath = Path.Combine(FileWatch.currentDir, "TEMP");

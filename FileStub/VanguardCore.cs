@@ -153,7 +153,7 @@ namespace Vanguard
 
             emuSpecTemplate.Insert(VanguardCore.getDefaultPartial());
 
-            AllSpec.VanguardSpec = new FullSpec(emuSpecTemplate, !CorruptCore.Attached); //You have to feed a partial spec as a template
+            AllSpec.VanguardSpec = new FullSpec(emuSpecTemplate, !RtcCore.Attached); //You have to feed a partial spec as a template
 
             if (VanguardCore.attached)
                 RTCV.Vanguard.VanguardConnector.PushVanguardSpecRef(AllSpec.VanguardSpec);
@@ -186,7 +186,7 @@ namespace Vanguard
             //Start everything
             VanguardImplementation.StartClient();
             VanguardCore.RegisterVanguardSpec();
-            CorruptCore.StartEmuSide();
+            RtcCore.StartEmuSide();
 
             //Refocus on Bizhawk
             S.GET<StubForm>().Focus();
