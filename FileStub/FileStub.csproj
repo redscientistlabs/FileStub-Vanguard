@@ -88,7 +88,7 @@
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="VanguardCore.cs" />
-    <Compile Include="VanguiardImplementation.cs" />
+    <Compile Include="VanguardImplementation.cs" />
     <EmbeddedResource Include="StubForm.resx">
       <DependentUpon>StubForm.cs</DependentUpon>
     </EmbeddedResource>
