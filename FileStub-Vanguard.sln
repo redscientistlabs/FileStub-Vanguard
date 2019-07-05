@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28902.138
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStub", "FileStub\FileStub.csproj", "{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStub", "FileStub\FileStub.csproj", "{3E02B2BA-0900-4BCF-A416-821C949E6C85}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RTCV", "RTCV", "{EBBC4835-E9F7-4939-A3FA-5E7F442646AD}"
 EndProject
@@ -29,15 +29,16 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}.Debug|Any CPU.Build.0 = Debug|x64
-		{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}.Debug|x64.ActiveCfg = Debug|x64
-		{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}.Debug|x64.Build.0 = Debug|x64
-		{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}.Debug|x86.ActiveCfg = Debug|x64
-		{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}.Release|Any CPU.ActiveCfg = Release|x64
-		{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}.Release|x64.ActiveCfg = Release|x64
-		{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}.Release|x64.Build.0 = Release|x64
-		{2ACB6EE7-DF56-4B84-857C-535F75CE0CA8}.Release|x86.ActiveCfg = Release|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Debug|Any CPU.Build.0 = Debug|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Debug|x64.ActiveCfg = Debug|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Debug|x64.Build.0 = Debug|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Debug|x86.ActiveCfg = Debug|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Release|Any CPU.ActiveCfg = Release|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Release|Any CPU.Build.0 = Release|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Release|x64.ActiveCfg = Release|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Release|x64.Build.0 = Release|x64
+		{3E02B2BA-0900-4BCF-A416-821C949E6C85}.Release|x86.ActiveCfg = Release|x64
 		{B5633A86-DC66-4723-88EB-7DFC95458072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5633A86-DC66-4723-88EB-7DFC95458072}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5633A86-DC66-4723-88EB-7DFC95458072}.Debug|x64.ActiveCfg = Debug|x64

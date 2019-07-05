@@ -182,7 +182,8 @@ namespace FileStub
 
         private void BtnReleaseTarget_Click(object sender, EventArgs e)
         {
-            FileWatch.CloseTarget();
+            if (!FileWatch.CloseTarget())
+                return;
             DisableTargetInterface();
         }
 
@@ -281,7 +282,8 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void StubForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            FileWatch.CloseTarget(false);
+            if (!FileWatch.CloseTarget(false))
+                e.Cancel = true;
         }
     }
 }

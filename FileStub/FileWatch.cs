@@ -18,7 +18,7 @@ namespace FileStub
 {
     public static class FileWatch
     {
-        public static string FileStubVersion = "0.0.6";
+        public static string FileStubVersion = "0.0.7";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
@@ -26,11 +26,8 @@ namespace FileStub
         public static ProgressForm progressForm;
 
 
-
-
         public static void Start()
         {
-
             if (VanguardCore.vanguardConnected)
                 RemoveDomains();
 
@@ -42,15 +39,11 @@ namespace FileStub
             RtcCore.EmuDirOverride = true; //allows the use of this value before vanguard is connected
 
 
-            string tempPath = Path.Combine(FileWatch.currentDir, "TEMP");
-            string temp2Path = Path.Combine(FileWatch.currentDir, "TEMP2");
+            string backupPath = Path.Combine(FileWatch.currentDir, "FILEBACKUPS");
             string paramsPath = Path.Combine(FileWatch.currentDir, "PARAMS");
 
-            if (!Directory.Exists(tempPath))
-                Directory.CreateDirectory(tempPath);
-
-            if (!Directory.Exists(temp2Path))
-                Directory.CreateDirectory(temp2Path);
+            if (!Directory.Exists(backupPath))
+                Directory.CreateDirectory(backupPath);
 
             if (!Directory.Exists(paramsPath))
                 Directory.CreateDirectory(paramsPath);
@@ -60,7 +53,7 @@ namespace FileStub
 
             if (File.Exists(disclaimerPath) && !File.Exists(disclaimerReadPath))
             {
-                MessageBox.Show(File.ReadAllText(disclaimerPath).Replace("[ver]", FileWatch.FileStubVersion), "Cemu Stub", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(File.ReadAllText(disclaimerPath).Replace("[ver]", FileWatch.FileStubVersion), "File Stub", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 File.Create(disclaimerReadPath);
             }
 
@@ -81,28 +74,32 @@ namespace FileStub
             UpdateDomains();
         }
 
-        public static void RestoreTarget()
+
+        public static bool RestoreTarget()
         {
-            if (FileWatch.currentFileInfo.autoUncorrupt)
+            bool success = false;
+            if (currentFileInfo.autoUncorrupt)
             {
                 if (StockpileManager_EmuSide.UnCorruptBL != null)
+                {
                     StockpileManager_EmuSide.UnCorruptBL.Apply(false);
+                    success = true;
+                }
                 else
                 {
                     //CHECK CRC WITH BACKUP HERE AND SKIP BACKUP IF WORKING FILE = BACKUP FILE
-                    FileWatch.currentFileInfo.targetInterface.ResetWorkingFile();
+                   success = currentFileInfo.targetInterface.ResetWorkingFile();
                 }
             }
             else
             {
-                FileWatch.currentFileInfo.targetInterface.ResetWorkingFile();
+                success = currentFileInfo.targetInterface.ResetWorkingFile();
             }
+            return success;
         }
 
         internal static bool LoadTarget()
         {
-
-
             if(currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
             {
                 FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
@@ -192,12 +189,10 @@ namespace FileStub
                     return false;
 
 
-
-
                 var mfi = (MultipleFileInterface)FileWatch.currentFileInfo.targetInterface;
                 //currentTargetName = mfi.ShortFilename;
                 S.GET<StubForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
-
+                StockpileManager_EmuSide.UnCorruptBL = null;
             }
 
             return true;
@@ -238,17 +233,22 @@ namespace FileStub
                 }
         }
 
-        internal static void CloseTarget(bool updateDomains = true)
+        internal static bool CloseTarget(bool updateDomains = true)
         {
             if (FileWatch.currentFileInfo.targetInterface != null)
             {
-                FileWatch.RestoreTarget();
+                if (!FileWatch.RestoreTarget())
+                {
+                    MessageBox.Show("Unable to restore the backup. Aborting!");
+                    return false;
+                }
                 FileWatch.currentFileInfo.targetInterface.CloseStream();
                 FileWatch.currentFileInfo.targetInterface = null;
             }
 
             if(updateDomains)
-            UpdateDomains();
+                UpdateDomains();
+            return true;
         }
 
         public static void UpdateDomains()
