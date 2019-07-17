@@ -138,6 +138,7 @@ namespace Vanguard
             partial[VSPEC.SUPPORTS_KILLSWITCH] = false;
             partial[VSPEC.SUPPORTS_MIXED_STOCKPILE] = false;
             partial[VSPEC.REPLACE_MANUALBLAST_WITH_GHCORRUPT] = true;
+            partial[VSPEC.EMUDIR] = emuDir;
 
             if(FileWatch.currentFileInfo.useCacheAndMultithread)
                 partial[VSPEC.SUPPORTS_MULTITHREAD] = true;

@@ -70,7 +70,7 @@ namespace Vanguard
                         {
                             //We still need to set the emulator's path
                             AllSpec.VanguardSpec.Update(VSPEC.EMUDIR, FileWatch.currentDir);
-                            SyncObjectSingleton.FormExecute((o, ea) =>
+                            SyncObjectSingleton.FormExecute(() =>
                             {
                                 FileWatch.UpdateDomains();
                             });
@@ -93,28 +93,28 @@ namespace Vanguard
                     case REMOTE_POSTCORRUPTACTION:
                         //var fileName = advancedMessage.objectValue as String;
                         FileWatch.currentFileInfo.targetInterface.CloseStream();
-                        SyncObjectSingleton.FormExecute((o, ea) =>
+                        SyncObjectSingleton.FormExecute(() =>
                         {
                             Executor.Execute();
                         });
                         break;
 
                     case REMOTE_CLOSEGAME:
-                        SyncObjectSingleton.FormExecute((o, ea) =>
+                        SyncObjectSingleton.FormExecute(() =>
                         {
                             FileWatch.KillProcess();
                         });
                         break;
 
                     case REMOTE_DOMAIN_GETDOMAINS:
-                        SyncObjectSingleton.FormExecute((o, ea) =>
+                        SyncObjectSingleton.FormExecute(() =>
                         {
                             e.setReturnValue(FileWatch.GetInterfaces());
                         });
                         break;
 
                     case REMOTE_EVENT_EMU_MAINFORM_CLOSE:
-                        SyncObjectSingleton.FormExecute((o, ea) =>
+                        SyncObjectSingleton.FormExecute(() =>
                         {
                             Environment.Exit(0);
                         });

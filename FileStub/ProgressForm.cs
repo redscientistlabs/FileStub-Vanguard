@@ -66,7 +66,7 @@ namespace FileStub
 
             if (postAction != null)
             {
-                SyncObjectSingleton.FormExecute((o, ea) => {
+                SyncObjectSingleton.FormExecute(() => {
                     postAction.Invoke(null, null);
                 });
             }
