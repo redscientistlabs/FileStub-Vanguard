@@ -111,7 +111,7 @@ namespace Vanguard
             set => AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, value);
         }
 
-        public static string emuDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static string emuDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         public static string logPath = Path.Combine(emuDir, "EMU_LOG.txt");
 
 
