@@ -227,7 +227,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
             FileWatch.currentFileInfo.targetInterface?.RestoreBackup();
 
-            foreach (string file in Directory.GetFiles(FileWatch.currentDir + "\\TEMP"))
+            foreach (string file in Directory.GetFiles(Path.Combine(FileWatch.currentDir, "FILEBACKUPS")))
             {
                 try
                 {
