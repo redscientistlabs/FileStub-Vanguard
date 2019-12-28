@@ -38,8 +38,8 @@
     <ApplicationIcon>FileStubIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ceras, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\RTCV_Deploy\packages\Ceras.4.0.40\lib\net47\Ceras.dll</HintPath>
+    <Reference Include="Ceras, Version=4.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\RTCV_Deploy\packages\Ceras.4.1.7\lib\net47\Ceras.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\RTCV_Deploy\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
