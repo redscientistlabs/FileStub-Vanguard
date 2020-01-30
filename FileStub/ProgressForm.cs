@@ -1,5 +1,5 @@
 ﻿using RTCV.NetCore;
-using RTCV.NetCore.StaticTools;
+using RTCV.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

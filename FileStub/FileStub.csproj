@@ -128,6 +128,10 @@
       <Project>{bd376bb2-17ec-4fb0-a9fe-6b1bbf4af3e3}</Project>
       <Name>UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\RTCV\Source\Libraries\Common\Common.csproj">
+      <Project>{a31c17e1-2eab-434f-a022-20193f2ceab7}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\RTCV\Source\Libraries\CorruptCore\CorruptCore.csproj">
       <Project>{b5633a86-dc66-4723-88eb-7dfc95458072}</Project>
       <Name>CorruptCore</Name>

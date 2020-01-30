@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RTCV.CorruptCore;
+using RTCV.Common;
 using RTCV.NetCore;
-using RTCV.NetCore.StaticTools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +18,7 @@ namespace FileStub
 {
     public static class FileWatch
     {
-        public static string FileStubVersion = "0.1.5";
+        public static string FileStubVersion = "0.1.7";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
