@@ -18,7 +18,7 @@ namespace FileStub
 {
     public static class FileWatch
     {
-        public static string FileStubVersion = "0.1.7";
+        public static string FileStubVersion = "0.1.6";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
@@ -28,6 +28,7 @@ namespace FileStub
 
         public static void Start()
         {
+            RTCV.Common.Logging.StartLogging(VanguardCore.logPath);
             if (VanguardCore.vanguardConnected)
                 RemoveDomains();
 
