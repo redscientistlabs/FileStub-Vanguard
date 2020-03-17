@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vanguard;
@@ -18,7 +19,7 @@ namespace FileStub
 {
     public static class FileWatch
     {
-        public static string FileStubVersion = "0.1.6";
+        public static string FileStubVersion = "0.1.7";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
@@ -224,6 +225,7 @@ namespace FileStub
                     {
                         processTemp.Start();
                         processTemp.WaitForExit();
+                        Thread.Sleep(500); //Add an artificial delay as sometimes handles don't release right away 
                     }
                     catch (Exception ex)
                     {
