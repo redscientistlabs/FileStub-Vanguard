@@ -26,4 +26,4 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.0
     - name: Build with MSBuild
-      run: msbuild '.\FileStub-Vanguard.sln'
+      run: msbuild '.\FileStub-Vanguard\FileStub-Vanguard.sln'
