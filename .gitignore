@@ -2,3 +2,4 @@
 FileStub/bin/*
 FileStub/obj/*
 packages/*
+.vscode
