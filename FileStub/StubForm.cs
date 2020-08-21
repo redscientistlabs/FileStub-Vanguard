@@ -49,7 +49,7 @@ namespace FileStub
             cbSelectedExecution.SelectedIndex = 0;
             cbTargetType.SelectedIndex = 0;
 
-            UICore.SetRTCColor(Color.Plum, this);
+            Colors.SetRTCColor(Color.Plum, this);
 
             FileWatch.Start();
         }
@@ -87,7 +87,7 @@ namespace FileStub
                     btnEditExec.Text = "Edit Exec";
                     break;
 
-                    
+
                 case ExecutionType.NO_EXECUTION:
                     lbArgs.Visible = false;
                     tbArgs.Visible = false;
