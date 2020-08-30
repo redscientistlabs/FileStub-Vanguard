@@ -19,7 +19,7 @@ namespace Vanguard
     {
         public static string[] args;
         public static bool vanguardStarted = false;
-        public static bool vanguardConnected => (VanguardImplementation.connector != null ? VanguardImplementation.connector.netcoreStatus == NetworkStatus.CONNECTED : false);
+        public static bool vanguardConnected => (VanguardImplementation.connector != null ? VanguardImplementation.connector.netcoreStatus == RTCV.NetCore.Enums.NetworkStatus.CONNECTED : false);
 
         internal static DialogResult ShowErrorDialog(Exception exception, bool canContinue = false)
         {
@@ -175,7 +175,7 @@ namespace Vanguard
         }
 
         //This is the entry point of RTC. Without this method, nothing will load.
-        
+
         public static void Start()
         {
 
