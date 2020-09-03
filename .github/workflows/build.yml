@@ -12,7 +12,7 @@ jobs:
     - name: Checkout RTCV peer dependency
       uses: actions/checkout@v2
       with:
-        repository: 'ircluzar/RTCV'
+        repository: 'redscientistlabs/RTCV'
         ref: '506'
         path: 'RTCV'
     - name: Setup Nuget
