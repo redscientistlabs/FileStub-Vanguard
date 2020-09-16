@@ -13,7 +13,6 @@ using System.Windows.Forms;
 using RTCV;
 using RTCV.CorruptCore;
 using RTCV.Common;
-using static RTCV.NetCore.NetcoreCommands;
 using FileStub;
 
 namespace Vanguard
