@@ -82,9 +82,9 @@ namespace FileStub
             bool success = false;
             if (currentFileInfo.autoUncorrupt)
             {
-                if (StockpileManager_EmuSide.UnCorruptBL != null)
+                if (StockpileManagerEmuSide.UnCorruptBL != null)
                 {
-                    StockpileManager_EmuSide.UnCorruptBL.Apply(false);
+                    StockpileManagerEmuSide.UnCorruptBL.Apply(false);
                     success = true;
                 }
                 else
@@ -194,7 +194,7 @@ namespace FileStub
                 var mfi = (MultipleFileInterface)FileWatch.currentFileInfo.targetInterface;
                 //currentTargetName = mfi.ShortFilename;
                 S.GET<StubForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
-                StockpileManager_EmuSide.UnCorruptBL = null;
+                StockpileManagerEmuSide.UnCorruptBL = null;
             }
 
             return true;
@@ -202,8 +202,8 @@ namespace FileStub
 
         internal static void KillProcess()
         {
-            if (currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM || 
-                currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH || 
+            if (currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM ||
+                currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH ||
                 currentFileInfo.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
                 if (currentFileInfo.TerminateBeforeExecution && Executor.otherProgram != null)
                 {
@@ -225,7 +225,7 @@ namespace FileStub
                     {
                         processTemp.Start();
                         processTemp.WaitForExit();
-                        Thread.Sleep(500); //Add an artificial delay as sometimes handles don't release right away 
+                        Thread.Sleep(500); //Add an artificial delay as sometimes handles don't release right away
                     }
                     catch (Exception ex)
                     {
@@ -273,10 +273,10 @@ namespace FileStub
                 AllSpec.VanguardSpec.Update(gameDone);
 
                 //This is local. If the domains changed it propgates over netcore
-                LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_DOMAINSUPDATED, true, true);
+                LocalNetCoreRouter.Route(RTCV.NetCore.Commands.Basic.CorruptCore, RTCV.NetCore.Commands.Remote.EventDomainsUpdated, true, true);
 
                 //Asks RTC to restrict any features unsupported by the stub
-                LocalNetCoreRouter.Route(NetcoreCommands.CORRUPTCORE, NetcoreCommands.REMOTE_EVENT_RESTRICTFEATURES, true, true);
+                LocalNetCoreRouter.Route(RTCV.NetCore.Commands.Basic.CorruptCore, RTCV.NetCore.Commands.Remote.EventRestrictFeatures, true, true);
 
             }
             catch (Exception ex)
@@ -300,7 +300,7 @@ namespace FileStub
                 List<MemoryDomainProxy> interfaces = new List<MemoryDomainProxy>();
 
                 switch (currentFileInfo.selectedTargetType)
-                {   //Checking if the FileInterface/MultiFileInterface is split in sub FileInterfaces 
+                {   //Checking if the FileInterface/MultiFileInterface is split in sub FileInterfaces
 
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH:
