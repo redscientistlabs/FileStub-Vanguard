@@ -112,7 +112,7 @@ namespace Vanguard
                         });
                         break;
 
-                    case RTCV.NetCore.Commands.Remote.EventEmuManiformClose:
+                    case RTCV.NetCore.Commands.Remote.EventEmuMainFormClose:
                         SyncObjectSingleton.FormExecute(() =>
                         {
                             Environment.Exit(0);
