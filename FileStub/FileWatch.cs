@@ -273,10 +273,10 @@ namespace FileStub
                 AllSpec.VanguardSpec.Update(gameDone);
 
                 //This is local. If the domains changed it propgates over netcore
-                LocalNetCoreRouter.Route(RTCV.NetCore.Commands.Basic.CorruptCore, RTCV.NetCore.Commands.Remote.EventDomainsUpdated, true, true);
+                LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.CorruptCore, RTCV.NetCore.Commands.Remote.EventDomainsUpdated, true, true);
 
                 //Asks RTC to restrict any features unsupported by the stub
-                LocalNetCoreRouter.Route(RTCV.NetCore.Commands.Basic.CorruptCore, RTCV.NetCore.Commands.Remote.EventRestrictFeatures, true, true);
+                LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.CorruptCore, RTCV.NetCore.Commands.Remote.EventRestrictFeatures, true, true);
 
             }
             catch (Exception ex)
