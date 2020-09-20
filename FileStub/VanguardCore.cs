@@ -1,31 +1,30 @@
-﻿using FileStub;
-using RTCV.CorruptCore;
-using RTCV.Common;
-using RTCV.NetCore;
-using RTCV.Vanguard;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.IO.Compression;
-using System.Reflection;
-using System.Threading;
-using System.Windows.Forms;
-
 namespace Vanguard
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Reflection;
+    using System.Threading;
+    using System.Windows.Forms;
+    using FileStub;
+    using RTCV.Common;
+    using RTCV.CorruptCore;
+    using RTCV.NetCore;
+    using RTCV.Vanguard;
+
     public static class VanguardCore
     {
-        public static string[] args;
-        public static bool vanguardStarted = false;
+        internal static string[] args;
+        internal static bool vanguardStarted = false;
         public static bool vanguardConnected => (VanguardImplementation.connector != null ? VanguardImplementation.connector.netcoreStatus == RTCV.NetCore.Enums.NetworkStatus.CONNECTED : false);
 
         internal static DialogResult ShowErrorDialog(Exception exception, bool canContinue = false)
         {
             return new RTCV.NetCore.CloudDebug(exception, canContinue).Start();
         }
-
 
         /// <summary>
         /// Global exceptions in Non User Interfarce(other thread) antipicated error
@@ -37,7 +36,6 @@ namespace Vanguard
             Exception ex = (Exception)e.ExceptionObject;
             Form error = new RTCV.NetCore.CloudDebug(ex);
             var result = error.ShowDialog();
-
         }
 
         /// <summary>
@@ -63,7 +61,7 @@ namespace Vanguard
             }
         }
 
-        public static bool attached = false;
+        internal static bool attached = false;
 
         public static string System
         {
@@ -100,20 +98,19 @@ namespace Vanguard
             get => (int)AllSpec.VanguardSpec[VSPEC.CORE_LASTLOADERROM];
             set => AllSpec.VanguardSpec.Update(VSPEC.CORE_LASTLOADERROM, value);
         }
-        public static string[] BlacklistedDomains
+        internal static string[] BlacklistedDomains
         {
             get => (string[])AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS];
             set => AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS, value);
         }
-        public static MemoryDomainProxy[] MemoryInterfacees
+        internal static MemoryDomainProxy[] MemoryInterfacees
         {
             get => (MemoryDomainProxy[])AllSpec.VanguardSpec[VSPEC.MEMORYDOMAINS_INTERFACES];
             set => AllSpec.VanguardSpec.Update(VSPEC.MEMORYDOMAINS_INTERFACES, value);
         }
 
-        public static string emuDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-        public static string logPath = Path.Combine(emuDir, "EMU_LOG.txt");
-
+        internal static string emuDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        internal static string logPath = Path.Combine(emuDir, "EMU_LOG.txt");
 
         public static PartialSpec getDefaultPartial()
         {
@@ -121,12 +118,12 @@ namespace Vanguard
 
             partial[VSPEC.NAME] = "FileStub";
             partial[VSPEC.SYSTEM] = "FileSystem";
-            partial[VSPEC.GAMENAME] = String.Empty;
-            partial[VSPEC.SYSTEMPREFIX] = String.Empty;
-            partial[VSPEC.OPENROMFILENAME] = String.Empty;
-            partial[VSPEC.SYNCSETTINGS] = String.Empty;
-            partial[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = new string[] { };
-            partial[VSPEC.MEMORYDOMAINS_INTERFACES] = new MemoryDomainProxy[] { };
+            partial[VSPEC.GAMENAME] = string.Empty;
+            partial[VSPEC.SYSTEMPREFIX] = string.Empty;
+            partial[VSPEC.OPENROMFILENAME] = string.Empty;
+            partial[VSPEC.SYNCSETTINGS] = string.Empty;
+            partial[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = Array.Empty<string>();
+            partial[VSPEC.MEMORYDOMAINS_INTERFACES] = Array.Empty<MemoryDomainProxy>();
             partial[VSPEC.CORE_LASTLOADERROM] = -1;
             partial[VSPEC.SUPPORTS_RENDERING] = false;
             partial[VSPEC.SUPPORTS_CONFIG_MANAGEMENT] = false;
@@ -141,7 +138,7 @@ namespace Vanguard
             partial[VSPEC.REPLACE_MANUALBLAST_WITH_GHCORRUPT] = true;
             partial[VSPEC.EMUDIR] = emuDir;
 
-            if(FileWatch.currentFileInfo.useCacheAndMultithread)
+            if (FileWatch.currentFileInfo.useCacheAndMultithread)
                 partial[VSPEC.SUPPORTS_MULTITHREAD] = true;
 
             //partial[VSPEC.CONFIG_PATHS] = new[] { Path.Combine(emuDir, "config.ini") };
@@ -163,11 +160,9 @@ namespace Vanguard
             LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.CorruptCore, RTCV.NetCore.Commands.Remote.PushVanguardSpec, emuSpecTemplate, true);
             LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.UI, RTCV.NetCore.Commands.Remote.PushVanguardSpec, emuSpecTemplate, true);
 
-
             AllSpec.VanguardSpec.SpecUpdated += (o, e) =>
             {
                 PartialSpec partial = e.partialSpec;
-
 
                 LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.CorruptCore, RTCV.NetCore.Commands.Remote.PushVanguardSpecUpdate, partial, true);
                 LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.UI, RTCV.NetCore.Commands.Remote.PushVanguardSpecUpdate, partial, true);
@@ -178,7 +173,6 @@ namespace Vanguard
 
         public static void Start()
         {
-
             vanguardStarted = true;
 
             //Grab an object on the main thread to use for netcore invokes
@@ -197,7 +191,5 @@ namespace Vanguard
             if (VanguardCore.attached)
                 VanguardConnector.ImplyClientConnected();
         }
-
-
     }
 }

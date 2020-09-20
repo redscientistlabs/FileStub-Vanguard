@@ -1,31 +1,29 @@
-﻿using RTCV.CorruptCore;
-using RTCV.NetCore;
-using RTCV.UI;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Vanguard;
-
 namespace FileStub
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using RTCV.CorruptCore;
+    using RTCV.NetCore;
+    using RTCV.UI;
+    using Vanguard;
+
     public partial class StubForm : Form
     {
-
         public StubForm()
         {
             InitializeComponent();
 
             SyncObjectSingleton.SyncObject = this;
 
-
-        Text += FileWatch.FileStubVersion;
+            Text += FileWatch.FileStubVersion;
 
             this.cbSelectedExecution.Items.AddRange(new object[] {
                 ExecutionType.NO_EXECUTION,
@@ -41,7 +39,6 @@ namespace FileStub
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN,
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH,
             });
-
         }
 
         private void StubForm_Load(object sender, EventArgs e)
@@ -54,9 +51,8 @@ namespace FileStub
             FileWatch.Start();
         }
 
-        public void RunProgressBar(string progressLabel, int maxProgress, Action<object, EventArgs> action, Action<object, EventArgs> postAction = null)
+        internal void RunProgressBar(string progressLabel, int maxProgress, Action<object, EventArgs> action, Action<object, EventArgs> postAction = null)
         {
-
             if (FileWatch.progressForm != null)
             {
                 FileWatch.progressForm.Close();
@@ -66,7 +62,6 @@ namespace FileStub
 
             FileWatch.progressForm = new ProgressForm(progressLabel, maxProgress, action, postAction);
             FileWatch.progressForm.Run();
-
         }
 
         private void CbSelectedExecution_SelectedIndexChanged(object sender, EventArgs e)
@@ -87,7 +82,6 @@ namespace FileStub
                     btnEditExec.Text = "Edit Exec";
                     break;
 
-
                 case ExecutionType.NO_EXECUTION:
                     lbArgs.Visible = false;
                     tbArgs.Visible = false;
@@ -107,14 +101,12 @@ namespace FileStub
             }
 
             Executor.RefreshLabel();
-
         }
 
         private void BtnEditExec_Click(object sender, EventArgs e)
         {
             Executor.EditExec();
         }
-
 
         Size originalLbTargetSize;
         Point originalLbTargetLocation;
@@ -132,8 +124,6 @@ namespace FileStub
             lbTarget.Size = new Size(lbTarget.Size.Width + diff, lbTarget.Size.Height);
             btnUnloadTarget.Visible = true;
             cbTargetType.Enabled = false;
-
-
 
             FileWatch.EnableInterface();
 
@@ -156,7 +146,6 @@ namespace FileStub
 
             cbSelectedExecution.SelectedIndex = 0;
 
-
             lbExecution.Visible = false;
             cbSelectedExecution.Visible = false;
 
@@ -169,7 +158,6 @@ namespace FileStub
 
         private void BtnBrowseTarget_Click(object sender, EventArgs e)
         {
-
             if (!FileWatch.LoadTarget())
                 return;
 
@@ -177,7 +165,6 @@ namespace FileStub
                 VanguardCore.Start();
 
             EnableTargetInterface();
-
         }
 
         private void BtnReleaseTarget_Click(object sender, EventArgs e)
@@ -191,7 +178,6 @@ namespace FileStub
         {
             //if(cbSelectedExecution.SelectedItem.ToString())
             FileWatch.currentFileInfo.selectedTargetType = cbTargetType.SelectedItem.ToString();
-
         }
 
         private void BtnKillProcess_Click(object sender, EventArgs e)
@@ -216,14 +202,12 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 return;
 
             FileWatch.currentFileInfo.targetInterface?.ResetBackup(true);
-
         }
 
         private void BtnClearAllBackups_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are you sure you want to clear ALL THE BACKUPS\n from FileStub's cache?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
-
 
             FileWatch.currentFileInfo.targetInterface?.RestoreBackup();
 
@@ -254,26 +238,19 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
                 ContextMenuStrip columnsMenu = new ContextMenuStrip();
 
-
                 ((ToolStripMenuItem)columnsMenu.Items.Add("Big endian", null, new EventHandler((ob, ev) => {
-
                     FileWatch.currentFileInfo.bigEndian = !FileStub.FileWatch.currentFileInfo.bigEndian;
 
                     if (VanguardCore.vanguardConnected)
                         FileWatch.UpdateDomains();
-
                 }))).Checked = FileWatch.currentFileInfo.bigEndian;
 
                 ((ToolStripMenuItem)columnsMenu.Items.Add("Auto-Uncorrupt", null, new EventHandler((ob, ev) => {
-
                     FileWatch.currentFileInfo.autoUncorrupt = !FileWatch.currentFileInfo.autoUncorrupt;
-
                 }))).Checked = FileWatch.currentFileInfo.autoUncorrupt;
 
                 ((ToolStripMenuItem)columnsMenu.Items.Add("Use Caching + Multithreading", null, new EventHandler((ob, ev) => {
-
                     FileWatch.currentFileInfo.useCacheAndMultithread = !FileWatch.currentFileInfo.useCacheAndMultithread;
-
                 }))).Checked = FileWatch.currentFileInfo.useCacheAndMultithread;
 
                 columnsMenu.Show(this, locate);

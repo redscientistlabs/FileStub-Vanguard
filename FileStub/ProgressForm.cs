@@ -1,25 +1,20 @@
-﻿using RTCV.NetCore;
-using RTCV.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace FileStub
 {
+    using System;
+    using System.ComponentModel;
+    using System.Windows.Forms;
+    using RTCV.Common;
+    using RTCV.NetCore;
+
     public partial class ProgressForm : Form
     {
-        public BackgroundWorker bw = new BackgroundWorker();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Dispose method is located in the designer file")]
+        internal BackgroundWorker bw = new BackgroundWorker();
         string defaultLabel;
 
-        public static Action<object, EventArgs> postAction = null;
+        internal static Action<object, EventArgs> postAction = null;
 
-        public ProgressForm(string lbText, int maxprogress, Action<object, EventArgs> actionRegistrant, Action<object, EventArgs> postActionRegistrant = null)
+        internal ProgressForm(string lbText, int maxprogress, Action<object, EventArgs> actionRegistrant, Action<object, EventArgs> postActionRegistrant = null)
         {
             InitializeComponent();
 
@@ -48,9 +43,6 @@ namespace FileStub
             Anchor = (AnchorStyles)(AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom);
             Show();
             BringToFront();
-
-
-
         }
 
         public void Run()
@@ -70,7 +62,6 @@ namespace FileStub
                     postAction.Invoke(null, null);
                 });
             }
-                
         }
 
         private void Bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -85,13 +76,11 @@ namespace FileStub
 
             if (e.UserState != null && e.UserState is string)
             {
-                if((e.UserState as string) == "DEFAULT")
+                if ((e.UserState as string) == "DEFAULT")
                     lbProgress.Text = defaultLabel;
                 else
                     lbProgress.Text = (e.UserState as string);
             }
-
         }
-
     }
 }

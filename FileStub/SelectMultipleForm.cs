@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using static RTCV.CorruptCore.FileInterface;
-using RTCV.CorruptCore;
-using Vanguard;
-
 namespace FileStub
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
+    using System.Security;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using RTCV.CorruptCore;
+    using Vanguard;
+    using static RTCV.CorruptCore.FileInterface;
+
     public partial class SelectMultipleForm : Form
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Dispose method is located in the designer file")]
         OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
         public SelectMultipleForm()
@@ -30,7 +31,7 @@ namespace FileStub
             if (dr == System.Windows.Forms.DialogResult.OK)
             {
                 // Read the files
-                foreach (String file in openFileDialog1.FileNames)
+                foreach (string file in openFileDialog1.FileNames)
                 {
                     lbMultipleFiles.Items.Add(file);
                 }
@@ -44,15 +45,14 @@ namespace FileStub
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             DialogResult result = fbd.ShowDialog();
 
-            List<String> files = DirSearch(fbd.SelectedPath);
+            List<string> files = DirSearch(fbd.SelectedPath);
 
             lbMultipleFiles.Items.AddRange(files.ToArray());
-
         }
 
-        private List<String> DirSearch(string sDir)
+        private List<string> DirSearch(string sDir)
         {
-            List<String> files = new List<String>();
+            List<string> files = new List<string>();
             try
             {
                 foreach (string f in Directory.GetFiles(sDir))
@@ -80,7 +80,6 @@ namespace FileStub
         private void InitializeOpenFileDialog()
         {
             //thanks: http://stackoverflow.com/questions/1311578/opening-multiple-files-openfiledialog-c
-
 
             // Set the file dialog to filter for graphics files.
             this.openFileDialog1.Filter =
@@ -112,7 +111,7 @@ namespace FileStub
 
         private void btnSendList_Click(object sender, EventArgs e)
         {
-            if(lbMultipleFiles.Items.Count == 0)
+            if (lbMultipleFiles.Items.Count == 0)
             {
                 MessageBox.Show("No files are selected");
                 return;
@@ -129,7 +128,7 @@ namespace FileStub
 
             string multipleFiles = "";
 
-            for(int i=0;i< allFiles.Count; i++)
+            for (int i = 0; i < allFiles.Count; i++)
             {
                 multipleFiles += allFiles[i];
 
@@ -173,7 +172,7 @@ namespace FileStub
                     lbMultipleFiles.Items.Clear();
                     lbMultipleFiles.Items.AddRange(files);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show("Something went wrong while loading file list \n\n" + ex.ToString());
                 }

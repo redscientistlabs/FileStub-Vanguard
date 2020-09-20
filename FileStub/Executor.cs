@@ -1,16 +1,16 @@
-﻿using RTCV.CorruptCore;
-using RTCV.Common;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace FileStub
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using RTCV.Common;
+    using RTCV.CorruptCore;
+
     static class Executor
     {
         public static string otherProgram = null;
@@ -18,7 +18,6 @@ namespace FileStub
 
         public static void EditExec()
         {
-
             if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM ||
                 FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
@@ -47,7 +46,6 @@ namespace FileStub
             }
 
             RefreshLabel();
-
         }
 
         public static void Execute()
@@ -57,7 +55,6 @@ namespace FileStub
             //Hijack no execution for the Netcore executor
             if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.NO_EXECUTION)
             {
-
             }
             else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
             {
@@ -81,7 +78,6 @@ namespace FileStub
                     MessageBox.Show("Execution of multiple individual files currently unsupported. Use Execute other program.");
                     return;
                 }
-                    
             }
             else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
@@ -108,20 +104,17 @@ namespace FileStub
                         MessageBox.Show("Execution of multiple individual files currently unsupported. Use Execute other program.");
                         return;
                     }
-
                 }
                 else
-                { 
+                {
                     MessageBox.Show("You need to specify a file to execute with the Edit Exec button.");
                     return;
                 }
-
             }
             else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM)
             {
                 if (otherProgram != null)
                 {
-
                     string fullPath = otherProgram;
                     ProcessStartInfo psi = new ProcessStartInfo();
                     psi.FileName = Path.GetFileName(fullPath);
@@ -131,7 +124,6 @@ namespace FileStub
                         psi.Arguments = args;
 
                     Process.Start(psi);
-
                 }
                 else
                     MessageBox.Show("You need to specify a file to execute with the Edit Exec button.");
@@ -190,11 +182,6 @@ namespace FileStub
                     gh.lbExecution.Text = script;
                 }
             }
-
-
         }
-
     }
-
-
 }
