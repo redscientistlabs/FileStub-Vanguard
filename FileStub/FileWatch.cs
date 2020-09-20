@@ -1,31 +1,30 @@
-﻿using Newtonsoft.Json;
-using RTCV.CorruptCore;
-using RTCV.Common;
-using RTCV.NetCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Vanguard;
-using FileStub;
-
 namespace FileStub
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using FileStub;
+    using Newtonsoft.Json;
+    using RTCV.Common;
+    using RTCV.CorruptCore;
+    using RTCV.NetCore;
+    using Vanguard;
+
     public static class FileWatch
     {
-        public static string FileStubVersion = "0.1.9";
-        public static string currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        internal static string FileStubVersion = "0.1.9";
+        internal static string currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-        public static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
+        internal static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
 
-        public static ProgressForm progressForm;
-
+        internal static ProgressForm progressForm;
 
         public static void Start()
         {
@@ -39,7 +38,6 @@ namespace FileStub
             //state = TargetType.UNFOUND;
 
             RtcCore.EmuDirOverride = true; //allows the use of this value before vanguard is connected
-
 
             string backupPath = Path.Combine(FileWatch.currentDir, "FILEBACKUPS");
             string paramsPath = Path.Combine(FileWatch.currentDir, "PARAMS");
@@ -62,12 +60,11 @@ namespace FileStub
             //If we can't load the dictionary, quit the wgh to prevent the loss of backups
             if (!FileInterface.LoadCompositeFilenameDico(FileWatch.currentDir))
                 Application.Exit();
-
         }
 
         private static void RemoveDomains()
         {
-            if(currentFileInfo.targetInterface != null)
+            if (currentFileInfo.targetInterface != null)
             {
                 currentFileInfo.targetInterface.CloseStream();
                 currentFileInfo.targetInterface = null;
@@ -75,7 +72,6 @@ namespace FileStub
 
             UpdateDomains();
         }
-
 
         public static bool RestoreTarget()
         {
@@ -102,7 +98,7 @@ namespace FileStub
 
         internal static bool LoadTarget()
         {
-            if(currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+            if (currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
             {
                 FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
 
@@ -131,7 +127,6 @@ namespace FileStub
 
                 CloseTarget(false);
 
-
                 FileInterface fi = null;
 
                 Action<object, EventArgs> action = (ob, ea) =>
@@ -157,7 +152,7 @@ namespace FileStub
                     FileWatch.currentFileInfo.targetInterface = fi;
                     S.GET<StubForm>().lbTarget.Text = targetId + "|MemorySize:" + fi.lastMemorySize.ToString();
 
-                    if(VanguardCore.vanguardConnected)
+                    if (VanguardCore.vanguardConnected)
                         UpdateDomains();
 
                     //Refresh the UI
@@ -165,15 +160,14 @@ namespace FileStub
                 };
 
                 S.GET<StubForm>().RunProgressBar($"Loading target...", 0, action, postAction);
-
             }
             else //MULTIPLE_FILE
             {
-                switch(currentFileInfo.selectedTargetType)
+                switch (currentFileInfo.selectedTargetType)
                 {
                     case TargetType.MULTIPLE_FILE_SINGLEDOMAIN:
                         FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
-                            break;
+                        break;
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
                         FileInterface.identity = FileInterfaceIdentity.HASHED_PREFIX;
                         break;
@@ -182,14 +176,12 @@ namespace FileStub
                         break;
                 }
 
-
                 S.GET<SelectMultipleForm>().Close();
                 var smForm = new SelectMultipleForm();
                 S.SET(smForm);
 
                 if (smForm.ShowDialog() != DialogResult.OK)
                     return false;
-
 
                 var mfi = (MultipleFileInterface)FileWatch.currentFileInfo.targetInterface;
                 //currentTargetName = mfi.ShortFilename;
@@ -207,7 +199,6 @@ namespace FileStub
                 currentFileInfo.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
                 if (currentFileInfo.TerminateBeforeExecution && Executor.otherProgram != null)
                 {
-
                     string otherProgramShortFilename = Path.GetFileName(Executor.otherProgram);
 
                     ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -227,9 +218,9 @@ namespace FileStub
                         processTemp.WaitForExit();
                         Thread.Sleep(500); //Add an artificial delay as sometimes handles don't release right away
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        throw ex;
+                        throw;
                     }
 
                     //Thread.Sleep(300);
@@ -249,7 +240,7 @@ namespace FileStub
                 FileWatch.currentFileInfo.targetInterface = null;
             }
 
-            if(updateDomains)
+            if (updateDomains)
                 UpdateDomains();
             return true;
         }
@@ -258,8 +249,6 @@ namespace FileStub
         {
             try
             {
-
-
                 PartialSpec gameDone = new PartialSpec("VanguardSpec");
                 gameDone[VSPEC.SYSTEM] = "FileSystem";
                 gameDone[VSPEC.GAMENAME] = FileWatch.currentFileInfo.targetShortName;
@@ -267,7 +256,7 @@ namespace FileStub
                 gameDone[VSPEC.SYSTEMCORE] = "FileStub";
                 //gameDone[VSPEC.SYNCSETTINGS] = BIZHAWK_GETSET_SYNCSETTINGS;
                 gameDone[VSPEC.OPENROMFILENAME] = currentFileInfo.targetFullName;
-                gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = new string[0];
+                gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = Array.Empty<string>();
                 gameDone[VSPEC.MEMORYDOMAINS_INTERFACES] = GetInterfaces();
                 gameDone[VSPEC.CORE_DISKBASED] = false;
                 AllSpec.VanguardSpec.Update(gameDone);
@@ -277,7 +266,6 @@ namespace FileStub
 
                 //Asks RTC to restrict any features unsupported by the stub
                 LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.CorruptCore, RTCV.NetCore.Commands.Remote.EventRestrictFeatures, true, true);
-
             }
             catch (Exception ex)
             {
@@ -294,14 +282,13 @@ namespace FileStub
                 if (currentFileInfo.targetInterface == null)
                 {
                     Console.WriteLine($"rpxInterface was null!");
-                    return new MemoryDomainProxy[] { };
+                    return Array.Empty<MemoryDomainProxy>();
                 }
 
                 List<MemoryDomainProxy> interfaces = new List<MemoryDomainProxy>();
 
                 switch (currentFileInfo.selectedTargetType)
                 {   //Checking if the FileInterface/MultiFileInterface is split in sub FileInterfaces
-
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH:
                         foreach (var fi in (currentFileInfo.targetInterface as MultipleFileInterface).FileInterfaces)
@@ -324,9 +311,8 @@ namespace FileStub
                 if (VanguardCore.ShowErrorDialog(ex, true) == DialogResult.Abort)
                     throw new RTCV.NetCore.AbortEverythingException();
 
-                return new MemoryDomainProxy[] { };
+                return Array.Empty<MemoryDomainProxy>();
             }
-
         }
 
         public static void EnableInterface()
@@ -340,8 +326,5 @@ namespace FileStub
             S.GET<StubForm>().btnResetBackup.Enabled = false;
             S.GET<StubForm>().btnRestoreBackup.Enabled = false;
         }
-
     }
-
-
 }

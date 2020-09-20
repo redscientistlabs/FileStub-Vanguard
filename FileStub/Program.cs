@@ -1,14 +1,14 @@
-﻿using RTCV.Common;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace FileStub
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using RTCV.Common;
+
     static class Program
     {
         /// <summary>
@@ -29,9 +29,7 @@ namespace FileStub
             var frm = new StubForm();
             S.SET<StubForm>(frm);
             Application.Run(frm);
-
         }
-
 
         //Lifted from Bizhawk
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)

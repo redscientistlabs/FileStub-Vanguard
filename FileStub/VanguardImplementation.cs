@@ -1,26 +1,25 @@
-﻿using RTCV.NetCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using RTCV;
-using RTCV.CorruptCore;
-using RTCV.Common;
-using FileStub;
-
 namespace Vanguard
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using FileStub;
+    using RTCV;
+    using RTCV.Common;
+    using RTCV.CorruptCore;
+    using RTCV.NetCore;
+
     public static class VanguardImplementation
     {
-        public static RTCV.Vanguard.VanguardConnector connector = null;
-
+        internal static RTCV.Vanguard.VanguardConnector connector = null;
 
         public static void StartClient()
         {
@@ -64,7 +63,6 @@ namespace Vanguard
                 ConsoleEx.WriteLine(message.Type);
                 switch (message.Type) //Handle received messages here
                 {
-
                     case RTCV.NetCore.Commands.Remote.AllSpecSent:
                         {
                             //We still need to set the emulator's path
@@ -133,6 +131,5 @@ namespace Vanguard
                     throw new RTCV.NetCore.AbortEverythingException();
             }
         }
-
     }
 }

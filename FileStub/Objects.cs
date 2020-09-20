@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Drawing;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.IO;
-using Ceras;
-using RTCV.CorruptCore;
-
-namespace FileStub
+﻿namespace FileStub
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.Text;
+    using System.Windows.Forms;
+    using Ceras;
+    using RTCV.CorruptCore;
 
     public class FileStubFileInfo
     {
@@ -52,5 +51,4 @@ namespace FileStub
         public const string MULTIPLE_FILE_MULTIDOMAIN = "Multiple files (Many domains)";
         public const string MULTIPLE_FILE_MULTIDOMAIN_FULLPATH = "Multiple files (Many domains + Full path)";
     }
-
 }
