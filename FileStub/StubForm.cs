@@ -17,9 +17,12 @@ namespace FileStub
 
     public partial class StubForm : Form
     {
+        int originalWidth;
         public StubForm()
         {
             InitializeComponent();
+
+            originalWidth = this.Width;
 
             SyncObjectSingleton.SyncObject = this;
 
@@ -41,10 +44,40 @@ namespace FileStub
             });
         }
 
+        public void ShrinkStubForm()
+        {
+            int remainder = this.Width - (btnTargetSettings.Location.X + btnTargetSettings.Width);
+            int rightsideTargetType = pnTargetType.Location.X + pnTargetType.Width;
+            originalWidth = this.Width;
+            this.Width = rightsideTargetType + remainder;
+        }
+
+        public void ExtendStubForm()
+        {
+            this.Width = originalWidth;
+        }
+
         private void StubForm_Load(object sender, EventArgs e)
         {
+            ShrinkStubForm();
+
             cbSelectedExecution.SelectedIndex = 0;
             cbTargetType.SelectedIndex = 0;
+
+            btnUnloadTarget.Location = btnLoadTargets.Location;
+            btnUnloadTarget.Size = btnLoadTargets.Size;
+
+            //uh oh magic numbers
+            //this will break if the combobox font isnt Segoe UI, 12pt
+            int magicWidth = cbTargetType.Size.Width - (411 - 387);
+            int magicHeight = cbTargetType.Size.Width - (36 - 29);
+            int magicX = cbTargetType.Location.X - (14 - 11);
+            int magicY = cbTargetType.Location.Y - (14 - 11);
+
+            lbTargetTypeDisplay.Font = cbTargetType.Font;
+            lbTargetTypeDisplay.Size = new Size(magicX, magicY);
+            lbTargetTypeDisplay.Location = new Point(magicWidth, magicHeight);
+            //---------------------------------------------------------------
 
             Colors.SetRTCColor(Color.Plum, this);
 
@@ -112,23 +145,19 @@ namespace FileStub
         Point originalLbTargetLocation;
         public void EnableTargetInterface()
         {
-            var diff = lbTarget.Location.X - btnBrowseTarget.Location.X;
-            originalLbTargetLocation = lbTarget.Location;
-            lbTarget.Location = btnBrowseTarget.Location;
-            lbTarget.Visible = true;
+            //var diff = lbTarget.Location.X - btnBrowseTarget.Location.X;
+            //originalLbTargetLocation = lbTarget.Location;
+            //lbTarget.Location = btnBrowseTarget.Location;
 
-            btnTargetSettings.Visible = false;
-
-            btnBrowseTarget.Visible = false;
+            btnLoadTargets.Visible = false;
             originalLbTargetSize = lbTarget.Size;
-            lbTarget.Size = new Size(lbTarget.Size.Width + diff, lbTarget.Size.Height);
+            //lbTarget.Size = new Size(lbTarget.Size.Width + diff, lbTarget.Size.Height);
             btnUnloadTarget.Visible = true;
-            cbTargetType.Enabled = false;
+            cbTargetType.Visible = false;
 
             FileWatch.EnableInterface();
 
             lbExecution.Visible = true;
-            cbSelectedExecution.Visible = true;
 
             lbTargetStatus.Text = FileWatch.currentFileInfo.selectedTargetType.ToString() + " target loaded";
         }
@@ -136,18 +165,12 @@ namespace FileStub
         public void DisableTargetInterface()
         {
             btnUnloadTarget.Visible = false;
-            btnBrowseTarget.Visible = true;
-            lbTarget.Size = originalLbTargetSize;
-            lbTarget.Location = originalLbTargetLocation;
-            lbTarget.Visible = false;
-            cbTargetType.Enabled = true;
-
-            btnTargetSettings.Visible = true;
+            btnLoadTargets.Visible = true;
+            //lbTarget.Size = originalLbTargetSize;
+            //lbTarget.Location = originalLbTargetLocation;
+            cbTargetType.Visible = true;
 
             cbSelectedExecution.SelectedIndex = 0;
-
-            lbExecution.Visible = false;
-            cbSelectedExecution.Visible = false;
 
             btnRestoreBackup.Enabled = false;
             btnResetBackup.Enabled = false;
@@ -158,16 +181,11 @@ namespace FileStub
 
         private void BtnBrowseTarget_Click(object sender, EventArgs e)
         {
-            if (!FileWatch.LoadTarget())
-                return;
+            FileWatch.InsertTargets();
 
-            if (!VanguardCore.vanguardConnected)
-                VanguardCore.Start();
-
-            EnableTargetInterface();
         }
 
-        private void BtnReleaseTarget_Click(object sender, EventArgs e)
+        private void BtnUnloadTarget_Click(object sender, EventArgs e)
         {
             if (!FileWatch.CloseTarget())
                 return;
@@ -178,6 +196,7 @@ namespace FileStub
         {
             //if(cbSelectedExecution.SelectedItem.ToString())
             FileWatch.currentFileInfo.selectedTargetType = cbTargetType.SelectedItem.ToString();
+            lbTargetTypeDisplay.Text = FileWatch.currentFileInfo.selectedTargetType;
         }
 
         private void BtnKillProcess_Click(object sender, EventArgs e)
@@ -261,6 +280,115 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         {
             if (!FileWatch.CloseTarget(false))
                 e.Cancel = true;
+        }
+
+        private void btnLoadTargets_Click(object sender, EventArgs e)
+        {
+            if (!FileWatch.LoadTargets())
+                return;
+
+            if (!VanguardCore.vanguardConnected)
+                VanguardCore.Start();
+
+            EnableTargetInterface();
+        }
+
+        private void btnClearTargets_Click(object sender, EventArgs e)
+        {
+            lbTargets.Items.Clear();
+        }
+
+        private void lbTargets_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lbTargets.SelectedIndex == -1)
+                return;
+
+            var target = (TargetLoader)lbTargets.SelectedItem;
+
+            nmHeaderPadding.Value = target.PaddingHeader;
+            nmFooterPadding.Value = target.PaddingFooter;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (lbTargets.SelectedIndex == -1)
+                return;
+
+            var target = (TargetLoader)lbTargets.SelectedItem;
+
+            target.PaddingHeader = Convert.ToInt64(nmHeaderPadding.Value);
+            target.PaddingFooter = Convert.ToInt64(nmFooterPadding.Value);
+        }
+
+        private void lbDragAndDrop_DragDrop(object sender, DragEventArgs e)
+        {
+            lbTargets.Items.Clear();
+            lbTargets_DragDrop(sender, e);
+
+            if (btnUnloadTarget.Visible)
+                BtnUnloadTarget_Click(sender, e);
+
+            btnLoadTargets_Click(sender, e);
+        }
+
+        private void lbDragAndDrop_DragEnter(object sender, DragEventArgs e) => lbTargets_DragEnter(sender, e);
+
+        private void lbTargets_DragDrop(object sender, DragEventArgs e)
+        {
+            var formats = e.Data.GetFormats();
+            e.Effect = DragDropEffects.Move;
+
+            string[] fd = (string[])e.Data.GetData(DataFormats.FileDrop); //file drop
+
+            foreach (var file in fd)
+            {
+                if (Directory.Exists(file))
+                {
+
+                    var files = SelectMultipleForm.DirSearch(file);
+
+                    var targets = files.Select(it => new TargetLoader(it, false));
+
+                    if (targets.Count() > 1 && FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+                        cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
+
+                    lbTargets.Items.AddRange(targets.ToArray());
+                }
+                else
+                {
+                    var targets = fd.Select(it => new TargetLoader(it, false));
+
+                    if (targets.Count() > 1 && FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+                        cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
+
+                    lbTargets.Items.AddRange(targets.ToArray());
+                }
+            }
+        }
+
+        private void lbTargets_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void btnExtendPanel_Click(object sender, EventArgs e)
+        {
+            if(btnExtendPanel.Text == "Advanced Options")
+            {
+                btnExtendPanel.Text = "Basic Options";
+                ExtendStubForm();
+            }
+            else
+            {
+                btnExtendPanel.Text = "Advanced Options";
+                ShrinkStubForm();
+            }
+
+        }
+
+        private void btnSetBaseDir_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Doesn't do anything right now");
         }
     }
 }

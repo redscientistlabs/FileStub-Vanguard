@@ -11,6 +11,7 @@ namespace FileStub
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using RTCV.Common;
     using RTCV.CorruptCore;
     using Vanguard;
     using static RTCV.CorruptCore.FileInterface;
@@ -50,7 +51,7 @@ namespace FileStub
             lbMultipleFiles.Items.AddRange(files.ToArray());
         }
 
-        private List<string> DirSearch(string sDir)
+        public static List<string> DirSearch(string sDir)
         {
             List<string> files = new List<string>();
             try
@@ -117,7 +118,7 @@ namespace FileStub
                 return;
             }
 
-            FileWatch.CloseTarget(false);
+            //FileWatch.CloseTarget(false);
 
             List<string> allFiles = new List<string>();
 
@@ -126,6 +127,7 @@ namespace FileStub
 
             allFiles.Sort();
 
+            /*
             string multipleFiles = "";
 
             for (int i = 0; i < allFiles.Count; i++)
@@ -135,6 +137,13 @@ namespace FileStub
                 if (i < allFiles.Count - 1)
                     multipleFiles += "|";
             }
+            */
+
+            var targets = allFiles.Select(it => new TargetLoader(it, false));
+
+            S.GET<StubForm>().lbTargets.Items.AddRange(targets.ToArray());
+
+            /*
 
             var mfi = new MultipleFileInterface(multipleFiles, FileWatch.currentFileInfo.bigEndian, FileWatch.currentFileInfo.useAutomaticBackups);
 
@@ -145,6 +154,8 @@ namespace FileStub
 
             if (VanguardCore.vanguardConnected)
                 FileWatch.UpdateDomains();
+
+            */
 
             this.DialogResult = DialogResult.OK;
             this.Close();

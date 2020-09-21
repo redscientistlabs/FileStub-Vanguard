@@ -96,32 +96,24 @@ namespace FileStub
             return success;
         }
 
-        internal static bool LoadTarget()
+        internal static bool LoadTargets()
         {
+            var targets = S.GET<StubForm>().lbTargets;
+            if (targets.Items.Count == 0)
+            {
+                MessageBox.Show("No targets scheduled for loading. Aborting loading.");
+                return false;
+            }
+
+
             if (currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
             {
                 FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
 
-                string filename = null;
+                var target = (TargetLoader)targets.Items[0];
+                string filename = targets.Items[0].ToString();
 
-                OpenFileDialog OpenFileDialog1;
-                OpenFileDialog1 = new OpenFileDialog();
 
-                OpenFileDialog1.Title = "Open File";
-                OpenFileDialog1.Filter = "files|*.*";
-                OpenFileDialog1.RestoreDirectory = true;
-                if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    if (OpenFileDialog1.FileName.ToString().Contains('^'))
-                    {
-                        MessageBox.Show("You can't use a file that contains the character ^ ");
-                        return false;
-                    }
-
-                    filename = OpenFileDialog1.FileName;
-                }
-                else
-                    return false;
 
                 string targetId = "File|" + filename;
 
@@ -131,7 +123,13 @@ namespace FileStub
 
                 Action<object, EventArgs> action = (ob, ea) =>
                 {
-                    fi = new FileInterface(targetId, FileWatch.currentFileInfo.bigEndian, true);
+                    fi = new FileInterface(
+                        targetId,
+                        bigEndian: FileWatch.currentFileInfo.bigEndian,
+                        useAutomaticFileBackups: true,
+                        startPadding: target.PaddingHeader,
+                        endPadding: target.PaddingFooter);
+
 
                     if (FileWatch.currentFileInfo.useCacheAndMultithread)
                         fi.getMemoryDump();
@@ -169,6 +167,78 @@ namespace FileStub
                         FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
                         break;
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
+                    default:
+                        FileInterface.identity = FileInterfaceIdentity.HASHED_PREFIX;
+                        break;
+                    case TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH:
+                        FileInterface.identity = FileInterfaceIdentity.FULL_PATH;
+                        break;
+                }
+
+                var targetLoaders = targets.Items.Cast<TargetLoader>().ToArray();
+
+                var mfi = new MultipleFileInterface(targetLoaders, FileWatch.currentFileInfo.bigEndian, FileWatch.currentFileInfo.useAutomaticBackups);
+
+                if (FileWatch.currentFileInfo.useCacheAndMultithread)
+                    mfi.getMemoryDump();
+
+                FileWatch.currentFileInfo.targetInterface = mfi;
+
+                if (VanguardCore.vanguardConnected)
+                    FileWatch.UpdateDomains();
+
+
+                //currentTargetName = mfi.ShortFilename;
+                S.GET<StubForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
+                StockpileManagerEmuSide.UnCorruptBL = null;
+            }
+
+            return true;
+        }
+
+        internal static bool InsertTargets()
+        {
+            if (currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+            {
+                FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
+
+                string filename = null;
+
+                OpenFileDialog OpenFileDialog1;
+                OpenFileDialog1 = new OpenFileDialog();
+
+                OpenFileDialog1.Title = "Open File";
+                OpenFileDialog1.Filter = "files|*.*";
+                OpenFileDialog1.RestoreDirectory = true;
+                if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    if (OpenFileDialog1.FileName.ToString().Contains('^'))
+                    {
+                        MessageBox.Show("You can't use a file that contains the character ^ ");
+                        return false;
+                    }
+
+                    filename = OpenFileDialog1.FileName;
+                }
+                else
+                    return false;
+
+                var target = new TargetLoader(filename, true);
+
+                //here we make target objects
+                S.GET<StubForm>().lbTargets.Items.Clear();
+                S.GET<StubForm>().lbTargets.Items.Add(target);
+
+            }
+            else //MULTIPLE_FILE
+            {
+                switch (currentFileInfo.selectedTargetType)
+                {
+                    case TargetType.MULTIPLE_FILE_SINGLEDOMAIN:
+                        FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
+                        break;
+                    case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
+                    default:
                         FileInterface.identity = FileInterfaceIdentity.HASHED_PREFIX;
                         break;
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH:
@@ -183,14 +253,15 @@ namespace FileStub
                 if (smForm.ShowDialog() != DialogResult.OK)
                     return false;
 
-                var mfi = (MultipleFileInterface)FileWatch.currentFileInfo.targetInterface;
-                //currentTargetName = mfi.ShortFilename;
-                S.GET<StubForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
-                StockpileManagerEmuSide.UnCorruptBL = null;
+                //var mfi = (MultipleFileInterface)FileWatch.currentFileInfo.targetInterface;
+                ////currentTargetName = mfi.ShortFilename;
+                //S.GET<StubForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
+                //StockpileManagerEmuSide.UnCorruptBL = null;
             }
 
             return true;
         }
+
 
         internal static void KillProcess()
         {
