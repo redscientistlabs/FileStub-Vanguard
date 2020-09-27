@@ -19,10 +19,10 @@ namespace FileStub
 
     public static class FileWatch
     {
-        internal static string FileStubVersion = "0.1.9";
+        internal static string FileStubVersion = "0.2.0";
         internal static string currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-        internal static FileStubFileInfo currentFileInfo = new FileStubFileInfo();
+        internal static FileStubSession currentSession = new FileStubSession();
 
         internal static ProgressForm progressForm;
 
@@ -64,10 +64,10 @@ namespace FileStub
 
         private static void RemoveDomains()
         {
-            if (currentFileInfo.targetInterface != null)
+            if (currentSession.targetInterface != null)
             {
-                currentFileInfo.targetInterface.CloseStream();
-                currentFileInfo.targetInterface = null;
+                currentSession.targetInterface.CloseStream();
+                currentSession.targetInterface = null;
             }
 
             UpdateDomains();
@@ -76,7 +76,7 @@ namespace FileStub
         public static bool RestoreTarget()
         {
             bool success = false;
-            if (currentFileInfo.autoUncorrupt)
+            if (currentSession.autoUncorrupt)
             {
                 if (StockpileManagerEmuSide.UnCorruptBL != null)
                 {
@@ -86,12 +86,12 @@ namespace FileStub
                 else
                 {
                     //CHECK CRC WITH BACKUP HERE AND SKIP BACKUP IF WORKING FILE = BACKUP FILE
-                   success = currentFileInfo.targetInterface.ResetWorkingFile();
+                   success = currentSession.targetInterface.ResetWorkingFile();
                 }
             }
             else
             {
-                success = currentFileInfo.targetInterface.ResetWorkingFile();
+                success = currentSession.targetInterface.ResetWorkingFile();
             }
             return success;
         }
@@ -105,33 +105,24 @@ namespace FileStub
                 return false;
             }
 
-
-            if (currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+            if (currentSession.selectedTargetType == TargetType.SINGLE_FILE)
             {
                 FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
 
                 var target = (FileTarget)targets.Items[0];
                 string filename = targets.Items[0].ToString();
 
+                target.BigEndian = FileWatch.currentSession.bigEndian;
 
-
-                string targetId = "File|" + filename;
-
-                CloseTarget(false);
+                CloseActiveTargets(false);
 
                 FileInterface fi = null;
 
                 Action<object, EventArgs> action = (ob, ea) =>
                 {
-                    fi = new FileInterface(
-                        targetId,
-                        bigEndian: FileWatch.currentFileInfo.bigEndian,
-                        useAutomaticFileBackups: true,
-                        startPadding: target.PaddingHeader,
-                        endPadding: target.PaddingFooter);
+                    fi = new FileInterface(target);
 
-
-                    if (FileWatch.currentFileInfo.useCacheAndMultithread)
+                    if (FileWatch.currentSession.useCacheAndMultithread)
                         fi.getMemoryDump();
                 };
 
@@ -144,11 +135,11 @@ namespace FileStub
                         return;
                     }
 
-                    FileWatch.currentFileInfo.targetShortName = fi.ShortFilename;
-                    FileWatch.currentFileInfo.targetFullName = fi.Filename;
+                    FileWatch.currentSession.targetShortName = fi.ShortFilename;
+                    FileWatch.currentSession.targetFullName = fi.Filename;
 
-                    FileWatch.currentFileInfo.targetInterface = fi;
-                    S.GET<StubForm>().lbTarget.Text = targetId + "|MemorySize:" + fi.lastMemorySize.ToString();
+                    FileWatch.currentSession.targetInterface = fi;
+                    S.GET<StubForm>().lbTarget.Text = fi.GetType().ToString() + "|MemorySize:" + fi.lastMemorySize.ToString();
 
                     if (VanguardCore.vanguardConnected)
                         UpdateDomains();
@@ -161,7 +152,7 @@ namespace FileStub
             }
             else //MULTIPLE_FILE
             {
-                switch (currentFileInfo.selectedTargetType)
+                switch (currentSession.selectedTargetType)
                 {
                     case TargetType.MULTIPLE_FILE_SINGLEDOMAIN:
                         FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
@@ -175,20 +166,21 @@ namespace FileStub
                         break;
                 }
 
-                var targetLoaders = targets.Items.Cast<FileTarget>().ToArray();
+                var fileTargets = targets.Items.Cast<FileTarget>().ToArray();
 
-                var mfi = new MultipleFileInterface(targetLoaders, FileWatch.currentFileInfo.bigEndian, FileWatch.currentFileInfo.useAutomaticBackups);
+                foreach (var target in fileTargets)
+                    target.BigEndian = FileWatch.currentSession.bigEndian;
 
-                if (FileWatch.currentFileInfo.useCacheAndMultithread)
+                var mfi = new MultipleFileInterface(fileTargets, FileWatch.currentSession.bigEndian, FileWatch.currentSession.useAutomaticBackups);
+
+                if (FileWatch.currentSession.useCacheAndMultithread)
                     mfi.getMemoryDump();
 
-                FileWatch.currentFileInfo.targetInterface = mfi;
+                FileWatch.currentSession.targetInterface = mfi;
 
                 if (VanguardCore.vanguardConnected)
                     FileWatch.UpdateDomains();
 
-
-                //currentTargetName = mfi.ShortFilename;
                 S.GET<StubForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
                 StockpileManagerEmuSide.UnCorruptBL = null;
             }
@@ -198,7 +190,7 @@ namespace FileStub
 
         internal static bool InsertTargets()
         {
-            if (currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+            if (currentSession.selectedTargetType == TargetType.SINGLE_FILE)
             {
                 FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
 
@@ -224,17 +216,14 @@ namespace FileStub
                     return false;
 
                 var target = Vault.RequestFileTarget(filename);
-                target.IsMain = true;
-                //var target = new TargetLoader(filename, true);
 
                 //here we make target objects
                 S.GET<StubForm>().lbTargets.Items.Clear();
                 S.GET<StubForm>().lbTargets.Items.Add(target);
-
             }
             else //MULTIPLE_FILE
             {
-                switch (currentFileInfo.selectedTargetType)
+                switch (currentSession.selectedTargetType)
                 {
                     case TargetType.MULTIPLE_FILE_SINGLEDOMAIN:
                         FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
@@ -254,23 +243,17 @@ namespace FileStub
 
                 if (smForm.ShowDialog() != DialogResult.OK)
                     return false;
-
-                //var mfi = (MultipleFileInterface)FileWatch.currentFileInfo.targetInterface;
-                ////currentTargetName = mfi.ShortFilename;
-                //S.GET<StubForm>().lbTarget.Text = mfi.ShortFilename + "|MemorySize:" + mfi.lastMemorySize.ToString();
-                //StockpileManagerEmuSide.UnCorruptBL = null;
             }
 
             return true;
         }
 
-
         internal static void KillProcess()
         {
-            if (currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM ||
-                currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH ||
-                currentFileInfo.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
-                if (currentFileInfo.TerminateBeforeExecution && Executor.otherProgram != null)
+            if (currentSession.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM ||
+                currentSession.selectedExecution == ExecutionType.EXECUTE_WITH ||
+                currentSession.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
+                if (currentSession.TerminateBeforeExecution && Executor.otherProgram != null)
                 {
                     string otherProgramShortFilename = Path.GetFileName(Executor.otherProgram);
 
@@ -300,17 +283,17 @@ namespace FileStub
                 }
         }
 
-        internal static bool CloseTarget(bool updateDomains = true)
+        internal static bool CloseActiveTargets(bool updateDomains = true)
         {
-            if (FileWatch.currentFileInfo.targetInterface != null)
+            if (FileWatch.currentSession.targetInterface != null)
             {
                 if (!FileWatch.RestoreTarget())
                 {
                     MessageBox.Show("Unable to restore the backup. Aborting!");
                     return false;
                 }
-                FileWatch.currentFileInfo.targetInterface.CloseStream();
-                FileWatch.currentFileInfo.targetInterface = null;
+                FileWatch.currentSession.targetInterface.CloseStream();
+                FileWatch.currentSession.targetInterface = null;
             }
 
             if (updateDomains)
@@ -324,11 +307,11 @@ namespace FileStub
             {
                 PartialSpec gameDone = new PartialSpec("VanguardSpec");
                 gameDone[VSPEC.SYSTEM] = "FileSystem";
-                gameDone[VSPEC.GAMENAME] = FileWatch.currentFileInfo.targetShortName;
+                gameDone[VSPEC.GAMENAME] = FileWatch.currentSession.targetShortName;
                 gameDone[VSPEC.SYSTEMPREFIX] = "FileStub";
                 gameDone[VSPEC.SYSTEMCORE] = "FileStub";
                 //gameDone[VSPEC.SYNCSETTINGS] = BIZHAWK_GETSET_SYNCSETTINGS;
-                gameDone[VSPEC.OPENROMFILENAME] = currentFileInfo.targetFullName;
+                gameDone[VSPEC.OPENROMFILENAME] = currentSession.targetFullName;
                 gameDone[VSPEC.MEMORYDOMAINS_BLACKLISTEDDOMAINS] = Array.Empty<string>();
                 gameDone[VSPEC.MEMORYDOMAINS_INTERFACES] = GetInterfaces();
                 gameDone[VSPEC.CORE_DISKBASED] = false;
@@ -352,7 +335,7 @@ namespace FileStub
             try
             {
                 Console.WriteLine($" getInterfaces()");
-                if (currentFileInfo.targetInterface == null)
+                if (currentSession.targetInterface == null)
                 {
                     Console.WriteLine($"rpxInterface was null!");
                     return Array.Empty<MemoryDomainProxy>();
@@ -360,22 +343,22 @@ namespace FileStub
 
                 List<MemoryDomainProxy> interfaces = new List<MemoryDomainProxy>();
 
-                switch (currentFileInfo.selectedTargetType)
+                switch (currentSession.selectedTargetType)
                 {   //Checking if the FileInterface/MultiFileInterface is split in sub FileInterfaces
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH:
-                        foreach (var fi in (currentFileInfo.targetInterface as MultipleFileInterface).FileInterfaces)
+                        foreach (var fi in (currentSession.targetInterface as MultipleFileInterface).FileInterfaces)
                             interfaces.Add(new MemoryDomainProxy(fi));
                         break;
                     case TargetType.SINGLE_FILE:
                     case TargetType.MULTIPLE_FILE_SINGLEDOMAIN:
                     default:
-                        interfaces.Add(new MemoryDomainProxy(currentFileInfo.targetInterface));
+                        interfaces.Add(new MemoryDomainProxy(currentSession.targetInterface));
                         break;
                 }
 
                 foreach (MemoryDomainProxy mdp in interfaces)
-                    mdp.BigEndian = currentFileInfo.bigEndian;
+                    mdp.BigEndian = currentSession.bigEndian;
 
                 return interfaces.ToArray();
             }

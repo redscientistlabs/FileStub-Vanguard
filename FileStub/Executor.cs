@@ -18,8 +18,8 @@ namespace FileStub
 
         public static void EditExec()
         {
-            if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM ||
-                FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH)
+            if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM ||
+                FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
                 OpenFileDialog OpenFileDialog1;
                 OpenFileDialog1 = new OpenFileDialog();
@@ -40,7 +40,7 @@ namespace FileStub
                 else
                     return;
             }
-            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.SCRIPT)
+            else if (FileWatch.currentSession.selectedExecution == ExecutionType.SCRIPT)
             {
                 MessageBox.Show("UNIMPLEMENTED");
             }
@@ -53,14 +53,14 @@ namespace FileStub
             string args = S.GET<StubForm>().tbArgs.Text;
 
             //Hijack no execution for the Netcore executor
-            if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.NO_EXECUTION)
+            if (FileWatch.currentSession.selectedExecution == ExecutionType.NO_EXECUTION)
             {
             }
-            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
+            else if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
             {
-                if (FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+                if (FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
                 {
-                    var fi = (FileInterface)FileWatch.currentFileInfo.targetInterface;
+                    var fi = (FileInterface)FileWatch.currentSession.targetInterface;
                     //Process.Start(fi.filename);
 
                     string fullPath = fi.Filename;
@@ -79,13 +79,13 @@ namespace FileStub
                     return;
                 }
             }
-            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH)
+            else if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
                 if (otherProgram != null)
                 {
-                    if (FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+                    if (FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
                     {
-                        var fi = (FileInterface)FileWatch.currentFileInfo.targetInterface;
+                        var fi = (FileInterface)FileWatch.currentSession.targetInterface;
                         //Process.Start(otherProgram, "\"" + fi.filename + "\"");
 
                         string fullPath = otherProgram;
@@ -111,7 +111,7 @@ namespace FileStub
                     return;
                 }
             }
-            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM)
+            else if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM)
             {
                 if (otherProgram != null)
                 {
@@ -129,7 +129,7 @@ namespace FileStub
                     MessageBox.Show("You need to specify a file to execute with the Edit Exec button.");
                 return;
             }
-            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.SCRIPT)
+            else if (FileWatch.currentSession.selectedExecution == ExecutionType.SCRIPT)
             {
                 MessageBox.Show("UNIMPLEMENTED");
             }
@@ -142,11 +142,11 @@ namespace FileStub
             gh.lbArgs.Visible = false;
             gh.tbArgs.Visible = false;
 
-            if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.NO_EXECUTION)
+            if (FileWatch.currentSession.selectedExecution == ExecutionType.NO_EXECUTION)
                 gh.lbExecution.Text = "No execution set";
-            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
+            else if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
                 gh.lbExecution.Text = "The target file will be executed";
-            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_WITH)
+            else if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
                 if (otherProgram == null)
                 {
@@ -157,7 +157,7 @@ namespace FileStub
                     gh.lbExecution.Text = "Target will be executed using " + otherProgram.Substring(otherProgram.LastIndexOf('\\') + 1);
                 }
             }
-            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM)
+            else if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM)
             {
                 gh.lbArgs.Visible = true;
                 gh.tbArgs.Visible = true;
@@ -171,7 +171,7 @@ namespace FileStub
                     gh.lbExecution.Text = otherProgram.Substring(otherProgram.LastIndexOf('\\') + 1) + " will be executed after corruption";
                 }
             }
-            else if (FileWatch.currentFileInfo.selectedExecution == ExecutionType.SCRIPT)
+            else if (FileWatch.currentSession.selectedExecution == ExecutionType.SCRIPT)
             {
                 if (otherProgram == null)
                 {

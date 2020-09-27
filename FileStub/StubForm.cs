@@ -101,7 +101,7 @@ namespace FileStub
         {
             string selected = cbSelectedExecution.SelectedItem.ToString();
 
-            FileWatch.currentFileInfo.selectedExecution = selected;
+            FileWatch.currentSession.selectedExecution = selected;
 
             switch (selected)
             {
@@ -141,17 +141,10 @@ namespace FileStub
             Executor.EditExec();
         }
 
-        Size originalLbTargetSize;
-        Point originalLbTargetLocation;
         public void EnableTargetInterface()
         {
-            //var diff = lbTarget.Location.X - btnBrowseTarget.Location.X;
-            //originalLbTargetLocation = lbTarget.Location;
-            //lbTarget.Location = btnBrowseTarget.Location;
-
             btnLoadTargets.Visible = false;
-            originalLbTargetSize = lbTarget.Size;
-            //lbTarget.Size = new Size(lbTarget.Size.Width + diff, lbTarget.Size.Height);
+
             btnUnloadTarget.Visible = true;
             cbTargetType.Visible = false;
 
@@ -159,7 +152,7 @@ namespace FileStub
 
             lbExecution.Visible = true;
 
-            lbTargetStatus.Text = FileWatch.currentFileInfo.selectedTargetType.ToString() + " target loaded";
+            lbTargetStatus.Text = FileWatch.currentSession.selectedTargetType.ToString() + " target loaded";
         }
 
         public void DisableTargetInterface()
@@ -182,12 +175,11 @@ namespace FileStub
         private void BtnBrowseTarget_Click(object sender, EventArgs e)
         {
             FileWatch.InsertTargets();
-
         }
 
         private void BtnUnloadTarget_Click(object sender, EventArgs e)
         {
-            if (!FileWatch.CloseTarget())
+            if (!FileWatch.CloseActiveTargets())
                 return;
             DisableTargetInterface();
         }
@@ -195,8 +187,8 @@ namespace FileStub
         private void CbTargetType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //if(cbSelectedExecution.SelectedItem.ToString())
-            FileWatch.currentFileInfo.selectedTargetType = cbTargetType.SelectedItem.ToString();
-            lbTargetTypeDisplay.Text = FileWatch.currentFileInfo.selectedTargetType;
+            FileWatch.currentSession.selectedTargetType = cbTargetType.SelectedItem.ToString();
+            lbTargetTypeDisplay.Text = FileWatch.currentSession.selectedTargetType;
         }
 
         private void BtnKillProcess_Click(object sender, EventArgs e)
@@ -206,8 +198,8 @@ namespace FileStub
 
         private void BtnRestoreBackup_Click(object sender, EventArgs e)
         {
-            FileWatch.currentFileInfo.targetInterface?.CloseStream();
-            FileWatch.currentFileInfo.targetInterface?.RestoreBackup();
+            FileWatch.currentSession.targetInterface?.CloseStream();
+            FileWatch.currentSession.targetInterface?.RestoreBackup();
         }
 
         private void BtnResetBackup_Click(object sender, EventArgs e)
@@ -220,7 +212,7 @@ you won't be able to restore the original file using it.
 Are you sure you want to reset the current target's backup?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            FileWatch.currentFileInfo.targetInterface?.ResetBackup(true);
+            FileWatch.currentSession.targetInterface?.ResetBackup(true);
         }
 
         private void BtnClearAllBackups_Click(object sender, EventArgs e)
@@ -228,7 +220,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             if (MessageBox.Show("Are you sure you want to clear ALL THE BACKUPS\n from FileStub's cache?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            FileWatch.currentFileInfo.targetInterface?.RestoreBackup();
+            FileWatch.currentSession.targetInterface?.RestoreBackup();
 
             foreach (string file in Directory.GetFiles(Path.Combine(FileWatch.currentDir, "FILEBACKUPS")))
             {
@@ -243,7 +235,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             }
 
             FileInterface.CompositeFilenameDico = new Dictionary<string, string>();
-            FileWatch.currentFileInfo.targetInterface?.ResetBackup(false);
+            FileWatch.currentSession.targetInterface?.ResetBackup(false);
             FileInterface.SaveCompositeFilenameDico();
             MessageBox.Show("All the backups were cleared.");
         }
@@ -258,19 +250,19 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 ContextMenuStrip columnsMenu = new ContextMenuStrip();
 
                 ((ToolStripMenuItem)columnsMenu.Items.Add("Big endian", null, new EventHandler((ob, ev) => {
-                    FileWatch.currentFileInfo.bigEndian = !FileStub.FileWatch.currentFileInfo.bigEndian;
+                    FileWatch.currentSession.bigEndian = !FileStub.FileWatch.currentSession.bigEndian;
 
                     if (VanguardCore.vanguardConnected)
                         FileWatch.UpdateDomains();
-                }))).Checked = FileWatch.currentFileInfo.bigEndian;
+                }))).Checked = FileWatch.currentSession.bigEndian;
 
                 ((ToolStripMenuItem)columnsMenu.Items.Add("Auto-Uncorrupt", null, new EventHandler((ob, ev) => {
-                    FileWatch.currentFileInfo.autoUncorrupt = !FileWatch.currentFileInfo.autoUncorrupt;
-                }))).Checked = FileWatch.currentFileInfo.autoUncorrupt;
+                    FileWatch.currentSession.autoUncorrupt = !FileWatch.currentSession.autoUncorrupt;
+                }))).Checked = FileWatch.currentSession.autoUncorrupt;
 
                 ((ToolStripMenuItem)columnsMenu.Items.Add("Use Caching + Multithreading", null, new EventHandler((ob, ev) => {
-                    FileWatch.currentFileInfo.useCacheAndMultithread = !FileWatch.currentFileInfo.useCacheAndMultithread;
-                }))).Checked = FileWatch.currentFileInfo.useCacheAndMultithread;
+                    FileWatch.currentSession.useCacheAndMultithread = !FileWatch.currentSession.useCacheAndMultithread;
+                }))).Checked = FileWatch.currentSession.useCacheAndMultithread;
 
                 columnsMenu.Show(this, locate);
             }
@@ -278,7 +270,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void StubForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!FileWatch.CloseTarget(false))
+            if (!FileWatch.CloseActiveTargets(false))
                 e.Cancel = true;
         }
 
@@ -344,12 +336,11 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             {
                 if (Directory.Exists(file))
                 {
-
                     var files = SelectMultipleForm.DirSearch(file);
 
                     var targets = files.Select(it => Vault.RequestFileTarget(it));
 
-                    if (targets.Count() > 1 && FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+                    if (targets.Count() > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
                         cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
 
                     lbTargets.Items.AddRange(targets.ToArray());
@@ -358,7 +349,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 {
                     var targets = fd.Select(it => Vault.RequestFileTarget(it));
 
-                    if (targets.Count() > 1 && FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
+                    if (targets.Count() > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
                         cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
 
                     lbTargets.Items.AddRange(targets.ToArray());
@@ -373,7 +364,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void btnExtendPanel_Click(object sender, EventArgs e)
         {
-            if(btnExtendPanel.Text == "Advanced Options")
+            if (btnExtendPanel.Text == "Advanced Options")
             {
                 btnExtendPanel.Text = "Basic Options";
                 ExtendStubForm();
@@ -383,7 +374,6 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 btnExtendPanel.Text = "Advanced Options";
                 ShrinkStubForm();
             }
-
         }
 
         private void btnSetBaseDir_Click(object sender, EventArgs e)

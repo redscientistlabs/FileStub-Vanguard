@@ -15,7 +15,7 @@ namespace FileStub
     using Ceras;
     using RTCV.CorruptCore;
 
-    public class FileStubFileInfo
+    public class FileStubSession
     {
         internal string targetShortName = "No target";
         internal string selectedExecution = null;
@@ -57,16 +57,9 @@ namespace FileStub
         void Start();
         Form GetAnchorForm();
         void Dispose();
-
-
         void SetStateId(string id);
         bool LoadTemp(); //glitch harvester save box
         bool SaveTemp(); //glitch harvester load box
-
         bool Corrupt(string id);
-
-
-
     }
-
 }
