@@ -127,35 +127,9 @@ namespace FileStub
 
             allFiles.Sort();
 
-            /*
-            string multipleFiles = "";
-
-            for (int i = 0; i < allFiles.Count; i++)
-            {
-                multipleFiles += allFiles[i];
-
-                if (i < allFiles.Count - 1)
-                    multipleFiles += "|";
-            }
-            */
-
-            var targets = allFiles.Select(it => new TargetLoader(it, false));
+            var targets = allFiles.Select(it => Vault.RequestFileTarget(it));
 
             S.GET<StubForm>().lbTargets.Items.AddRange(targets.ToArray());
-
-            /*
-
-            var mfi = new MultipleFileInterface(multipleFiles, FileWatch.currentFileInfo.bigEndian, FileWatch.currentFileInfo.useAutomaticBackups);
-
-            if (FileWatch.currentFileInfo.useCacheAndMultithread)
-                mfi.getMemoryDump();
-
-            FileWatch.currentFileInfo.targetInterface = mfi;
-
-            if (VanguardCore.vanguardConnected)
-                FileWatch.UpdateDomains();
-
-            */
 
             this.DialogResult = DialogResult.OK;
             this.Close();

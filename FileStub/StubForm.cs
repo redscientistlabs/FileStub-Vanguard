@@ -303,7 +303,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             if (lbTargets.SelectedIndex == -1)
                 return;
 
-            var target = (TargetLoader)lbTargets.SelectedItem;
+            var target = (FileTarget)lbTargets.SelectedItem;
 
             nmHeaderPadding.Value = target.PaddingHeader;
             nmFooterPadding.Value = target.PaddingFooter;
@@ -314,7 +314,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             if (lbTargets.SelectedIndex == -1)
                 return;
 
-            var target = (TargetLoader)lbTargets.SelectedItem;
+            var target = (FileTarget)lbTargets.SelectedItem;
 
             target.PaddingHeader = Convert.ToInt64(nmHeaderPadding.Value);
             target.PaddingFooter = Convert.ToInt64(nmFooterPadding.Value);
@@ -347,7 +347,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
                     var files = SelectMultipleForm.DirSearch(file);
 
-                    var targets = files.Select(it => new TargetLoader(it, false));
+                    var targets = files.Select(it => Vault.RequestFileTarget(it));
 
                     if (targets.Count() > 1 && FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
                         cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
@@ -356,7 +356,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 }
                 else
                 {
-                    var targets = fd.Select(it => new TargetLoader(it, false));
+                    var targets = fd.Select(it => Vault.RequestFileTarget(it));
 
                     if (targets.Count() > 1 && FileWatch.currentFileInfo.selectedTargetType == TargetType.SINGLE_FILE)
                         cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);

@@ -110,7 +110,7 @@ namespace FileStub
             {
                 FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
 
-                var target = (TargetLoader)targets.Items[0];
+                var target = (FileTarget)targets.Items[0];
                 string filename = targets.Items[0].ToString();
 
 
@@ -175,7 +175,7 @@ namespace FileStub
                         break;
                 }
 
-                var targetLoaders = targets.Items.Cast<TargetLoader>().ToArray();
+                var targetLoaders = targets.Items.Cast<FileTarget>().ToArray();
 
                 var mfi = new MultipleFileInterface(targetLoaders, FileWatch.currentFileInfo.bigEndian, FileWatch.currentFileInfo.useAutomaticBackups);
 
@@ -223,7 +223,9 @@ namespace FileStub
                 else
                     return false;
 
-                var target = new TargetLoader(filename, true);
+                var target = Vault.RequestFileTarget(filename);
+                target.IsMain = true;
+                //var target = new TargetLoader(filename, true);
 
                 //here we make target objects
                 S.GET<StubForm>().lbTargets.Items.Clear();
