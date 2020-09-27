@@ -75,8 +75,9 @@ namespace FileStub
             int magicY = cbTargetType.Location.Y - (14 - 11);
 
             lbTargetTypeDisplay.Font = cbTargetType.Font;
-            lbTargetTypeDisplay.Size = new Size(magicX, magicY);
-            lbTargetTypeDisplay.Location = new Point(magicWidth, magicHeight);
+            //lbTargetTypeDisplay.Size = new Size(magicX, magicY);
+            //lbTargetTypeDisplay.Location = new Point(magicWidth, magicHeight);
+            lbTargetTypeDisplay.Visible = true;
             //---------------------------------------------------------------
 
             Colors.SetRTCColor(Color.Plum, this);
@@ -159,15 +160,13 @@ namespace FileStub
         {
             btnUnloadTarget.Visible = false;
             btnLoadTargets.Visible = true;
-            //lbTarget.Size = originalLbTargetSize;
-            //lbTarget.Location = originalLbTargetLocation;
             cbTargetType.Visible = true;
 
             cbSelectedExecution.SelectedIndex = 0;
 
-            btnRestoreBackup.Enabled = false;
-            btnResetBackup.Enabled = false;
-            btnClearAllBackups.Enabled = false;
+            btnRestoreTargets.Enabled = false;
+            btnResetBackups.Enabled = false;
+            btnClearVaultData.Enabled = false;
             lbTarget.Text = "No target selected";
             lbTargetStatus.Text = "No target selected";
         }
@@ -186,7 +185,6 @@ namespace FileStub
 
         private void CbTargetType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if(cbSelectedExecution.SelectedItem.ToString())
             FileWatch.currentSession.selectedTargetType = cbTargetType.SelectedItem.ToString();
             lbTargetTypeDisplay.Text = FileWatch.currentSession.selectedTargetType;
         }
@@ -198,8 +196,8 @@ namespace FileStub
 
         private void BtnRestoreBackup_Click(object sender, EventArgs e)
         {
-            FileWatch.currentSession.targetInterface?.CloseStream();
-            FileWatch.currentSession.targetInterface?.RestoreBackup();
+            FileWatch.currentSession.fileInterface?.CloseStream();
+            FileWatch.currentSession.fileInterface?.SendBackupToReal();
         }
 
         private void BtnResetBackup_Click(object sender, EventArgs e)
@@ -212,32 +210,24 @@ you won't be able to restore the original file using it.
 Are you sure you want to reset the current target's backup?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            FileWatch.currentSession.targetInterface?.ResetBackup(true);
+            FileWatch.currentSession.fileInterface?.SendRealToBackup(true);
         }
 
         private void BtnClearAllBackups_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to clear ALL THE BACKUPS\n from FileStub's cache?", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show("Are you sure you want to reset the vault?\n This will delete any remaining artifacts.", "WARNING", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            FileWatch.currentSession.targetInterface?.RestoreBackup();
+            if (btnUnloadTarget.Visible)
+                BtnUnloadTarget_Click(sender, e);
 
-            foreach (string file in Directory.GetFiles(Path.Combine(FileWatch.currentDir, "FILEBACKUPS")))
-            {
-                try
-                {
-                    File.Delete(file);
-                }
-                catch
-                {
-                    MessageBox.Show($"Could not delete file {file}");
-                }
-            }
+            FileWatch.CloseActiveTargets();
 
-            FileInterface.CompositeFilenameDico = new Dictionary<string, string>();
-            FileWatch.currentSession.targetInterface?.ResetBackup(false);
-            FileInterface.SaveCompositeFilenameDico();
-            MessageBox.Show("All the backups were cleared.");
+            Vault.ResetVault();
+
+            lbTargets.Items.Clear();
+
+            MessageBox.Show("The vault was reset.");
         }
 
         private void BtnTargetSettings_MouseDown(object sender, MouseEventArgs e)
@@ -270,8 +260,26 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void StubForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!FileWatch.CloseActiveTargets(false))
-                e.Cancel = true;
+            FileWatch.CloseActiveTargets(false);
+
+            int nbDirtyFiles = Vault.GetDirtyTargets().Count;
+            if (nbDirtyFiles > 0)
+            {
+                var answer = MessageBox.Show($"There are still {nbDirtyFiles} dirty files, would you like to restore them?", "Warning: Quitting FileStub with Dirty Files", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+
+                switch (answer)
+                {
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        return;
+                    case DialogResult.Yes:
+                        FileWatch.RestoreDirty();
+                        return;
+                    case DialogResult.No:
+                    default:
+                        return;
+                }
+            }
         }
 
         private void btnLoadTargets_Click(object sender, EventArgs e)
@@ -379,6 +387,16 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         private void btnSetBaseDir_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Doesn't do anything right now");
+        }
+
+        private void btnRestoreDirty_Click(object sender, EventArgs e)
+        {
+            FileWatch.RestoreDirty();
+        }
+
+        private void btnBakeAllDirty_Click(object sender, EventArgs e)
+        {
+            FileWatch.BakeDirty();
         }
     }
 }

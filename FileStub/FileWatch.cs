@@ -15,6 +15,7 @@ namespace FileStub
     using RTCV.Common;
     using RTCV.CorruptCore;
     using RTCV.NetCore;
+    using RTCV.Vanguard;
     using Vanguard;
 
     public static class FileWatch
@@ -32,18 +33,11 @@ namespace FileStub
             if (VanguardCore.vanguardConnected)
                 RemoveDomains();
 
-            //FileWatch.currentFileInfo = new FileStubFileInfo();
-
             DisableInterface();
-            //state = TargetType.UNFOUND;
 
             RtcCore.EmuDirOverride = true; //allows the use of this value before vanguard is connected
 
-            string backupPath = Path.Combine(FileWatch.currentDir, "FILEBACKUPS");
             string paramsPath = Path.Combine(FileWatch.currentDir, "PARAMS");
-
-            if (!Directory.Exists(backupPath))
-                Directory.CreateDirectory(backupPath);
 
             if (!Directory.Exists(paramsPath))
                 Directory.CreateDirectory(paramsPath);
@@ -57,17 +51,46 @@ namespace FileStub
                 File.Create(disclaimerReadPath);
             }
 
-            //If we can't load the dictionary, quit the wgh to prevent the loss of backups
-            if (!FileInterface.LoadCompositeFilenameDico(FileWatch.currentDir))
-                Application.Exit();
+            Vault.Init();
+
+            Vault.VaultUpdated += Vault_VaultUpdated;
+
+            RefreshVaultInterface();
+        }
+
+        private static void Vault_VaultUpdated(object sender, EventArgs e)
+        {
+            RefreshVaultInterface();
+        }
+
+        private static void RefreshVaultInterface()
+        {
+            List<FileTarget> dirtyTargets = Vault.GetDirtyTargets();
+            var sf = S.GET<StubForm>();
+
+            if (dirtyTargets.Count == 0)
+            {
+                sf.lbDirtyFiles.Text = "No dirty files";
+                sf.btnBakeAllDirty.Enabled = false;
+                sf.btnRestoreDirty.Enabled = false;
+                sf.btnClearVaultData.Enabled = true;
+
+            }
+            else
+            {
+                sf.lbDirtyFiles.Text = $"{dirtyTargets.Count} dirty files";
+                sf.btnBakeAllDirty.Enabled = true;
+                sf.btnRestoreDirty.Enabled = true;
+                sf.btnClearVaultData.Enabled = false;
+            }
         }
 
         private static void RemoveDomains()
         {
-            if (currentSession.targetInterface != null)
+            if (currentSession.fileInterface != null)
             {
-                currentSession.targetInterface.CloseStream();
-                currentSession.targetInterface = null;
+                currentSession.fileInterface.CloseStream();
+                currentSession.fileInterface = null;
             }
 
             UpdateDomains();
@@ -75,24 +98,43 @@ namespace FileStub
 
         public static bool RestoreTarget()
         {
+            var targets = currentSession.fileInterface.GetFileTargets();
+            if (targets != null)
+            {
+                var dirtyTarget = targets.FirstOrDefault(it => it.isDirty); //if no dirty target, no restore needed
+                if (dirtyTarget == null)
+                    return true;
+            }
+
             bool success = false;
+            bool dirtyState;
+
             if (currentSession.autoUncorrupt)
             {
                 if (StockpileManagerEmuSide.UnCorruptBL != null)
                 {
                     StockpileManagerEmuSide.UnCorruptBL.Apply(false);
                     success = true;
+                    dirtyState = true;
                 }
                 else
                 {
-                    //CHECK CRC WITH BACKUP HERE AND SKIP BACKUP IF WORKING FILE = BACKUP FILE
-                   success = currentSession.targetInterface.ResetWorkingFile();
+                    success = currentSession.fileInterface.SendBackupToReal(false);
+                    dirtyState = false;
                 }
             }
             else
             {
-                success = currentSession.targetInterface.ResetWorkingFile();
+                success = currentSession.fileInterface.SendBackupToReal(false);
+                dirtyState = false;
             }
+
+            if (targets != null)
+                foreach (var target in targets)
+                    target.isDirty = dirtyState;
+
+            Vault.SaveVaultDb();
+
             return success;
         }
 
@@ -138,7 +180,7 @@ namespace FileStub
                     FileWatch.currentSession.targetShortName = fi.ShortFilename;
                     FileWatch.currentSession.targetFullName = fi.Filename;
 
-                    FileWatch.currentSession.targetInterface = fi;
+                    FileWatch.currentSession.fileInterface = fi;
                     S.GET<StubForm>().lbTarget.Text = fi.GetType().ToString() + "|MemorySize:" + fi.lastMemorySize.ToString();
 
                     if (VanguardCore.vanguardConnected)
@@ -176,7 +218,7 @@ namespace FileStub
                 if (FileWatch.currentSession.useCacheAndMultithread)
                     mfi.getMemoryDump();
 
-                FileWatch.currentSession.targetInterface = mfi;
+                FileWatch.currentSession.fileInterface = mfi;
 
                 if (VanguardCore.vanguardConnected)
                     FileWatch.UpdateDomains();
@@ -285,18 +327,14 @@ namespace FileStub
 
         internal static bool CloseActiveTargets(bool updateDomains = true)
         {
-            if (FileWatch.currentSession.targetInterface != null)
+            if (FileWatch.currentSession.fileInterface != null)
             {
-                if (!FileWatch.RestoreTarget())
-                {
-                    MessageBox.Show("Unable to restore the backup. Aborting!");
-                    return false;
-                }
-                FileWatch.currentSession.targetInterface.CloseStream();
-                FileWatch.currentSession.targetInterface = null;
+                FileWatch.RestoreTarget();
+                FileWatch.currentSession.fileInterface?.CloseStream();
+                FileWatch.currentSession.fileInterface = null;
             }
 
-            if (updateDomains)
+            if (updateDomains && VanguardCore.vanguardConnected)
                 UpdateDomains();
             return true;
         }
@@ -330,12 +368,26 @@ namespace FileStub
             }
         }
 
+        internal static void BakeDirty()
+        {
+            var targets = Vault.GetDirtyTargets();
+            foreach (var target in targets)
+                Vault.CopyRealToBackup(target);
+        }
+
+        internal static void RestoreDirty()
+        {
+            var targets = Vault.GetDirtyTargets();
+            foreach (var target in targets)
+                Vault.CopyBackupToReal(target);
+        }
+
         public static MemoryDomainProxy[] GetInterfaces()
         {
             try
             {
                 Console.WriteLine($" getInterfaces()");
-                if (currentSession.targetInterface == null)
+                if (currentSession.fileInterface == null)
                 {
                     Console.WriteLine($"rpxInterface was null!");
                     return Array.Empty<MemoryDomainProxy>();
@@ -347,13 +399,13 @@ namespace FileStub
                 {   //Checking if the FileInterface/MultiFileInterface is split in sub FileInterfaces
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH:
-                        foreach (var fi in (currentSession.targetInterface as MultipleFileInterface).FileInterfaces)
+                        foreach (var fi in (currentSession.fileInterface as MultipleFileInterface).FileInterfaces)
                             interfaces.Add(new MemoryDomainProxy(fi));
                         break;
                     case TargetType.SINGLE_FILE:
                     case TargetType.MULTIPLE_FILE_SINGLEDOMAIN:
                     default:
-                        interfaces.Add(new MemoryDomainProxy(currentSession.targetInterface));
+                        interfaces.Add(new MemoryDomainProxy(currentSession.fileInterface));
                         break;
                 }
 
@@ -373,14 +425,14 @@ namespace FileStub
 
         public static void EnableInterface()
         {
-            S.GET<StubForm>().btnResetBackup.Enabled = true;
-            S.GET<StubForm>().btnRestoreBackup.Enabled = true;
+            S.GET<StubForm>().btnResetBackups.Enabled = true;
+            S.GET<StubForm>().btnRestoreTargets.Enabled = true;
         }
 
         public static void DisableInterface()
         {
-            S.GET<StubForm>().btnResetBackup.Enabled = false;
-            S.GET<StubForm>().btnRestoreBackup.Enabled = false;
+            S.GET<StubForm>().btnResetBackups.Enabled = false;
+            S.GET<StubForm>().btnRestoreTargets.Enabled = false;
         }
     }
 }

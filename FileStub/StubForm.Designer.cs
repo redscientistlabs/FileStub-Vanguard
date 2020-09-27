@@ -31,8 +31,8 @@ namespace FileStub
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StubForm));
             this.label5 = new System.Windows.Forms.Label();
             this.pnTarget = new System.Windows.Forms.Panel();
-            this.btnUnloadTarget = new System.Windows.Forms.Button();
             this.lbTarget = new System.Windows.Forms.Label();
+            this.btnUnloadTarget = new System.Windows.Forms.Button();
             this.cbTargetType = new System.Windows.Forms.ComboBox();
             this.btnBrowseTarget = new System.Windows.Forms.Button();
             this.btnTargetSettings = new System.Windows.Forms.Button();
@@ -41,18 +41,24 @@ namespace FileStub
             this.tbArgs = new System.Windows.Forms.TextBox();
             this.lbExecution = new System.Windows.Forms.Label();
             this.pnSideBar = new System.Windows.Forms.Panel();
+            this.btnBakeAllDirty = new System.Windows.Forms.Button();
+            this.btnRestoreDirty = new System.Windows.Forms.Button();
+            this.lbDirtyFiles = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.lbTargetStatus = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnClearAllBackups = new System.Windows.Forms.Button();
+            this.btnClearVaultData = new System.Windows.Forms.Button();
             this.pnGlitchHarvesterOpen = new System.Windows.Forms.Panel();
-            this.btnRestoreBackup = new System.Windows.Forms.Button();
-            this.btnResetBackup = new System.Windows.Forms.Button();
+            this.btnRestoreTargets = new System.Windows.Forms.Button();
+            this.btnResetBackups = new System.Windows.Forms.Button();
             this.cbSelectedExecution = new System.Windows.Forms.ComboBox();
             this.pnTargetExecution = new System.Windows.Forms.Panel();
             this.btnEditExec = new System.Windows.Forms.Button();
             this.lbTargetExecution = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pnTargetType = new System.Windows.Forms.Panel();
+            this.lbTargetTypeDisplay = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnClearTargets = new System.Windows.Forms.Button();
@@ -63,10 +69,8 @@ namespace FileStub
             this.label4 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.nmFooterPadding = new RTCV.UI.Components.Controls.MultiUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.nmHeaderPadding = new RTCV.UI.Components.Controls.MultiUpDown();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -78,7 +82,8 @@ namespace FileStub
             this.panel9 = new System.Windows.Forms.Panel();
             this.panel10 = new System.Windows.Forms.Panel();
             this.btnExtendPanel = new System.Windows.Forms.Button();
-            this.lbTargetTypeDisplay = new System.Windows.Forms.Label();
+            this.nmFooterPadding = new RTCV.UI.Components.Controls.MultiUpDown();
+            this.nmHeaderPadding = new RTCV.UI.Components.Controls.MultiUpDown();
             this.pnTarget.SuspendLayout();
             this.pnSideBar.SuspendLayout();
             this.pnTargetExecution.SuspendLayout();
@@ -116,6 +121,19 @@ namespace FileStub
             this.pnTarget.TabIndex = 13;
             this.pnTarget.Tag = "color:dark1";
             // 
+            // lbTarget
+            // 
+            this.lbTarget.BackColor = System.Drawing.Color.Transparent;
+            this.lbTarget.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbTarget.ForeColor = System.Drawing.Color.White;
+            this.lbTarget.Location = new System.Drawing.Point(12, 6);
+            this.lbTarget.Name = "lbTarget";
+            this.lbTarget.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
+            this.lbTarget.Size = new System.Drawing.Size(380, 47);
+            this.lbTarget.TabIndex = 36;
+            this.lbTarget.Tag = "";
+            this.lbTarget.Text = "No target loaded";
+            // 
             // btnUnloadTarget
             // 
             this.btnUnloadTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
@@ -133,19 +151,6 @@ namespace FileStub
             this.btnUnloadTarget.UseVisualStyleBackColor = false;
             this.btnUnloadTarget.Visible = false;
             this.btnUnloadTarget.Click += new System.EventHandler(this.BtnUnloadTarget_Click);
-            // 
-            // lbTarget
-            // 
-            this.lbTarget.BackColor = System.Drawing.Color.Transparent;
-            this.lbTarget.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lbTarget.ForeColor = System.Drawing.Color.White;
-            this.lbTarget.Location = new System.Drawing.Point(12, 6);
-            this.lbTarget.Name = "lbTarget";
-            this.lbTarget.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
-            this.lbTarget.Size = new System.Drawing.Size(380, 47);
-            this.lbTarget.TabIndex = 36;
-            this.lbTarget.Tag = "";
-            this.lbTarget.Text = "No target loaded";
             // 
             // cbTargetType
             // 
@@ -263,18 +268,99 @@ namespace FileStub
             // pnSideBar
             // 
             this.pnSideBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.pnSideBar.Controls.Add(this.btnBakeAllDirty);
+            this.pnSideBar.Controls.Add(this.btnRestoreDirty);
+            this.pnSideBar.Controls.Add(this.lbDirtyFiles);
+            this.pnSideBar.Controls.Add(this.label11);
+            this.pnSideBar.Controls.Add(this.label10);
             this.pnSideBar.Controls.Add(this.lbTargetStatus);
             this.pnSideBar.Controls.Add(this.label2);
-            this.pnSideBar.Controls.Add(this.btnClearAllBackups);
+            this.pnSideBar.Controls.Add(this.btnClearVaultData);
             this.pnSideBar.Controls.Add(this.pnGlitchHarvesterOpen);
-            this.pnSideBar.Controls.Add(this.btnRestoreBackup);
-            this.pnSideBar.Controls.Add(this.btnResetBackup);
+            this.pnSideBar.Controls.Add(this.btnRestoreTargets);
+            this.pnSideBar.Controls.Add(this.btnResetBackups);
             this.pnSideBar.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnSideBar.Location = new System.Drawing.Point(0, 0);
             this.pnSideBar.Name = "pnSideBar";
             this.pnSideBar.Size = new System.Drawing.Size(118, 479);
             this.pnSideBar.TabIndex = 174;
             this.pnSideBar.Tag = "color:dark3";
+            // 
+            // btnBakeAllDirty
+            // 
+            this.btnBakeAllDirty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.btnBakeAllDirty.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnBakeAllDirty.FlatAppearance.BorderSize = 0;
+            this.btnBakeAllDirty.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBakeAllDirty.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.btnBakeAllDirty.ForeColor = System.Drawing.Color.OrangeRed;
+            this.btnBakeAllDirty.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBakeAllDirty.Location = new System.Drawing.Point(0, 321);
+            this.btnBakeAllDirty.Name = "btnBakeAllDirty";
+            this.btnBakeAllDirty.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.btnBakeAllDirty.Size = new System.Drawing.Size(133, 34);
+            this.btnBakeAllDirty.TabIndex = 128;
+            this.btnBakeAllDirty.TabStop = false;
+            this.btnBakeAllDirty.Tag = "color:dark3";
+            this.btnBakeAllDirty.Text = "Bake All Dirty";
+            this.btnBakeAllDirty.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBakeAllDirty.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnBakeAllDirty.UseVisualStyleBackColor = false;
+            this.btnBakeAllDirty.Click += new System.EventHandler(this.btnBakeAllDirty_Click);
+            // 
+            // btnRestoreDirty
+            // 
+            this.btnRestoreDirty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.btnRestoreDirty.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnRestoreDirty.FlatAppearance.BorderSize = 0;
+            this.btnRestoreDirty.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRestoreDirty.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.btnRestoreDirty.ForeColor = System.Drawing.Color.White;
+            this.btnRestoreDirty.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRestoreDirty.Location = new System.Drawing.Point(0, 285);
+            this.btnRestoreDirty.Name = "btnRestoreDirty";
+            this.btnRestoreDirty.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.btnRestoreDirty.Size = new System.Drawing.Size(133, 34);
+            this.btnRestoreDirty.TabIndex = 127;
+            this.btnRestoreDirty.TabStop = false;
+            this.btnRestoreDirty.Tag = "color:dark3";
+            this.btnRestoreDirty.Text = "Restore All Dirty";
+            this.btnRestoreDirty.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRestoreDirty.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnRestoreDirty.UseVisualStyleBackColor = false;
+            this.btnRestoreDirty.Click += new System.EventHandler(this.btnRestoreDirty_Click);
+            // 
+            // lbDirtyFiles
+            // 
+            this.lbDirtyFiles.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbDirtyFiles.ForeColor = System.Drawing.Color.White;
+            this.lbDirtyFiles.Location = new System.Drawing.Point(9, 256);
+            this.lbDirtyFiles.Name = "lbDirtyFiles";
+            this.lbDirtyFiles.Size = new System.Drawing.Size(99, 26);
+            this.lbDirtyFiles.TabIndex = 126;
+            this.lbDirtyFiles.Text = "No dirty files";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            this.label11.ForeColor = System.Drawing.Color.White;
+            this.label11.Location = new System.Drawing.Point(8, 228);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(74, 19);
+            this.label11.TabIndex = 125;
+            this.label11.Text = "Vault Data";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            this.label10.ForeColor = System.Drawing.Color.White;
+            this.label10.Location = new System.Drawing.Point(8, 93);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(56, 19);
+            this.label10.TabIndex = 124;
+            this.label10.Text = "Session";
             // 
             // lbTargetStatus
             // 
@@ -297,28 +383,27 @@ namespace FileStub
             this.label2.TabIndex = 122;
             this.label2.Text = "Status";
             // 
-            // btnClearAllBackups
+            // btnClearVaultData
             // 
-            this.btnClearAllBackups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.btnClearAllBackups.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.btnClearAllBackups.FlatAppearance.BorderSize = 0;
-            this.btnClearAllBackups.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearAllBackups.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.btnClearAllBackups.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnClearAllBackups.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearAllBackups.Location = new System.Drawing.Point(0, 166);
-            this.btnClearAllBackups.Name = "btnClearAllBackups";
-            this.btnClearAllBackups.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.btnClearAllBackups.Size = new System.Drawing.Size(133, 34);
-            this.btnClearAllBackups.TabIndex = 121;
-            this.btnClearAllBackups.TabStop = false;
-            this.btnClearAllBackups.Tag = "color:dark3";
-            this.btnClearAllBackups.Text = "Clear All Backups";
-            this.btnClearAllBackups.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearAllBackups.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnClearAllBackups.UseVisualStyleBackColor = false;
-            this.btnClearAllBackups.Visible = false;
-            this.btnClearAllBackups.Click += new System.EventHandler(this.BtnClearAllBackups_Click);
+            this.btnClearVaultData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.btnClearVaultData.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnClearVaultData.FlatAppearance.BorderSize = 0;
+            this.btnClearVaultData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearVaultData.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.btnClearVaultData.ForeColor = System.Drawing.Color.OrangeRed;
+            this.btnClearVaultData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClearVaultData.Location = new System.Drawing.Point(0, 359);
+            this.btnClearVaultData.Name = "btnClearVaultData";
+            this.btnClearVaultData.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.btnClearVaultData.Size = new System.Drawing.Size(133, 34);
+            this.btnClearVaultData.TabIndex = 121;
+            this.btnClearVaultData.TabStop = false;
+            this.btnClearVaultData.Tag = "color:dark3";
+            this.btnClearVaultData.Text = "Clear Vault Data";
+            this.btnClearVaultData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClearVaultData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnClearVaultData.UseVisualStyleBackColor = false;
+            this.btnClearVaultData.Click += new System.EventHandler(this.BtnClearAllBackups_Click);
             // 
             // pnGlitchHarvesterOpen
             // 
@@ -330,51 +415,51 @@ namespace FileStub
             this.pnGlitchHarvesterOpen.Tag = "color:light1";
             this.pnGlitchHarvesterOpen.Visible = false;
             // 
-            // btnRestoreBackup
+            // btnRestoreTargets
             // 
-            this.btnRestoreBackup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.btnRestoreBackup.Enabled = false;
-            this.btnRestoreBackup.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.btnRestoreBackup.FlatAppearance.BorderSize = 0;
-            this.btnRestoreBackup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRestoreBackup.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.btnRestoreBackup.ForeColor = System.Drawing.Color.White;
-            this.btnRestoreBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRestoreBackup.Location = new System.Drawing.Point(0, 90);
-            this.btnRestoreBackup.Name = "btnRestoreBackup";
-            this.btnRestoreBackup.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.btnRestoreBackup.Size = new System.Drawing.Size(133, 34);
-            this.btnRestoreBackup.TabIndex = 119;
-            this.btnRestoreBackup.TabStop = false;
-            this.btnRestoreBackup.Tag = "color:dark3";
-            this.btnRestoreBackup.Text = "Restore Backup";
-            this.btnRestoreBackup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRestoreBackup.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnRestoreBackup.UseVisualStyleBackColor = false;
-            this.btnRestoreBackup.Click += new System.EventHandler(this.BtnRestoreBackup_Click);
+            this.btnRestoreTargets.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.btnRestoreTargets.Enabled = false;
+            this.btnRestoreTargets.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnRestoreTargets.FlatAppearance.BorderSize = 0;
+            this.btnRestoreTargets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRestoreTargets.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.btnRestoreTargets.ForeColor = System.Drawing.Color.White;
+            this.btnRestoreTargets.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRestoreTargets.Location = new System.Drawing.Point(0, 113);
+            this.btnRestoreTargets.Name = "btnRestoreTargets";
+            this.btnRestoreTargets.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.btnRestoreTargets.Size = new System.Drawing.Size(133, 34);
+            this.btnRestoreTargets.TabIndex = 119;
+            this.btnRestoreTargets.TabStop = false;
+            this.btnRestoreTargets.Tag = "color:dark3";
+            this.btnRestoreTargets.Text = "Restore Targets";
+            this.btnRestoreTargets.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRestoreTargets.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnRestoreTargets.UseVisualStyleBackColor = false;
+            this.btnRestoreTargets.Click += new System.EventHandler(this.BtnRestoreBackup_Click);
             // 
-            // btnResetBackup
+            // btnResetBackups
             // 
-            this.btnResetBackup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.btnResetBackup.Enabled = false;
-            this.btnResetBackup.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.btnResetBackup.FlatAppearance.BorderSize = 0;
-            this.btnResetBackup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnResetBackup.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.btnResetBackup.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnResetBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResetBackup.Location = new System.Drawing.Point(0, 128);
-            this.btnResetBackup.Name = "btnResetBackup";
-            this.btnResetBackup.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.btnResetBackup.Size = new System.Drawing.Size(133, 34);
-            this.btnResetBackup.TabIndex = 120;
-            this.btnResetBackup.TabStop = false;
-            this.btnResetBackup.Tag = "color:dark3";
-            this.btnResetBackup.Text = "Reset Backup";
-            this.btnResetBackup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResetBackup.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnResetBackup.UseVisualStyleBackColor = false;
-            this.btnResetBackup.Click += new System.EventHandler(this.BtnResetBackup_Click);
+            this.btnResetBackups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.btnResetBackups.Enabled = false;
+            this.btnResetBackups.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.btnResetBackups.FlatAppearance.BorderSize = 0;
+            this.btnResetBackups.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnResetBackups.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.btnResetBackups.ForeColor = System.Drawing.Color.OrangeRed;
+            this.btnResetBackups.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnResetBackups.Location = new System.Drawing.Point(0, 151);
+            this.btnResetBackups.Name = "btnResetBackups";
+            this.btnResetBackups.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.btnResetBackups.Size = new System.Drawing.Size(133, 34);
+            this.btnResetBackups.TabIndex = 120;
+            this.btnResetBackups.TabStop = false;
+            this.btnResetBackups.Tag = "color:dark3";
+            this.btnResetBackups.Text = "Reset Backups";
+            this.btnResetBackups.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnResetBackups.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnResetBackups.UseVisualStyleBackColor = false;
+            this.btnResetBackups.Click += new System.EventHandler(this.BtnResetBackup_Click);
             // 
             // cbSelectedExecution
             // 
@@ -461,6 +546,19 @@ namespace FileStub
             this.pnTargetType.Size = new System.Drawing.Size(440, 60);
             this.pnTargetType.TabIndex = 119;
             this.pnTargetType.Tag = "color:dark1";
+            // 
+            // lbTargetTypeDisplay
+            // 
+            this.lbTargetTypeDisplay.BackColor = System.Drawing.Color.Transparent;
+            this.lbTargetTypeDisplay.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.lbTargetTypeDisplay.ForeColor = System.Drawing.Color.White;
+            this.lbTargetTypeDisplay.Location = new System.Drawing.Point(11, 13);
+            this.lbTargetTypeDisplay.Name = "lbTargetTypeDisplay";
+            this.lbTargetTypeDisplay.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
+            this.lbTargetTypeDisplay.Size = new System.Drawing.Size(387, 36);
+            this.lbTargetTypeDisplay.TabIndex = 119;
+            this.lbTargetTypeDisplay.Tag = "";
+            this.lbTargetTypeDisplay.Text = "_";
             // 
             // label3
             // 
@@ -631,33 +729,6 @@ namespace FileStub
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // nmFooterPadding
-            // 
-            this.nmFooterPadding.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.nmFooterPadding.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.nmFooterPadding.ForeColor = System.Drawing.Color.White;
-            this.nmFooterPadding.Hexadecimal = true;
-            this.nmFooterPadding.Location = new System.Drawing.Point(109, 38);
-            this.nmFooterPadding.Maximum = new decimal(new int[] {
-            -1,
-            -1,
-            0,
-            0});
-            this.nmFooterPadding.Minimum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.nmFooterPadding.Name = "nmFooterPadding";
-            this.nmFooterPadding.Size = new System.Drawing.Size(86, 20);
-            this.nmFooterPadding.TabIndex = 145;
-            this.nmFooterPadding.Tag = "color:dark2";
-            this.nmFooterPadding.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -679,33 +750,6 @@ namespace FileStub
             this.label23.Size = new System.Drawing.Size(91, 13);
             this.label23.TabIndex = 142;
             this.label23.Text = "Header padding";
-            // 
-            // nmHeaderPadding
-            // 
-            this.nmHeaderPadding.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.nmHeaderPadding.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.nmHeaderPadding.ForeColor = System.Drawing.Color.White;
-            this.nmHeaderPadding.Hexadecimal = true;
-            this.nmHeaderPadding.Location = new System.Drawing.Point(109, 12);
-            this.nmHeaderPadding.Maximum = new decimal(new int[] {
-            -1,
-            -1,
-            0,
-            0});
-            this.nmHeaderPadding.Minimum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.nmHeaderPadding.Name = "nmHeaderPadding";
-            this.nmHeaderPadding.Size = new System.Drawing.Size(86, 20);
-            this.nmHeaderPadding.TabIndex = 143;
-            this.nmHeaderPadding.Tag = "color:dark2";
-            this.nmHeaderPadding.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
             // 
             // panel4
             // 
@@ -832,18 +876,59 @@ namespace FileStub
             this.btnExtendPanel.UseVisualStyleBackColor = false;
             this.btnExtendPanel.Click += new System.EventHandler(this.btnExtendPanel_Click);
             // 
-            // lbTargetTypeDisplay
+            // nmFooterPadding
             // 
-            this.lbTargetTypeDisplay.BackColor = System.Drawing.Color.Transparent;
-            this.lbTargetTypeDisplay.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.lbTargetTypeDisplay.ForeColor = System.Drawing.Color.White;
-            this.lbTargetTypeDisplay.Location = new System.Drawing.Point(11, 13);
-            this.lbTargetTypeDisplay.Name = "lbTargetTypeDisplay";
-            this.lbTargetTypeDisplay.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
-            this.lbTargetTypeDisplay.Size = new System.Drawing.Size(387, 36);
-            this.lbTargetTypeDisplay.TabIndex = 119;
-            this.lbTargetTypeDisplay.Tag = "";
-            this.lbTargetTypeDisplay.Text = "_";
+            this.nmFooterPadding.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.nmFooterPadding.Font = new System.Drawing.Font("Consolas", 8.25F);
+            this.nmFooterPadding.ForeColor = System.Drawing.Color.White;
+            this.nmFooterPadding.Hexadecimal = true;
+            this.nmFooterPadding.Location = new System.Drawing.Point(109, 38);
+            this.nmFooterPadding.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            0,
+            0});
+            this.nmFooterPadding.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nmFooterPadding.Name = "nmFooterPadding";
+            this.nmFooterPadding.Size = new System.Drawing.Size(86, 20);
+            this.nmFooterPadding.TabIndex = 145;
+            this.nmFooterPadding.Tag = "color:dark2";
+            this.nmFooterPadding.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // nmHeaderPadding
+            // 
+            this.nmHeaderPadding.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.nmHeaderPadding.Font = new System.Drawing.Font("Consolas", 8.25F);
+            this.nmHeaderPadding.ForeColor = System.Drawing.Color.White;
+            this.nmHeaderPadding.Hexadecimal = true;
+            this.nmHeaderPadding.Location = new System.Drawing.Point(109, 12);
+            this.nmHeaderPadding.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            0,
+            0});
+            this.nmHeaderPadding.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nmHeaderPadding.Name = "nmHeaderPadding";
+            this.nmHeaderPadding.Size = new System.Drawing.Size(86, 20);
+            this.nmHeaderPadding.TabIndex = 143;
+            this.nmHeaderPadding.Tag = "color:dark2";
+            this.nmHeaderPadding.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             // 
             // StubForm
             // 
@@ -910,10 +995,10 @@ namespace FileStub
         public System.Windows.Forms.TextBox tbArgs;
         public System.Windows.Forms.Label lbExecution;
         private System.Windows.Forms.Panel pnSideBar;
-        public System.Windows.Forms.Button btnClearAllBackups;
+        public System.Windows.Forms.Button btnClearVaultData;
         internal System.Windows.Forms.Panel pnGlitchHarvesterOpen;
-        public System.Windows.Forms.Button btnRestoreBackup;
-        public System.Windows.Forms.Button btnResetBackup;
+        public System.Windows.Forms.Button btnRestoreTargets;
+        public System.Windows.Forms.Button btnResetBackups;
         private System.Windows.Forms.Button btnKillProcess;
         public System.Windows.Forms.ComboBox cbSelectedExecution;
         private System.Windows.Forms.Panel pnTargetExecution;
@@ -953,6 +1038,11 @@ namespace FileStub
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.Button btnExtendPanel;
         public System.Windows.Forms.Label lbTargetTypeDisplay;
+        public System.Windows.Forms.Button btnBakeAllDirty;
+        public System.Windows.Forms.Button btnRestoreDirty;
+        public System.Windows.Forms.Label lbDirtyFiles;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
     }
 }
 

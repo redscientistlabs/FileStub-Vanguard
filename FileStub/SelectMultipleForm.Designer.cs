@@ -1,4 +1,4 @@
-﻿namespace FileStub
+namespace FileStub
 {
     partial class SelectMultipleForm
     {

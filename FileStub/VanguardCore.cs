@@ -17,7 +17,6 @@ namespace Vanguard
 
     public static class VanguardCore
     {
-        internal static string[] args;
         internal static bool vanguardStarted = false;
         public static bool vanguardConnected => (VanguardImplementation.connector != null ? VanguardImplementation.connector.netcoreStatus == RTCV.NetCore.Enums.NetworkStatus.CONNECTED : false);
 

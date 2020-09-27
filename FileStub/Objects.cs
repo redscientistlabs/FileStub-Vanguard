@@ -21,7 +21,7 @@ namespace FileStub
         internal string selectedExecution = null;
         internal bool writeCopyMode = false;
         internal string targetFullName = "No target";
-        internal FileMemoryInterface targetInterface;
+        internal FileMemoryInterface fileInterface;
         internal string selectedTargetType = TargetType.SINGLE_FILE;
         internal bool autoUncorrupt = true;
         internal bool TerminateBeforeExecution = true;

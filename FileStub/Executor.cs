@@ -60,7 +60,7 @@ namespace FileStub
             {
                 if (FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
                 {
-                    var fi = (FileInterface)FileWatch.currentSession.targetInterface;
+                    var fi = (FileInterface)FileWatch.currentSession.fileInterface;
                     //Process.Start(fi.filename);
 
                     string fullPath = fi.Filename;
@@ -85,7 +85,7 @@ namespace FileStub
                 {
                     if (FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
                     {
-                        var fi = (FileInterface)FileWatch.currentSession.targetInterface;
+                        var fi = (FileInterface)FileWatch.currentSession.fileInterface;
                         //Process.Start(otherProgram, "\"" + fi.filename + "\"");
 
                         string fullPath = otherProgram;

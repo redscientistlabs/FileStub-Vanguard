@@ -30,8 +30,7 @@ namespace FileStub.Templates
 
         public static (string text, string value) GetTemplates()
         {
-            return (null,null);
+            return (null, null);
         }
-
     }
 }

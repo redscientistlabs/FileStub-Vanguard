@@ -83,16 +83,16 @@ namespace Vanguard
 
                     case RTCV.NetCore.Commands.Remote.PreCorruptAction:
                         FileWatch.KillProcess();
-                        FileWatch.currentSession.targetInterface.CloseStream();
+                        FileWatch.currentSession.fileInterface?.CloseStream();
                         FileWatch.RestoreTarget();
                         break;
 
                     case RTCV.NetCore.Commands.Remote.PostCorruptAction:
-                        //var fileName = advancedMessage.objectValue as String;
-                        FileWatch.currentSession.targetInterface.CloseStream();
+                        FileWatch.currentSession.fileInterface.CloseStream();
                         SyncObjectSingleton.FormExecute(() =>
                         {
                             Executor.Execute();
+                            Vault.SaveVaultDb();
                         });
                         break;
 
