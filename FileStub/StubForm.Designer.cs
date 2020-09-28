@@ -60,7 +60,7 @@ namespace FileStub
             this.pnTargetType = new System.Windows.Forms.Panel();
             this.lbTargetTypeDisplay = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.pnFileLoading = new System.Windows.Forms.Panel();
             this.btnClearTargets = new System.Windows.Forms.Button();
             this.btnSetBaseDir = new System.Windows.Forms.Button();
             this.btnLoadTargets = new System.Windows.Forms.Button();
@@ -68,12 +68,14 @@ namespace FileStub
             this.lbDragAndDrop = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnSaveTargetPadding = new System.Windows.Forms.Button();
+            this.nmFooterPadding = new RTCV.UI.Components.Controls.MultiUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
+            this.nmHeaderPadding = new RTCV.UI.Components.Controls.MultiUpDown();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lbBaseDir = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
@@ -82,13 +84,11 @@ namespace FileStub
             this.panel9 = new System.Windows.Forms.Panel();
             this.panel10 = new System.Windows.Forms.Panel();
             this.btnExtendPanel = new System.Windows.Forms.Button();
-            this.nmFooterPadding = new RTCV.UI.Components.Controls.MultiUpDown();
-            this.nmHeaderPadding = new RTCV.UI.Components.Controls.MultiUpDown();
             this.pnTarget.SuspendLayout();
             this.pnSideBar.SuspendLayout();
             this.pnTargetExecution.SuspendLayout();
             this.pnTargetType.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.pnFileLoading.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -181,7 +181,7 @@ namespace FileStub
             this.btnBrowseTarget.TabIndex = 35;
             this.btnBrowseTarget.TabStop = false;
             this.btnBrowseTarget.Tag = "color:light1";
-            this.btnBrowseTarget.Text = "Browse files";
+            this.btnBrowseTarget.Text = "Browse target";
             this.btnBrowseTarget.UseVisualStyleBackColor = false;
             this.btnBrowseTarget.Click += new System.EventHandler(this.BtnBrowseTarget_Click);
             // 
@@ -568,25 +568,25 @@ namespace FileStub
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(5, 5);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 15);
+            this.label3.Size = new System.Drawing.Size(86, 15);
             this.label3.TabIndex = 178;
-            this.label3.Text = "File Loading";
+            this.label3.Text = "Target Loading";
             // 
-            // panel2
+            // pnFileLoading
             // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.panel2.Controls.Add(this.btnUnloadTarget);
-            this.panel2.Controls.Add(this.btnClearTargets);
-            this.panel2.Controls.Add(this.btnSetBaseDir);
-            this.panel2.Controls.Add(this.btnLoadTargets);
-            this.panel2.Controls.Add(this.lbTargets);
-            this.panel2.Controls.Add(this.lbDragAndDrop);
-            this.panel2.Controls.Add(this.btnBrowseTarget);
-            this.panel2.Location = new System.Drawing.Point(131, 181);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(440, 277);
-            this.panel2.TabIndex = 179;
-            this.panel2.Tag = "color:dark1";
+            this.pnFileLoading.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pnFileLoading.Controls.Add(this.btnUnloadTarget);
+            this.pnFileLoading.Controls.Add(this.btnClearTargets);
+            this.pnFileLoading.Controls.Add(this.btnSetBaseDir);
+            this.pnFileLoading.Controls.Add(this.btnLoadTargets);
+            this.pnFileLoading.Controls.Add(this.lbTargets);
+            this.pnFileLoading.Controls.Add(this.lbDragAndDrop);
+            this.pnFileLoading.Controls.Add(this.btnBrowseTarget);
+            this.pnFileLoading.Location = new System.Drawing.Point(131, 181);
+            this.pnFileLoading.Name = "pnFileLoading";
+            this.pnFileLoading.Size = new System.Drawing.Size(440, 277);
+            this.pnFileLoading.TabIndex = 179;
+            this.pnFileLoading.Tag = "color:dark1";
             // 
             // btnClearTargets
             // 
@@ -674,14 +674,14 @@ namespace FileStub
             this.lbDragAndDrop.BackColor = System.Drawing.Color.Transparent;
             this.lbDragAndDrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbDragAndDrop.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lbDragAndDrop.ForeColor = System.Drawing.Color.LightGray;
+            this.lbDragAndDrop.ForeColor = System.Drawing.Color.White;
             this.lbDragAndDrop.Location = new System.Drawing.Point(311, 16);
             this.lbDragAndDrop.Name = "lbDragAndDrop";
             this.lbDragAndDrop.Padding = new System.Windows.Forms.Padding(16);
             this.lbDragAndDrop.Size = new System.Drawing.Size(116, 96);
             this.lbDragAndDrop.TabIndex = 37;
-            this.lbDragAndDrop.Tag = "color:light2";
-            this.lbDragAndDrop.Text = "Quick Load Drag and drop zone";
+            this.lbDragAndDrop.Tag = "color:light3";
+            this.lbDragAndDrop.Text = "Quick Load drag and drop zone";
             this.lbDragAndDrop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbDragAndDrop.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbDragAndDrop_DragDrop);
             this.lbDragAndDrop.DragEnter += new System.Windows.Forms.DragEventHandler(this.lbDragAndDrop_DragEnter);
@@ -701,7 +701,7 @@ namespace FileStub
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.panel3.Controls.Add(this.button2);
+            this.panel3.Controls.Add(this.btnSaveTargetPadding);
             this.panel3.Controls.Add(this.nmFooterPadding);
             this.panel3.Controls.Add(this.label7);
             this.panel3.Controls.Add(this.label23);
@@ -712,22 +712,49 @@ namespace FileStub
             this.panel3.TabIndex = 177;
             this.panel3.Tag = "color:dark1";
             // 
-            // button2
+            // btnSaveTargetPadding
             // 
-            this.button2.BackColor = System.Drawing.Color.Gray;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(14, 77);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(181, 32);
-            this.button2.TabIndex = 146;
-            this.button2.TabStop = false;
-            this.button2.Tag = "color:light1";
-            this.button2.Text = "Save target padding";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnSaveTargetPadding.BackColor = System.Drawing.Color.Gray;
+            this.btnSaveTargetPadding.FlatAppearance.BorderSize = 0;
+            this.btnSaveTargetPadding.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSaveTargetPadding.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnSaveTargetPadding.ForeColor = System.Drawing.Color.White;
+            this.btnSaveTargetPadding.Location = new System.Drawing.Point(14, 77);
+            this.btnSaveTargetPadding.Name = "button2";
+            this.btnSaveTargetPadding.Size = new System.Drawing.Size(181, 32);
+            this.btnSaveTargetPadding.TabIndex = 146;
+            this.btnSaveTargetPadding.TabStop = false;
+            this.btnSaveTargetPadding.Tag = "color:light1";
+            this.btnSaveTargetPadding.Text = "Save target padding";
+            this.btnSaveTargetPadding.UseVisualStyleBackColor = false;
+            this.btnSaveTargetPadding.Click += new System.EventHandler(this.btnSaveTargetPadding_Click);
+            // 
+            // nmFooterPadding
+            // 
+            this.nmFooterPadding.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.nmFooterPadding.Font = new System.Drawing.Font("Consolas", 8.25F);
+            this.nmFooterPadding.ForeColor = System.Drawing.Color.White;
+            this.nmFooterPadding.Hexadecimal = true;
+            this.nmFooterPadding.Location = new System.Drawing.Point(109, 38);
+            this.nmFooterPadding.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            0,
+            0});
+            this.nmFooterPadding.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nmFooterPadding.Name = "nmFooterPadding";
+            this.nmFooterPadding.Size = new System.Drawing.Size(86, 20);
+            this.nmFooterPadding.TabIndex = 145;
+            this.nmFooterPadding.Tag = "color:dark2";
+            this.nmFooterPadding.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             // 
             // label7
             // 
@@ -751,11 +778,38 @@ namespace FileStub
             this.label23.TabIndex = 142;
             this.label23.Text = "Header padding";
             // 
+            // nmHeaderPadding
+            // 
+            this.nmHeaderPadding.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.nmHeaderPadding.Font = new System.Drawing.Font("Consolas", 8.25F);
+            this.nmHeaderPadding.ForeColor = System.Drawing.Color.White;
+            this.nmHeaderPadding.Hexadecimal = true;
+            this.nmHeaderPadding.Location = new System.Drawing.Point(109, 12);
+            this.nmHeaderPadding.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            0,
+            0});
+            this.nmHeaderPadding.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nmHeaderPadding.Name = "nmHeaderPadding";
+            this.nmHeaderPadding.Size = new System.Drawing.Size(86, 20);
+            this.nmHeaderPadding.TabIndex = 143;
+            this.nmHeaderPadding.Tag = "color:dark2";
+            this.nmHeaderPadding.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.panel4.Controls.Add(this.label9);
-            this.panel4.Controls.Add(this.label8);
+            this.panel4.Controls.Add(this.lbBaseDir);
             this.panel4.Location = new System.Drawing.Point(808, 341);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(189, 119);
@@ -773,18 +827,18 @@ namespace FileStub
             this.label9.TabIndex = 183;
             this.label9.Text = "Base dir";
             // 
-            // label8
+            // lbBaseDir
             // 
-            this.label8.BackColor = System.Drawing.Color.Transparent;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(11, 29);
-            this.label8.Name = "label8";
-            this.label8.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
-            this.label8.Size = new System.Drawing.Size(162, 80);
-            this.label8.TabIndex = 37;
-            this.label8.Tag = "";
-            this.label8.Text = "(unset)";
+            this.lbBaseDir.BackColor = System.Drawing.Color.Transparent;
+            this.lbBaseDir.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lbBaseDir.ForeColor = System.Drawing.Color.White;
+            this.lbBaseDir.Location = new System.Drawing.Point(11, 29);
+            this.lbBaseDir.Name = "lbBaseDir";
+            this.lbBaseDir.Padding = new System.Windows.Forms.Padding(3, 6, 1, 1);
+            this.lbBaseDir.Size = new System.Drawing.Size(162, 80);
+            this.lbBaseDir.TabIndex = 37;
+            this.lbBaseDir.Tag = "";
+            this.lbBaseDir.Text = "(unset)";
             // 
             // label6
             // 
@@ -876,60 +930,6 @@ namespace FileStub
             this.btnExtendPanel.UseVisualStyleBackColor = false;
             this.btnExtendPanel.Click += new System.EventHandler(this.btnExtendPanel_Click);
             // 
-            // nmFooterPadding
-            // 
-            this.nmFooterPadding.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.nmFooterPadding.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.nmFooterPadding.ForeColor = System.Drawing.Color.White;
-            this.nmFooterPadding.Hexadecimal = true;
-            this.nmFooterPadding.Location = new System.Drawing.Point(109, 38);
-            this.nmFooterPadding.Maximum = new decimal(new int[] {
-            -1,
-            -1,
-            0,
-            0});
-            this.nmFooterPadding.Minimum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.nmFooterPadding.Name = "nmFooterPadding";
-            this.nmFooterPadding.Size = new System.Drawing.Size(86, 20);
-            this.nmFooterPadding.TabIndex = 145;
-            this.nmFooterPadding.Tag = "color:dark2";
-            this.nmFooterPadding.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            // 
-            // nmHeaderPadding
-            // 
-            this.nmHeaderPadding.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.nmHeaderPadding.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.nmHeaderPadding.ForeColor = System.Drawing.Color.White;
-            this.nmHeaderPadding.Hexadecimal = true;
-            this.nmHeaderPadding.Location = new System.Drawing.Point(109, 12);
-            this.nmHeaderPadding.Maximum = new decimal(new int[] {
-            -1,
-            -1,
-            0,
-            0});
-            this.nmHeaderPadding.Minimum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.nmHeaderPadding.Name = "nmHeaderPadding";
-            this.nmHeaderPadding.Size = new System.Drawing.Size(86, 20);
-            this.nmHeaderPadding.TabIndex = 143;
-            this.nmHeaderPadding.Tag = "color:dark2";
-            this.nmHeaderPadding.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            // 
             // StubForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -939,7 +939,7 @@ namespace FileStub
             this.Controls.Add(this.btnExtendPanel);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.pnFileLoading);
             this.Controls.Add(this.pnTargetType);
             this.Controls.Add(this.pnTargetExecution);
             this.Controls.Add(this.pnSideBar);
@@ -966,7 +966,7 @@ namespace FileStub
             this.pnTargetExecution.ResumeLayout(false);
             this.pnTargetExecution.PerformLayout();
             this.pnTargetType.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
+            this.pnFileLoading.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
@@ -1013,7 +1013,7 @@ namespace FileStub
         public System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnTargetType;
         public System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnFileLoading;
         public System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel3;
         public System.Windows.Forms.Label lbDragAndDrop;
@@ -1024,11 +1024,11 @@ namespace FileStub
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label23;
         public RTCV.UI.Components.Controls.MultiUpDown nmHeaderPadding;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnSaveTargetPadding;
         private System.Windows.Forms.Button btnClearTargets;
         private System.Windows.Forms.Panel panel4;
         public System.Windows.Forms.Label label9;
-        public System.Windows.Forms.Label label8;
+        public System.Windows.Forms.Label lbBaseDir;
         public System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel6;

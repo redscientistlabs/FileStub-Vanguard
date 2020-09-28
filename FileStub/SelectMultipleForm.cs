@@ -11,6 +11,7 @@ namespace FileStub
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using NLog;
     using RTCV.Common;
     using RTCV.CorruptCore;
     using Vanguard;
@@ -68,6 +69,24 @@ namespace FileStub
             catch (System.Exception excpt)
             {
                 MessageBox.Show(excpt.Message);
+            }
+
+            return files;
+        }
+
+        public static List<FileInfo> DirSearch(DirectoryInfo dir)
+        {
+            List<FileInfo> files = new List<FileInfo>();
+            try
+            {
+                files.AddRange(dir.GetFiles());
+
+                foreach (var d in dir.GetDirectories())
+                    files.AddRange(DirSearch(d));
+            }
+            catch (System.Exception ex)
+            {
+                
             }
 
             return files;

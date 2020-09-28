@@ -138,21 +138,34 @@ namespace FileStub
             return success;
         }
 
-        internal static bool LoadTargets()
+        internal static bool LoadTargets(FileTarget[] provided = null)
         {
-            var targets = S.GET<StubForm>().lbTargets;
-            if (targets.Items.Count == 0)
+
+            FileTarget[] targets;
+            string requestedFileType = currentSession.selectedTargetType;
+
+            if (provided == null)
             {
-                MessageBox.Show("No targets scheduled for loading. Aborting loading.");
-                return false;
+                var lbTargets = S.GET<StubForm>().lbTargets;
+                if (lbTargets.Items.Count == 0)
+                {
+                    MessageBox.Show("No targets scheduled for loading. Aborting loading.");
+                    return false;
+                }
+
+                targets = lbTargets.Items.Cast<FileTarget>().ToArray();
+            }
+            else
+            {
+                targets = provided;
             }
 
-            if (currentSession.selectedTargetType == TargetType.SINGLE_FILE)
+            if (requestedFileType == TargetType.SINGLE_FILE)
             {
                 FileInterface.identity = FileInterfaceIdentity.SELF_DESCRIBE;
 
-                var target = (FileTarget)targets.Items[0];
-                string filename = targets.Items[0].ToString();
+                var target = targets[0];
+                string filename = targets[0].ToString();
 
                 target.BigEndian = FileWatch.currentSession.bigEndian;
 
@@ -208,12 +221,11 @@ namespace FileStub
                         break;
                 }
 
-                var fileTargets = targets.Items.Cast<FileTarget>().ToArray();
 
-                foreach (var target in fileTargets)
+                foreach (var target in targets)
                     target.BigEndian = FileWatch.currentSession.bigEndian;
 
-                var mfi = new MultipleFileInterface(fileTargets, FileWatch.currentSession.bigEndian, FileWatch.currentSession.useAutomaticBackups);
+                var mfi = new MultipleFileInterface(targets, FileWatch.currentSession.bigEndian, FileWatch.currentSession.useAutomaticBackups);
 
                 if (FileWatch.currentSession.useCacheAndMultithread)
                     mfi.getMemoryDump();
@@ -399,12 +411,12 @@ namespace FileStub
                 {   //Checking if the FileInterface/MultiFileInterface is split in sub FileInterfaces
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN:
                     case TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH:
+                    default:
                         foreach (var fi in (currentSession.fileInterface as MultipleFileInterface).FileInterfaces)
                             interfaces.Add(new MemoryDomainProxy(fi));
                         break;
                     case TargetType.SINGLE_FILE:
                     case TargetType.MULTIPLE_FILE_SINGLEDOMAIN:
-                    default:
                         interfaces.Add(new MemoryDomainProxy(currentSession.fileInterface));
                         break;
                 }

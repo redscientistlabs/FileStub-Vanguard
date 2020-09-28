@@ -1,4 +1,4 @@
-namespace FileStub.Templates
+namespace FileStub
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,11 @@ namespace FileStub.Templates
 
     interface IFileStubTemplate
     {
-        Form GetTemplateForm(string[] args);
-        FileTarget GetTargets();
+        Form GetTemplateForm(string templateName);
+        FileTarget[] GetTargets();
+        string[] TemplateNames { get; }
+
+        bool DragDrop(string[] fd);
+        void BrowseFiles();
     }
 }

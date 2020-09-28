@@ -17,7 +17,11 @@ namespace FileStub
 
     public partial class StubForm : Form
     {
+        public static Color ProgramColor = Color.Plum;
         int originalWidth;
+        Dictionary<string, IFileStubTemplate> templateDico = new Dictionary<string, IFileStubTemplate>();
+
+        IFileStubTemplate selectedTemplate = null;
         public StubForm()
         {
             InitializeComponent();
@@ -42,6 +46,29 @@ namespace FileStub
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN,
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH,
             });
+
+            var templates = GetAssemblyTemplates();
+            foreach (var template in templates)
+            {
+                foreach (var name in template.TemplateNames)
+                    templateDico[name] = template;
+
+                this.cbTargetType.Items.AddRange(template.TemplateNames);
+            }
+
+        }
+
+        private IFileStubTemplate[] GetAssemblyTemplates()
+        {
+            var type = typeof(IFileStubTemplate);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p));
+
+            return types
+                .Where(it => it != typeof(IFileStubTemplate))
+                .Select(it => (IFileStubTemplate)Activator.CreateInstance(it))
+                .ToArray();
         }
 
         public void ShrinkStubForm()
@@ -80,7 +107,7 @@ namespace FileStub
             lbTargetTypeDisplay.Visible = true;
             //---------------------------------------------------------------
 
-            Colors.SetRTCColor(Color.Plum, this);
+            Colors.SetRTCColor(ProgramColor, this);
 
             FileWatch.Start();
         }
@@ -173,7 +200,12 @@ namespace FileStub
 
         private void BtnBrowseTarget_Click(object sender, EventArgs e)
         {
-            FileWatch.InsertTargets();
+            if(selectedTemplate != null)
+            {
+                selectedTemplate.BrowseFiles();
+            }
+            else
+                FileWatch.InsertTargets();
         }
 
         private void BtnUnloadTarget_Click(object sender, EventArgs e)
@@ -187,6 +219,45 @@ namespace FileStub
         {
             FileWatch.currentSession.selectedTargetType = cbTargetType.SelectedItem.ToString();
             lbTargetTypeDisplay.Text = FileWatch.currentSession.selectedTargetType;
+            lbTargets.Items.Clear();
+
+            if(templateDico.TryGetValue(FileWatch.currentSession.selectedTargetType, out IFileStubTemplate template))
+            {
+                if(selectedTemplate != null)
+                {
+                    var st = (selectedTemplate as Form);
+                    if (st.Parent != null)
+                        st.Parent.Controls.Remove(st);
+                }
+
+                var tf = template.GetTemplateForm(FileWatch.currentSession.selectedTargetType);
+                tf.TopLevel = false;
+                Colors.SetRTCColor(ProgramColor, tf);
+                pnFileLoading.Controls.Add(tf);
+                tf.BringToFront();
+                tf.Show();
+
+                selectedTemplate = template;
+                btnSetBaseDir.Visible = false;
+
+                if (btnExtendPanel.Text != "Advanced Options")
+                    btnExtendPanel_Click(null, null);
+
+                btnExtendPanel.Visible = false;
+            }
+            else
+            {
+                if (selectedTemplate != null)
+                {
+                    var st = (selectedTemplate as Form);
+                    if(st.Parent != null)
+                        st.Parent.Controls.Remove(st);
+                }
+                selectedTemplate = null;
+                btnSetBaseDir.Visible = true;
+
+                btnExtendPanel.Visible = true;
+            }
         }
 
         private void BtnKillProcess_Click(object sender, EventArgs e)
@@ -284,7 +355,18 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void btnLoadTargets_Click(object sender, EventArgs e)
         {
-            if (!FileWatch.LoadTargets())
+            FileTarget[] overrideTargets = null;
+            if(selectedTemplate != null)
+            {
+                lbTargets.Items.Clear();
+                overrideTargets = selectedTemplate.GetTargets();
+                //if (targets != null)
+                //    lbTargets.Items.AddRange(targets);
+
+                //overrideTargets.
+            }
+
+            if (!FileWatch.LoadTargets(overrideTargets))
                 return;
 
             if (!VanguardCore.vanguardConnected)
@@ -307,9 +389,11 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
             nmHeaderPadding.Value = target.PaddingHeader;
             nmFooterPadding.Value = target.PaddingFooter;
+
+            lbBaseDir.Text = (string.IsNullOrWhiteSpace(target.BaseDir) ? "(unset)" : target.BaseDir);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnSaveTargetPadding_Click(object sender, EventArgs e)
         {
             if (lbTargets.SelectedIndex == -1)
                 return;
@@ -323,7 +407,9 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         private void lbDragAndDrop_DragDrop(object sender, DragEventArgs e)
         {
             lbTargets.Items.Clear();
-            lbTargets_DragDrop(sender, e);
+
+            if (!targetDragDrop(sender, e))
+                return;
 
             if (btnUnloadTarget.Visible)
                 BtnUnloadTarget_Click(sender, e);
@@ -333,35 +419,45 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void lbDragAndDrop_DragEnter(object sender, DragEventArgs e) => lbTargets_DragEnter(sender, e);
 
-        private void lbTargets_DragDrop(object sender, DragEventArgs e)
+        private void lbTargets_DragDrop(object sender, DragEventArgs e) => targetDragDrop(sender, e);
+        bool targetDragDrop(object sender, DragEventArgs e)
         {
             var formats = e.Data.GetFormats();
             e.Effect = DragDropEffects.Move;
 
             string[] fd = (string[])e.Data.GetData(DataFormats.FileDrop); //file drop
-
-            foreach (var file in fd)
+            if (selectedTemplate != null)
             {
-                if (Directory.Exists(file))
+                return selectedTemplate.DragDrop(fd);
+
+            }
+            else
+            {
+                foreach (var file in fd)
                 {
-                    var files = SelectMultipleForm.DirSearch(file);
+                    if (Directory.Exists(file))
+                    {
+                        var files = SelectMultipleForm.DirSearch(file);
 
-                    var targets = files.Select(it => Vault.RequestFileTarget(it));
+                        var targets = files.Select(it => Vault.RequestFileTarget(it));
 
-                    if (targets.Count() > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
-                        cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
+                        if (targets.Count() > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
+                            cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
 
-                    lbTargets.Items.AddRange(targets.ToArray());
+                        lbTargets.Items.AddRange(targets.ToArray());
+                    }
+                    else
+                    {
+                        var targets = fd.Select(it => Vault.RequestFileTarget(it));
+
+                        if (targets.Count() > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
+                            cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
+
+                        lbTargets.Items.AddRange(targets.ToArray());
+                    }
                 }
-                else
-                {
-                    var targets = fd.Select(it => Vault.RequestFileTarget(it));
 
-                    if (targets.Count() > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
-                        cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
-
-                    lbTargets.Items.AddRange(targets.ToArray());
-                }
+                return true;
             }
         }
 
@@ -386,7 +482,30 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void btnSetBaseDir_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Doesn't do anything right now");
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            DialogResult result = fbd.ShowDialog();
+
+            if(result == DialogResult.OK)
+            {
+                var baseDir = fbd.SelectedPath;
+
+                FileTarget invalid = lbTargets.Items.Cast<FileTarget>()
+                    .FirstOrDefault(it => string.IsNullOrWhiteSpace(it.BaseDir) && !it.FilePath.Contains(baseDir));
+
+                if(invalid != null)
+                {
+                    MessageBox.Show("Could not match all files with basedir");
+                    return;
+                }
+
+                foreach (FileTarget target in lbTargets.Items)
+                {
+                    target.SetBaseDir(baseDir);
+                }
+            }
+
+
+
         }
 
         private void btnRestoreDirty_Click(object sender, EventArgs e)

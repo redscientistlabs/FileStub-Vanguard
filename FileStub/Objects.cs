@@ -52,14 +52,4 @@ namespace FileStub
         public const string MULTIPLE_FILE_MULTIDOMAIN_FULLPATH = "Multiple files (Many domains + Full path)";
     }
 
-    public interface IFileStubTemplate
-    {
-        void Start();
-        Form GetAnchorForm();
-        void Dispose();
-        void SetStateId(string id);
-        bool LoadTemp(); //glitch harvester save box
-        bool SaveTemp(); //glitch harvester load box
-        bool Corrupt(string id);
-    }
 }
