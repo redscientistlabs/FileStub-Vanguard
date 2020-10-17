@@ -313,7 +313,7 @@ namespace FileStub
 
                     ProcessStartInfo startInfo = new ProcessStartInfo();
                     startInfo.FileName = "taskkill";
-                    startInfo.Arguments = $"/IM \"{otherProgramShortFilename}\"";
+                    startInfo.Arguments = $"/f /IM \"{otherProgramShortFilename}\"";
                     startInfo.RedirectStandardOutput = true;
                     startInfo.RedirectStandardError = true;
                     startInfo.UseShellExecute = false;
