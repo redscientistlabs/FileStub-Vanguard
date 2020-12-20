@@ -65,24 +65,31 @@ namespace FileStub
 
         private static void RefreshVaultInterface()
         {
-            List<FileTarget> dirtyTargets = Vault.GetDirtyTargets();
-            var sf = S.GET<StubForm>();
 
-            if (dirtyTargets.Count == 0)
+            SyncObjectSingleton.FormExecute(() =>
             {
-                sf.lbDirtyFiles.Text = "No dirty files";
-                sf.btnBakeAllDirty.Enabled = false;
-                sf.btnRestoreDirty.Enabled = false;
-                sf.btnClearVaultData.Enabled = true;
 
-            }
-            else
-            {
-                sf.lbDirtyFiles.Text = $"{dirtyTargets.Count} dirty files";
-                sf.btnBakeAllDirty.Enabled = true;
-                sf.btnRestoreDirty.Enabled = true;
-                sf.btnClearVaultData.Enabled = false;
-            }
+
+                List<FileTarget> dirtyTargets = Vault.GetDirtyTargets();
+                var sf = S.GET<StubForm>();
+
+                if (dirtyTargets.Count == 0)
+                {
+                    sf.lbDirtyFiles.Text = "No dirty files";
+                    sf.btnBakeAllDirty.Enabled = false;
+                    sf.btnRestoreDirty.Enabled = false;
+                    sf.btnClearVaultData.Enabled = true;
+
+                }
+                else
+                {
+                    sf.lbDirtyFiles.Text = $"{dirtyTargets.Count} dirty files";
+                    sf.btnBakeAllDirty.Enabled = true;
+                    sf.btnRestoreDirty.Enabled = true;
+                    sf.btnClearVaultData.Enabled = false;
+                }
+
+            });
         }
 
         private static void RemoveDomains()
@@ -337,11 +344,13 @@ namespace FileStub
                 }
         }
 
-        internal static bool CloseActiveTargets(bool updateDomains = true)
+        internal static bool CloseActiveTargets(bool updateDomains = true, bool restoreTarget = true)
         {
             if (FileWatch.currentSession.fileInterface != null)
             {
-                FileWatch.RestoreTarget();
+                if(restoreTarget)
+                    FileWatch.RestoreTarget();
+
                 FileWatch.currentSession.fileInterface?.CloseStream();
                 FileWatch.currentSession.fileInterface = null;
             }

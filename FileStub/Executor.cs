@@ -137,49 +137,49 @@ namespace FileStub
 
         public static void RefreshLabel()
         {
-            var gh = S.GET<StubForm>();
+            var stubForm = S.GET<StubForm>();
 
-            gh.lbArgs.Visible = false;
-            gh.tbArgs.Visible = false;
+            stubForm.lbArgs.Visible = false;
+            stubForm.tbArgs.Visible = false;
 
             if (FileWatch.currentSession.selectedExecution == ExecutionType.NO_EXECUTION)
-                gh.lbExecution.Text = "No execution set";
+                stubForm.lbExecution.Text = "No execution set";
             else if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_CORRUPTED_FILE)
-                gh.lbExecution.Text = "The target file will be executed";
+                stubForm.lbExecution.Text = "The target file will be executed";
             else if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_WITH)
             {
                 if (otherProgram == null)
                 {
-                    gh.lbExecution.Text = "No program selected for execution";
+                    stubForm.lbExecution.Text = "No program selected for execution";
                 }
                 else
                 {
-                    gh.lbExecution.Text = "Target will be executed using " + otherProgram.Substring(otherProgram.LastIndexOf('\\') + 1);
+                    stubForm.lbExecution.Text = "Target will be executed using " + otherProgram.Substring(otherProgram.LastIndexOf('\\') + 1);
                 }
             }
             else if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM)
             {
-                gh.lbArgs.Visible = true;
-                gh.tbArgs.Visible = true;
+                stubForm.lbArgs.Visible = true;
+                stubForm.tbArgs.Visible = true;
 
                 if (otherProgram == null)
                 {
-                    gh.lbExecution.Text = "No program selected for execution";
+                    stubForm.lbExecution.Text = "No program selected for execution";
                 }
                 else
                 {
-                    gh.lbExecution.Text = otherProgram.Substring(otherProgram.LastIndexOf('\\') + 1) + " will be executed after corruption";
+                    stubForm.lbExecution.Text = otherProgram.Substring(otherProgram.LastIndexOf('\\') + 1) + " will be executed after corruption";
                 }
             }
             else if (FileWatch.currentSession.selectedExecution == ExecutionType.SCRIPT)
             {
                 if (otherProgram == null)
                 {
-                    gh.lbExecution.Text = "No script loaded";
+                    stubForm.lbExecution.Text = "No script loaded";
                 }
                 else
                 {
-                    gh.lbExecution.Text = script;
+                    stubForm.lbExecution.Text = script;
                 }
             }
         }

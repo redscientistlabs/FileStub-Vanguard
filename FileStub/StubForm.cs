@@ -210,7 +210,7 @@ namespace FileStub
 
         private void BtnUnloadTarget_Click(object sender, EventArgs e)
         {
-            if (!FileWatch.CloseActiveTargets())
+            if (!FileWatch.CloseActiveTargets(restoreTarget:false))
                 return;
             DisableTargetInterface();
         }
@@ -331,7 +331,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
         private void StubForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            FileWatch.CloseActiveTargets(false);
+            FileWatch.CloseActiveTargets(false, false);
 
             int nbDirtyFiles = Vault.GetDirtyTargets().Count;
             if (nbDirtyFiles > 0)

@@ -720,7 +720,7 @@ namespace FileStub
             this.btnSaveTargetPadding.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnSaveTargetPadding.ForeColor = System.Drawing.Color.White;
             this.btnSaveTargetPadding.Location = new System.Drawing.Point(14, 77);
-            this.btnSaveTargetPadding.Name = "button2";
+            this.btnSaveTargetPadding.Name = "btnSaveTargetPadding";
             this.btnSaveTargetPadding.Size = new System.Drawing.Size(181, 32);
             this.btnSaveTargetPadding.TabIndex = 146;
             this.btnSaveTargetPadding.TabStop = false;
@@ -957,7 +957,7 @@ namespace FileStub
             this.MinimumSize = new System.Drawing.Size(516, 352);
             this.Name = "StubForm";
             this.Tag = "color:dark2";
-            this.Text = "File Stub ";
+            this.Text = "FileStub ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StubForm_FormClosing);
             this.Load += new System.EventHandler(this.StubForm_Load);
             this.pnTarget.ResumeLayout(false);

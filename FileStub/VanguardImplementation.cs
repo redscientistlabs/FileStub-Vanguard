@@ -113,7 +113,8 @@ namespace Vanguard
                     case RTCV.NetCore.Commands.Remote.EventEmuMainFormClose:
                         SyncObjectSingleton.FormExecute(() =>
                         {
-                            Environment.Exit(0);
+                            S.GET<StubForm>()?.Close();
+                            Environment.Exit(-1);
                         });
                         break;
                     case RTCV.NetCore.Commands.Remote.IsNormalAdvance:
@@ -121,7 +122,11 @@ namespace Vanguard
                         break;
 
                     case RTCV.NetCore.Commands.Remote.EventCloseEmulator:
-                        Environment.Exit(-1);
+                        SyncObjectSingleton.FormExecute(() =>
+                        {
+                            S.GET<StubForm>()?.Close();
+                            Environment.Exit(-1);
+                        });
                         break;
                 }
             }
