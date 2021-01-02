@@ -15,6 +15,10 @@ namespace FileStub
         string[] TemplateNames { get; }
 
         bool DragDrop(string[] fd);
+
+        bool DisplayBrowseTarget { get; }
+        bool DisplayDragAndDrop { get; }
         void BrowseFiles();
+
     }
 }

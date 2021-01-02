@@ -31,6 +31,9 @@ namespace FileStub.Templates
             UNITYSTUB_UNITYDLL,
         }; }
 
+        public bool DisplayDragAndDrop => true;
+        public bool DisplayBrowseTarget => true;
+
         public FileStubTemplateUnity()
         {
             InitializeComponent();
@@ -119,10 +122,8 @@ namespace FileStub.Templates
             currentSelectedTemplate = name;
 
             lbTemplateDescription.Text =
-$@"Unity Engine Template
-{name}
-
-Requires: Unity Game EXE file
+$@"== Corrupt Unity Engine ==
+Click on Browse Target and select the EXE of the game you want to corrupt or drag it into the box.
 ";
         }
 

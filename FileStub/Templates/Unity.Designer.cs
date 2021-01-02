@@ -42,12 +42,12 @@ namespace FileStub.Templates
             // 
             this.lbTemplateDescription.AllowDrop = true;
             this.lbTemplateDescription.BackColor = System.Drawing.Color.Transparent;
-            this.lbTemplateDescription.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lbTemplateDescription.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbTemplateDescription.ForeColor = System.Drawing.Color.White;
-            this.lbTemplateDescription.Location = new System.Drawing.Point(12, 12);
+            this.lbTemplateDescription.Location = new System.Drawing.Point(-2, 0);
             this.lbTemplateDescription.Name = "lbTemplateDescription";
             this.lbTemplateDescription.Padding = new System.Windows.Forms.Padding(16);
-            this.lbTemplateDescription.Size = new System.Drawing.Size(178, 90);
+            this.lbTemplateDescription.Size = new System.Drawing.Size(276, 114);
             this.lbTemplateDescription.TabIndex = 38;
             this.lbTemplateDescription.Tag = "";
             this.lbTemplateDescription.Text = "_";
@@ -59,7 +59,7 @@ namespace FileStub.Templates
             this.pnTarget.Controls.Add(this.lbExeTarget);
             this.pnTarget.Location = new System.Drawing.Point(14, 164);
             this.pnTarget.Name = "pnTarget";
-            this.pnTarget.Size = new System.Drawing.Size(203, 102);
+            this.pnTarget.Size = new System.Drawing.Size(274, 102);
             this.pnTarget.TabIndex = 39;
             this.pnTarget.Tag = "color:normal";
             // 
@@ -72,7 +72,7 @@ namespace FileStub.Templates
             this.lbExeTarget.Location = new System.Drawing.Point(12, 9);
             this.lbExeTarget.Name = "lbExeTarget";
             this.lbExeTarget.Padding = new System.Windows.Forms.Padding(8);
-            this.lbExeTarget.Size = new System.Drawing.Size(178, 82);
+            this.lbExeTarget.Size = new System.Drawing.Size(249, 82);
             this.lbExeTarget.TabIndex = 39;
             this.lbExeTarget.Tag = "";
             this.lbExeTarget.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -83,7 +83,7 @@ namespace FileStub.Templates
             this.panel1.Controls.Add(this.lbTemplateDescription);
             this.panel1.Location = new System.Drawing.Point(14, 17);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(203, 114);
+            this.panel1.Size = new System.Drawing.Size(274, 114);
             this.panel1.TabIndex = 40;
             this.panel1.Tag = "color:normal";
             // 

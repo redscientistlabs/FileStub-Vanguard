@@ -244,6 +244,10 @@ namespace FileStub
                     btnExtendPanel_Click(null, null);
 
                 btnExtendPanel.Visible = false;
+
+                lbDragAndDrop.Visible = template.DisplayDragAndDrop;
+                btnBrowseTarget.Visible = template.DisplayBrowseTarget;
+
             }
             else
             {
@@ -257,6 +261,9 @@ namespace FileStub
                 btnSetBaseDir.Visible = true;
 
                 btnExtendPanel.Visible = true;
+
+                lbDragAndDrop.Visible = true;
+                btnBrowseTarget.Visible = true;
             }
         }
 
@@ -353,7 +360,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             }
         }
 
-        private void btnLoadTargets_Click(object sender, EventArgs e)
+        public void btnLoadTargets_Click(object sender, EventArgs e)
         {
             FileTarget[] overrideTargets = null;
             if(selectedTemplate != null)
@@ -364,6 +371,11 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 //    lbTargets.Items.AddRange(targets);
 
                 //overrideTargets.
+            }
+
+            if(overrideTargets == null)
+            {
+                MessageBox.Show("Error loading target");
             }
 
             if (!FileWatch.LoadTargets(overrideTargets))

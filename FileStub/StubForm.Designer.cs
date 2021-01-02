@@ -175,7 +175,7 @@ namespace FileStub
             this.btnBrowseTarget.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBrowseTarget.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnBrowseTarget.ForeColor = System.Drawing.Color.White;
-            this.btnBrowseTarget.Location = new System.Drawing.Point(311, 130);
+            this.btnBrowseTarget.Location = new System.Drawing.Point(309, 15);
             this.btnBrowseTarget.Name = "btnBrowseTarget";
             this.btnBrowseTarget.Size = new System.Drawing.Size(116, 32);
             this.btnBrowseTarget.TabIndex = 35;
@@ -575,13 +575,13 @@ namespace FileStub
             // pnFileLoading
             // 
             this.pnFileLoading.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pnFileLoading.Controls.Add(this.btnBrowseTarget);
             this.pnFileLoading.Controls.Add(this.btnUnloadTarget);
             this.pnFileLoading.Controls.Add(this.btnClearTargets);
             this.pnFileLoading.Controls.Add(this.btnSetBaseDir);
             this.pnFileLoading.Controls.Add(this.btnLoadTargets);
             this.pnFileLoading.Controls.Add(this.lbTargets);
             this.pnFileLoading.Controls.Add(this.lbDragAndDrop);
-            this.pnFileLoading.Controls.Add(this.btnBrowseTarget);
             this.pnFileLoading.Location = new System.Drawing.Point(131, 181);
             this.pnFileLoading.Name = "pnFileLoading";
             this.pnFileLoading.Size = new System.Drawing.Size(440, 277);
@@ -612,7 +612,7 @@ namespace FileStub
             this.btnSetBaseDir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSetBaseDir.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnSetBaseDir.ForeColor = System.Drawing.Color.White;
-            this.btnSetBaseDir.Location = new System.Drawing.Point(311, 170);
+            this.btnSetBaseDir.Location = new System.Drawing.Point(311, 167);
             this.btnSetBaseDir.Name = "btnSetBaseDir";
             this.btnSetBaseDir.Size = new System.Drawing.Size(116, 32);
             this.btnSetBaseDir.TabIndex = 115;
@@ -675,7 +675,7 @@ namespace FileStub
             this.lbDragAndDrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbDragAndDrop.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lbDragAndDrop.ForeColor = System.Drawing.Color.White;
-            this.lbDragAndDrop.Location = new System.Drawing.Point(311, 16);
+            this.lbDragAndDrop.Location = new System.Drawing.Point(309, 59);
             this.lbDragAndDrop.Name = "lbDragAndDrop";
             this.lbDragAndDrop.Padding = new System.Windows.Forms.Padding(16);
             this.lbDragAndDrop.Size = new System.Drawing.Size(116, 96);
