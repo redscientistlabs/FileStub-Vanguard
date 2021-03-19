@@ -76,12 +76,26 @@
     <Compile Include="SelectMultipleForm.Designer.cs">
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Templates\ELFHelper.cs" />
     <Compile Include="Templates\IFileStubTemplate.cs" />
     <Compile Include="Templates\Cemu.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Templates\Cemu.Designer.cs">
       <DependentUpon>Cemu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\NSOHelper.cs" />
+    <Compile Include="Templates\SourceEngine.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Templates\SourceEngine.Designer.cs">
+      <DependentUpon>SourceEngine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Yuzu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Templates\Yuzu.Designer.cs">
+      <DependentUpon>Yuzu.cs</DependentUpon>
     </Compile>
     <Compile Include="Templates\Unity.cs">
       <SubType>Form</SubType>
@@ -112,6 +126,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Templates\Cemu.resx">
       <DependentUpon>Cemu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SourceEngine.resx">
+      <DependentUpon>SourceEngine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\Yuzu.resx">
+      <DependentUpon>Yuzu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Templates\Unity.resx">
       <DependentUpon>Unity.cs</DependentUpon>

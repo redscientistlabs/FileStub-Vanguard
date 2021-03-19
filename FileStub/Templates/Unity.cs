@@ -4,6 +4,7 @@ namespace FileStub.Templates
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
+    using System.Diagnostics;
     using System.Drawing;
     using System.IO;
     using System.Linq;
@@ -34,11 +35,11 @@ namespace FileStub.Templates
         public bool DisplayDragAndDrop => true;
         public bool DisplayBrowseTarget => true;
 
+
         public FileStubTemplateUnity()
         {
             InitializeComponent();
         }
-
         public FileTarget[] GetTargets()
         {
             string targetExe = lbExeTarget.Text;
@@ -108,6 +109,11 @@ namespace FileStub.Templates
                     break;
             }
 
+            //Prepare filestub for execution
+            var sf = S.GET<StubForm>();
+            FileWatch.currentSession.selectedExecution = ExecutionType.EXECUTE_OTHER_PROGRAM;
+            Executor.otherProgram = targetExe;
+            sf.tbArgs.Text = $"";
             return targets.ToArray();
         }
 
@@ -169,5 +175,11 @@ Click on Browse Target and select the EXE of the game you want to corrupt or dra
 
             lbExeTarget.Text = filename;
         }
+
+        public void GetSegments(FileInterface exeInterface)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -38,6 +38,7 @@ namespace FileStub.Templates
             this.lbTargetedGameId = new System.Windows.Forms.Label();
             this.cbSelectedGame = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.btnGetSegments = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -70,6 +71,7 @@ namespace FileStub.Templates
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(96)))));
+            this.panel2.Controls.Add(this.btnGetSegments);
             this.panel2.Controls.Add(this.lbTargetVersion);
             this.panel2.Controls.Add(this.tbExpectedVersion);
             this.panel2.Controls.Add(this.lbTargetedGameRpx);
@@ -151,6 +153,24 @@ namespace FileStub.Templates
             this.label5.TabIndex = 41;
             this.label5.Text = "Targeted Game";
             // 
+            // btnGetSegments
+            // 
+            this.btnGetSegments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetSegments.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnGetSegments.FlatAppearance.BorderSize = 0;
+            this.btnGetSegments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGetSegments.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnGetSegments.ForeColor = System.Drawing.Color.White;
+            this.btnGetSegments.Location = new System.Drawing.Point(127, 43);
+            this.btnGetSegments.Name = "btnGetSegments";
+            this.btnGetSegments.Size = new System.Drawing.Size(132, 32);
+            this.btnGetSegments.TabIndex = 191;
+            this.btnGetSegments.TabStop = false;
+            this.btnGetSegments.Tag = "color:dark1";
+            this.btnGetSegments.Text = "Get Segments";
+            this.btnGetSegments.UseVisualStyleBackColor = false;
+            this.btnGetSegments.Click += new System.EventHandler(this.btnGetSegments_Click);
+            // 
             // FileStubTemplateCemu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -184,5 +204,6 @@ namespace FileStub.Templates
         public System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lbTargetVersion;
         private System.Windows.Forms.TextBox tbExpectedVersion;
+        private System.Windows.Forms.Button btnGetSegments;
     }
 }

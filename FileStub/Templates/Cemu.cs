@@ -17,13 +17,14 @@ namespace FileStub.Templates
     using Newtonsoft.Json;
     using RTCV.Common;
     using RTCV.CorruptCore;
+    using RTCV.UI;
 
     public partial class FileStubTemplateCemu : Form, IFileStubTemplate
     {
         
         const string CEMUSTUB_RPX = "Cemu : Wii U RPX Executables";
 
-        public string expectedCemuVersion { get; set; } = "1.19.2c";//"1.22.3";
+        public string expectedCemuVersion { get; set; } = "1.22.6c";//"1.22.3";
         public string expectedCemuTitle => "Cemu " + expectedCemuVersion;
 
         public string cemuDir = Path.Combine(FileStub.FileWatch.currentDir, "CEMU");
@@ -55,6 +56,7 @@ namespace FileStub.Templates
         public bool DisplayDragAndDrop => false;
         public bool DisplayBrowseTarget => false;
 
+
         public FileStubTemplateCemu()
         {
             InitializeComponent();
@@ -77,7 +79,6 @@ namespace FileStub.Templates
         {
             expectedCemuVersion = tbExpectedVersion.Text;
         }
-
         public FileTarget[] GetTargets()
         {
             DontSelectGame = true;
@@ -110,16 +111,52 @@ namespace FileStub.Templates
             string baseless(string path) => path.Replace(exeFolder, "");
             var rpxTarget = Vault.RequestFileTarget(baseless(exeFileInfo.FullName), baseFolder.FullName);
             targets.Add(rpxTarget);
-
             //Prepare filestub for execution
             var sf = S.GET<StubForm>();
             FileWatch.currentSession.selectedExecution = ExecutionType.EXECUTE_OTHER_PROGRAM;
             Executor.otherProgram = currentSession.cemuExeFile.FullName;
             sf.tbArgs.Text = $"-g \"{currentSession.gameRpxPath}\"";
-
+            FileWatch.currentSession.bigEndian = true;
             return targets.ToArray();
         }
 
+        public void GetSegments(FileInterface exeInterface)
+        {
+            ELFHelper rpx = new ELFHelper(exeInterface);
+            string exePath = exeInterface.Filename;
+            var rpxInfo = new FileInfo(exePath);
+            int i = 0;
+            //List<FileInterface> segmentInterfaces = new List<FileInterface>();
+            //List<MemoryDomainProxy> memoryDomainProxies = new List<MemoryDomainProxy>();
+            while (i < rpx.sht_entries)
+            {
+                i++;
+                long[] range = new long[2];
+                range[0] =  rpx.ss_offsets[i] ;
+                range[1] = rpx.ss_offsets[i]+rpx.ss_sizes[i];
+                string vmdnametext = rpxInfo.Name + "|Section" + i;
+                if (range[0] >= range[1])
+                {
+                    return;
+                }
+
+                List<long[]> ranges = new List<long[]>();
+                ranges.Add(range);
+                VmdPrototype vmdPrototype = new VmdPrototype();
+                vmdPrototype.GenDomain = exeInterface.ToString();
+                vmdPrototype.BigEndian = exeInterface.BigEndian;
+                vmdPrototype.AddRanges = ranges;
+                vmdPrototype.WordSize = exeInterface.WordSize;
+                vmdPrototype.VmdName = vmdnametext;
+                vmdPrototype.PointerSpacer = 1;
+                if(range[1] < exeInterface.Size)
+                {
+                    RTCV.NetCore.LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.CorruptCore, RTCV.NetCore.Commands.Remote.DomainVMDAdd, (object)vmdPrototype, true);
+                }
+                S.GET<VmdPoolForm>().RefreshVMDs();
+                S.GET<MemoryDomainsForm>().RefreshDomains();
+            }
+        }
         public Form GetTemplateForm(string name)
         {
             this.SummonTemplate(name);
@@ -786,6 +823,13 @@ Load a game in Cemu and after it has loaded, click on Load targets into RTCV.
             S.GET<StubForm>().btnLoadTargets_Click(null, null);
 
         }
+
+        private void btnGetSegments_Click(object sender, EventArgs e)
+        {
+            foreach (var fi in (FileWatch.currentSession.fileInterface as MultipleFileInterface).FileInterfaces)
+                GetSegments(fi);
+        }
+
     }
 
     enum CemuState
@@ -816,7 +860,7 @@ Load a game in Cemu and after it has loaded, click on Load targets into RTCV.
         public string fileInterfaceTargetId = null;
         public string gameName = "Autodetect";
         public string updateRpxUncompressedToken = null;
-
+        public FileInterface rpxInterface = null;
         internal FileMemoryInterface fileInterface;
 
         public override string ToString()

@@ -21,7 +21,7 @@ namespace FileStub
         int originalWidth;
         Dictionary<string, IFileStubTemplate> templateDico = new Dictionary<string, IFileStubTemplate>();
 
-        IFileStubTemplate selectedTemplate = null;
+        public IFileStubTemplate selectedTemplate = null;
         public StubForm()
         {
             InitializeComponent();
@@ -247,7 +247,6 @@ namespace FileStub
 
                 lbDragAndDrop.Visible = template.DisplayDragAndDrop;
                 btnBrowseTarget.Visible = template.DisplayBrowseTarget;
-
             }
             else
             {
