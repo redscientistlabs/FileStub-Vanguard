@@ -76,6 +76,10 @@
     <Compile Include="SelectMultipleForm.Designer.cs">
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Templates\RPCS3.cs" />
+    <Compile Include="Templates\RPCS3.Designer.cs">
+      <DependentUpon>RPCS3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Templates\ELFHelper.cs" />
     <Compile Include="Templates\IFileStubTemplate.cs" />
     <Compile Include="Templates\Cemu.cs">
@@ -123,6 +127,9 @@
     </Compile>
     <EmbeddedResource Include="SelectMultipleForm.resx">
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\RPCS3.resx">
+      <DependentUpon>RPCS3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Templates\Cemu.resx">
       <DependentUpon>Cemu.cs</DependentUpon>
