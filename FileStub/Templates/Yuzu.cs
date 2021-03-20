@@ -82,7 +82,7 @@ namespace FileStub.Templates
 
             var allExecutables = allFiles.Where(it =>
                     it.Name.ToUpper().Contains("MAIN") && !it.Name.ToUpper().Contains("NPDM") && !it.Name.ToUpper().Contains("BAK") ||
-                    it.Name.ToUpper().Contains("SDK")
+                    it.Name.ToUpper().Contains("SDK") && !it.Name.ToUpper().Contains("BAK")
                     ).ToArray();
 
             var allMain = allExecutables.Where(it =>
@@ -187,7 +187,7 @@ namespace FileStub.Templates
             lbTemplateDescription.Text =
 $@"== Corrupt Switch Games ==
 Click on Select Yuzu and select the location of your version of Yuzu you wish to use, then...
-Click on Browse Target and select the main executable of the game you want to corrupt or drag it into the box.
+Load or drag and drop the main executable of the game you wish to corrupt.
 ";
         }
 
