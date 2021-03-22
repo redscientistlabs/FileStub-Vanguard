@@ -87,6 +87,7 @@ namespace FileStub.Templates
             this.cbSelectedGame.Size = new System.Drawing.Size(181, 21);
             this.cbSelectedGame.TabIndex = 140;
             this.cbSelectedGame.Tag = "color:normal";
+            this.cbSelectedGame.SelectedIndexChanged += new System.EventHandler(this.cbSelectedGame_SelectedIndexChanged);
             // 
             // lbGameName
             // 
@@ -187,7 +188,8 @@ namespace FileStub.Templates
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FileStubTemplateYuzu";
             this.Tag = "color:dark1";
-            this.Text = "Unity";
+            this.Text = "Yuzu";
+            this.Load += new System.EventHandler(this.FileStubTemplateYuzu_Load);
             this.pnTarget.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -203,7 +205,7 @@ namespace FileStub.Templates
         private System.Windows.Forms.Button btnGetSegments;
         private System.Windows.Forms.Button btnEditExec;
         private System.Windows.Forms.Button btnDecompress;
-        public System.Windows.Forms.Label lbGameName;
         public System.Windows.Forms.ComboBox cbSelectedGame;
+        public System.Windows.Forms.Label lbGameName;
     }
 }

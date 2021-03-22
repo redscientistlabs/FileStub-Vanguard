@@ -171,7 +171,7 @@ namespace FileStub.Templates
             else
             {
                 long headeroffset = GetSectionHeaderTableOffset(elf) + (0x40 * Convert.ToInt64(segment));
-                long stroffset = (long)BitConverter.ToUInt64(elf.PeekBytes(headeroffset, 4).Reverse().ToArray(), 0);
+                long stroffset = (long)BitConverter.ToUInt64(elf.PeekBytes(headeroffset, 8).Reverse().ToArray(), 0);
                 if (GetShstrOffset(elf) == 0) return " ";
                 return System.Text.Encoding.ASCII.GetString(elf.PeekBytes(GetShstrOffset(elf) + stroffset, 8));
             }

@@ -75,7 +75,8 @@ namespace FileStub.Templates
                     it.Name.ToUpper().Contains("PARTICLE") ||
                     it.Name.ToUpper().Contains("TERRAIN") ||
                     it.Name.ToUpper().Contains("VEHICLES") ||
-                    it.Name.ToUpper().Contains("UNITYENGINE.DLL")
+                    it.Name.ToUpper().Contains("UNITYENGINE.DLL") ||
+                    it.Name.ToUpper().Contains("UNITYPLAYER.DLL")
                     ).ToArray();
 
             var allUnityEngine = allDlls.Where(it =>
@@ -88,13 +89,13 @@ namespace FileStub.Templates
                 case UNITYSTUB_EXE_KNOWN_DLL:
                     {
                         targets.Add(exeTarget);
-                        targets.AddRange(allDlls.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
+                        targets.AddRange(allKnownDlls.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
                     }
                     break;
                 case UNITYSTUB_EXE_ALL_DLL:
                     {
                         targets.Add(exeTarget);
-                        targets.AddRange(allKnownDlls.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
+                        targets.AddRange(allDlls.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
                     }
                     break;
                 case UNITYSTUB_EXE:

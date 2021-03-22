@@ -38,6 +38,7 @@ namespace FileStub.Templates
             this.cbSelectedGame = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.lbGameInfo = new System.Windows.Forms.Label();
+            this.btnGetSegments = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -70,6 +71,7 @@ namespace FileStub.Templates
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(96)))));
+            this.panel2.Controls.Add(this.btnGetSegments);
             this.panel2.Controls.Add(this.lbGameInfo);
             this.panel2.Controls.Add(this.lbGameFolder);
             this.panel2.Controls.Add(this.lbTargetedGameRpx);
@@ -144,8 +146,26 @@ namespace FileStub.Templates
             this.lbGameInfo.ForeColor = System.Drawing.Color.White;
             this.lbGameInfo.Location = new System.Drawing.Point(2, 56);
             this.lbGameInfo.Name = "lbGameInfo";
-            this.lbGameInfo.Size = new System.Drawing.Size(269, 80);
+            this.lbGameInfo.Size = new System.Drawing.Size(131, 80);
             this.lbGameInfo.TabIndex = 9;
+            // 
+            // btnGetSegments
+            // 
+            this.btnGetSegments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetSegments.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnGetSegments.FlatAppearance.BorderSize = 0;
+            this.btnGetSegments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGetSegments.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnGetSegments.ForeColor = System.Drawing.Color.White;
+            this.btnGetSegments.Location = new System.Drawing.Point(139, 101);
+            this.btnGetSegments.Name = "btnGetSegments";
+            this.btnGetSegments.Size = new System.Drawing.Size(132, 32);
+            this.btnGetSegments.TabIndex = 193;
+            this.btnGetSegments.TabStop = false;
+            this.btnGetSegments.Tag = "color:dark1";
+            this.btnGetSegments.Text = "Get Segments";
+            this.btnGetSegments.UseVisualStyleBackColor = false;
+            this.btnGetSegments.Click += new System.EventHandler(this.btnGetSegments_Click_1);
             // 
             // FileStubTemplateRPCS3
             // 
@@ -179,5 +199,6 @@ namespace FileStub.Templates
         public System.Windows.Forms.Label label5;
         public System.Windows.Forms.Label lbGameFolder;
         public System.Windows.Forms.Label lbGameInfo;
+        private System.Windows.Forms.Button btnGetSegments;
     }
 }

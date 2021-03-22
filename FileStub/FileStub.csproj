@@ -76,6 +76,7 @@
     <Compile Include="SelectMultipleForm.Designer.cs">
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Templates\XEXHelper.cs" />
     <Compile Include="Templates\RPCS3.cs" />
     <Compile Include="Templates\RPCS3.Designer.cs">
       <DependentUpon>RPCS3.cs</DependentUpon>

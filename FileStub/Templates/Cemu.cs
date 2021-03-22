@@ -21,7 +21,7 @@ namespace FileStub.Templates
 
     public partial class FileStubTemplateCemu : Form, IFileStubTemplate
     {
-        
+
         const string CEMUSTUB_RPX = "Cemu : Wii U RPX Executables";
 
         public string expectedCemuVersion { get; set; } = "1.22.6c";//"1.22.3";
@@ -49,9 +49,12 @@ namespace FileStub.Templates
         public bool DontSelectGame = false;
 
         string currentSelectedTemplate = null;
-        public string[] TemplateNames { get => new string[] {
+        public string[] TemplateNames
+        {
+            get => new string[] {
             CEMUSTUB_RPX
-        }; }
+        };
+        }
 
         public bool DisplayDragAndDrop => false;
         public bool DisplayBrowseTarget => false;
@@ -132,8 +135,8 @@ namespace FileStub.Templates
             {
                 i++;
                 long[] range = new long[2];
-                range[0] =  rpx.ss_offsets[i] ;
-                range[1] = rpx.ss_offsets[i]+rpx.ss_sizes[i];
+                range[0] = rpx.ss_offsets[i];
+                range[1] = rpx.ss_offsets[i] + rpx.ss_sizes[i];
                 string vmdnametext = rpxInfo.Name + "|Section" + i;
                 if (range[0] >= range[1])
                 {
@@ -149,12 +152,11 @@ namespace FileStub.Templates
                 vmdPrototype.WordSize = exeInterface.WordSize;
                 vmdPrototype.VmdName = vmdnametext;
                 vmdPrototype.PointerSpacer = 1;
-                if(range[1] < exeInterface.Size)
+                if (range[1] <= exeInterface.Size)
                 {
-                    RTCV.NetCore.LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.CorruptCore, RTCV.NetCore.Commands.Remote.DomainVMDAdd, (object)vmdPrototype, true);
+                    RTCV.NetCore.LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.UI, RTCV.NetCore.Commands.Remote.DomainVMDAdd, (object)vmdPrototype, true);
+                    RTCV.NetCore.LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.UI, RTCV.NetCore.Commands.Remote.EventDomainsUpdated);
                 }
-                S.GET<VmdPoolForm>().RefreshVMDs();
-                S.GET<MemoryDomainsForm>().RefreshDomains();
             }
         }
         public Form GetTemplateForm(string name)
@@ -241,7 +243,7 @@ Load a game in Cemu and after it has loaded, click on Load targets into RTCV.
             {
                 state = CemuState.RUNNING;
             }
-            else if(
+            else if (
                 state != CemuState.UNFOUND &&
                 state != CemuState.GAMELOADED &&
                 state != CemuState.READY &&
@@ -710,7 +712,7 @@ Load a game in Cemu and after it has loaded, click on Load targets into RTCV.
             string rpxFullPath = currentSession.gameRpxFileInfo.FullName;
             if (!File.Exists(rpxFullPath))
             {
-                string message = "Cemu Stub couldn't find the Rpx file for this game. Would you like to remove this entry?";
+                string message = "File Stub couldn't find the Rpx file for this game. Would you like to remove this entry?";
                 var result = MessageBox.Show(message, "Error finding game", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
 
                 if (result == DialogResult.Yes)

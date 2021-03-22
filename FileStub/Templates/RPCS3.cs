@@ -17,6 +17,7 @@ namespace FileStub.Templates
     using Newtonsoft.Json;
     using RTCV.Common;
     using RTCV.CorruptCore;
+    using RTCV.NetCore;
     using RTCV.UI;
 
     public partial class FileStubTemplateRPCS3 : Form, IFileStubTemplate
@@ -143,15 +144,22 @@ namespace FileStub.Templates
             }
 
             knownGamesDico[currentSession.gameName] = currentSession;
-            if(!cbSelectedGame.Items.Contains(currentSession.gameName))
+            if (!cbSelectedGame.Items.Contains(currentSession.gameName))
                 cbSelectedGame.Items.Add(currentSession.gameName);
             cbSelectedGame.SelectedIndex = cbSelectedGame.Items.Count - 1;
             currentSession._game = gameInfo;
             lbTargetedGameRpx.Visible = false;
             string savedata = Path.Combine(rpcs3EmuDir, "dev_hdd0", "home", "00000001", "savedata");
-            if (Directory.GetDirectories(savedata, currentSession.gameSerial).Length != 0)
+            if (Directory.GetDirectories(savedata).Length != 0)
             {
-                currentSession.possibleGameSaveFolders = new DirectoryInfo(savedata).GetDirectories(currentSession.gameSerial);
+                //currentSession.possibleGameSaveFolders = new DirectoryInfo[1024];
+                foreach (string savedatafolder in Directory.GetDirectories(savedata))
+                {
+                    if (savedatafolder.Contains(gameInfo.SERIAL))
+                    {
+                        currentSession.possibleGameSaveFolders.Add(new DirectoryInfo(savedatafolder));
+                    }
+                }
                 currentSession.firstgameSaveFolder = currentSession.possibleGameSaveFolders.FirstOrDefault();
                 currentSession.firstgameSaveFolderPath = currentSession.firstgameSaveFolder.FullName;
             }
@@ -166,11 +174,14 @@ namespace FileStub.Templates
                 cgi.gameUSRDIRPath = currentSession.gameUSRDIRPath;
                 cgi.gameFolderPath = currentSession.gameFolderPath;
                 cgi._game = currentSession._game;
-                cgi.firstgameSaveFolder = currentSession.firstgameSaveFolder;
-                cgi.firstgameSaveFolderPath = currentSession.firstgameSaveFolderPath;
-                cgi.possibleGameSaveFolders = currentSession.possibleGameSaveFolders;
+                if (!string.IsNullOrEmpty(currentSession.firstgameSaveFolderPath))
+                {
+                    cgi.firstgameSaveFolder = currentSession.firstgameSaveFolder;
+                    cgi.firstgameSaveFolderPath = currentSession.firstgameSaveFolderPath;
+                    cgi.possibleGameSaveFolders = currentSession.possibleGameSaveFolders;
+                }
             }
-            //SaveKnownGames(); //saving and loading jsons causes issues for some reason with this template right now so for now I'm disabling knowngames.json for this template
+            //SaveKnownGames();
             //Prepare filestub for execution
             var sf = S.GET<StubForm>();
             FileWatch.currentSession.selectedExecution = ExecutionType.EXECUTE_OTHER_PROGRAM;
@@ -189,7 +200,66 @@ TYPE: {gameInfo.TYPE}
 
         public void GetSegments(FileInterface exeInterface)
         {
+            ELFHelper elf = new ELFHelper(exeInterface);
+            string exePath = exeInterface.Filename;
+            var elfInfo = new FileInfo(exePath);
+            int i = 0;
+            //List<FileInterface> segmentInterfaces = new List<FileInterface>();
+            //List<MemoryDomainProxy> memoryDomainProxies = new List<MemoryDomainProxy>();
+            while (i < elf.pht_entries)
+            {
+                i++;
+                long[] range = new long[2];
+                range[0] = elf.ps_offsets[i];
+                range[1] = elf.ps_offsets[i] + elf.ps_sizes[i];
+                string vmdnametext = elfInfo.Name + "|Program" + i;
+                if (range[0] >= range[1])
+                {
+                    return;
+                }
 
+                List<long[]> ranges = new List<long[]>();
+                ranges.Add(range);
+                VmdPrototype vmdPrototype = new VmdPrototype();
+                vmdPrototype.GenDomain = exeInterface.ToString();
+                vmdPrototype.BigEndian = exeInterface.BigEndian;
+                vmdPrototype.AddRanges = ranges;
+                vmdPrototype.WordSize = exeInterface.WordSize;
+                vmdPrototype.VmdName = vmdnametext;
+                vmdPrototype.PointerSpacer = 1;
+                if (range[1] <= exeInterface.Size)
+                {
+                    RTCV.NetCore.LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.UI, RTCV.NetCore.Commands.Remote.DomainVMDAdd, (object)vmdPrototype, true);
+                    RTCV.NetCore.LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.UI, RTCV.NetCore.Commands.Remote.EventDomainsUpdated);
+                }
+            }
+            while (i < elf.sht_entries)
+            {
+                i++;
+                long[] range = new long[2];
+                range[0] = elf.ss_offsets[i];
+                range[1] = elf.ss_offsets[i] + elf.ss_sizes[i];
+                string vmdnametext = elfInfo.Name + "|Section" + i;
+                if (range[0] >= range[1])
+                {
+                    return;
+                }
+
+                List<long[]> ranges = new List<long[]>();
+                ranges.Add(range);
+                VmdPrototype vmdPrototype = new VmdPrototype();
+                vmdPrototype.GenDomain = exeInterface.ToString();
+                vmdPrototype.BigEndian = exeInterface.BigEndian;
+                vmdPrototype.AddRanges = ranges;
+                vmdPrototype.WordSize = exeInterface.WordSize;
+                vmdPrototype.VmdName = vmdnametext;
+                vmdPrototype.PointerSpacer = 1;
+                if (range[1] <= exeInterface.Size)
+                {
+                    RTCV.NetCore.LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.UI, RTCV.NetCore.Commands.Remote.DomainVMDAdd, (object)vmdPrototype, true);
+                    RTCV.NetCore.LocalNetCoreRouter.Route(RTCV.NetCore.Endpoints.UI, RTCV.NetCore.Commands.Remote.EventDomainsUpdated);
+                }
+            }
         }
         public Form GetTemplateForm(string name)
         {
@@ -219,15 +289,11 @@ For some reason, at the moment this template won't work unless FileStub is alrea
             openread.Close();
             if (!System.Text.Encoding.ASCII.GetString(magicnumber).Contains("SCE"))
                 return true; //assume the file's already decrypted
-            if(!File.Exists(elfpath +".bak"))
+            if (!File.Exists(elfpath + ".bak"))
                 File.Copy(elfpath, elfpath + ".bak");
             rpcs3Process.StartInfo.Arguments = $"--decrypt \"{elfpath}\"";
             rpcs3Process.Start();
-
-            while (_state == RPCS3State.RUNNING)
-            {
-                UpdateRpcs3ProcessInfo();
-            }
+            rpcs3Process.WaitForExit();
             openread = File.OpenRead(elfpath);
             openread.Read(magicnumber, 0, 4);
             openread.Close();
@@ -287,7 +353,7 @@ For some reason, at the moment this template won't work unless FileStub is alrea
             if (Process.GetProcessesByName("rpcs3").Length != 0)
             {
                 _state = RPCS3State.RUNNING;
-                if(!Process.GetProcessesByName("rpcs3").FirstOrDefault().Responding)
+                if (!Process.GetProcessesByName("rpcs3").FirstOrDefault().Responding)
                 {
                     Process.GetProcessesByName("rpcs3").FirstOrDefault().Kill();
                     _state = RPCS3State.OFF;
@@ -321,11 +387,7 @@ For some reason, at the moment this template won't work unless FileStub is alrea
                 UpdateRpcs3ProcessInfo();
             }
             rpcs3Process.Start();
-            UpdateRpcs3ProcessInfo();
-            while (_state == RPCS3State.RUNNING)
-            {
-                UpdateRpcs3ProcessInfo();
-            }
+            rpcs3Process.WaitForExit();
             gameInfo = new GameInfo(currentSession.gameinfopath);
             currentSession.gameUSRDIRPath = gameInfo.USRDIRPATH;
             currentSession.ebootFilePath = gameInfo.EBOOTPATH;
@@ -337,7 +399,7 @@ For some reason, at the moment this template won't work unless FileStub is alrea
         public bool LoadKnownGames()
         {
             JsonSerializer serializer = new JsonSerializer();
-            string path = Path.Combine(rpcs3SpecDir, "PARAMS", "knowngames.json");
+            string path = Path.Combine(FileStub.FileWatch.currentDir, "RPCS3", "PARAMS", "knowngames.json");
             if (!File.Exists(path))
             {
                 knownGamesDico = new Dictionary<string, RPCS3StubSession>();
@@ -389,7 +451,6 @@ For some reason, at the moment this template won't work unless FileStub is alrea
             if (selected != null && selected != "Autodetect")
                 currentSession = knownGamesDico[selected];
 
-            var rpcs3FullPath = currentSession.rpcs3ExeFile;
             if (!File.Exists(rpcs3ExePath))
             {
                 //RPCS3 could not be found.
@@ -450,7 +511,7 @@ For some reason, at the moment this template won't work unless FileStub is alrea
                     lbGameFolder.Text = "";
                     return;
                 }
-                
+
                 folderpath = folderBrowserDialog.SelectedPath;
             }
             else
@@ -473,10 +534,7 @@ For some reason, at the moment this template won't work unless FileStub is alrea
             rpcs3Process.StartInfo.Arguments = $"--gameinfo \"{currentSession.gameFolderPath}\"";
             rpcs3Process.Start();
             UpdateRpcs3ProcessInfo();
-            while (_state == RPCS3State.RUNNING)
-            {
-                UpdateRpcs3ProcessInfo();
-            }
+            rpcs3Process.WaitForExit();
             gameInfo = new GameInfo(currentSession.gameinfopath);
             currentSession.gameUSRDIRPath = gameInfo.USRDIRPATH;
             currentSession.ebootFilePath = gameInfo.EBOOTPATH;
@@ -507,12 +565,12 @@ For some reason, at the moment this template won't work unless FileStub is alrea
 
         }
 
-        private void btnGetSegments_Click(object sender, EventArgs e)
+
+        private void btnGetSegments_Click_1(object sender, EventArgs e)
         {
-
+            foreach (var fi in (FileWatch.currentSession.fileInterface as MultipleFileInterface).FileInterfaces)
+                GetSegments(fi);
         }
-
-
     }
 
     enum RPCS3State
@@ -526,11 +584,8 @@ For some reason, at the moment this template won't work unless FileStub is alrea
 
     public class RPCS3StubSession
     {
-        public FileInfo gameEbootFileInfo = null;
-        public FileInfo rpcs3ExeFile = null;
-        public FileInfo[] updateCodeFiles = null;
         public DirectoryInfo firstgameSaveFolder = null;
-        public DirectoryInfo[] possibleGameSaveFolders = null;
+        public List<DirectoryInfo> possibleGameSaveFolders = new List<DirectoryInfo>();
         public string firstgameSaveFolderPath = null;
         public string ebootFilePath = null;
         public string gameFolderPath = null;
@@ -538,9 +593,7 @@ For some reason, at the moment this template won't work unless FileStub is alrea
         public string gameSerial = null;
         public string gameinfopath = null;
         public string gameName = "Autodetect";
-        public string ebootUncompressedToken = null;
         public GameInfo _game = null;
-        public FileInterface ebootInterface = null;
         internal FileMemoryInterface fileInterface;
 
         public override string ToString()
@@ -582,7 +635,8 @@ For some reason, at the moment this template won't work unless FileStub is alrea
             if (TYPE != "Disk Game")
             {
                 USRDIRPATH = PATH + "/USRDIR";
-            }else
+            }
+            else
             {
                 USRDIRPATH = lines[5].Replace("USRDIRPATH$$", "") + "/USRDIR";
             }
@@ -591,7 +645,8 @@ For some reason, at the moment this template won't work unless FileStub is alrea
             if (TYPE != "Disk Game")
             {
                 EBOOTPATH = USRDIRPATH + "/EBOOT.BIN";
-            }else
+            }
+            else
             {
                 EBOOTPATH = lines[6].Replace("EBOOTPATH$$", "");
             }
