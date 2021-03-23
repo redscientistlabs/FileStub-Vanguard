@@ -44,9 +44,14 @@ namespace FileStub.Templates
             {
                 pht_offset = GetProgramHeaderTableOffset(elfInterface);
                 pht_entries = GetProgramHeaderEntryNum(elfInterface);
+                ps_offsets = new long[pht_entries];
+                ps_sizes = new long[pht_entries];
             }
             sht_offset = GetSectionHeaderTableOffset(elfInterface);
             sht_entries = GetSectionHeaderEntryNum(elfInterface);
+            ss_names = new string[sht_entries];
+            ss_offsets = new long[sht_entries];
+            ss_sizes = new long[sht_entries];
             if(!IsRPX)
             {
                 int ph_iterator = 0;

@@ -76,7 +76,6 @@
     <Compile Include="SelectMultipleForm.Designer.cs">
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Templates\XEXHelper.cs" />
     <Compile Include="Templates\RPCS3.cs" />
     <Compile Include="Templates\RPCS3.Designer.cs">
       <DependentUpon>RPCS3.cs</DependentUpon>
@@ -95,6 +94,12 @@
     </Compile>
     <Compile Include="Templates\SourceEngine.Designer.cs">
       <DependentUpon>SourceEngine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Xenia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Templates\Xenia.Designer.cs">
+      <DependentUpon>Xenia.cs</DependentUpon>
     </Compile>
     <Compile Include="Templates\Yuzu.cs">
       <SubType>Form</SubType>
@@ -137,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Templates\SourceEngine.resx">
       <DependentUpon>SourceEngine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\Xenia.resx">
+      <DependentUpon>Xenia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Templates\Yuzu.resx">
       <DependentUpon>Yuzu.cs</DependentUpon>
