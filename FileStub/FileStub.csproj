@@ -77,12 +77,6 @@
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Templates\IFileStubTemplate.cs" />
-    <Compile Include="Templates\Cemu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Templates\Cemu.Designer.cs">
-      <DependentUpon>Cemu.cs</DependentUpon>
-    </Compile>
     <Compile Include="Templates\Unity.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,9 +103,6 @@
     </Compile>
     <EmbeddedResource Include="SelectMultipleForm.resx">
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Templates\Cemu.resx">
-      <DependentUpon>Cemu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Templates\Unity.resx">
       <DependentUpon>Unity.cs</DependentUpon>
