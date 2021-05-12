@@ -37,7 +37,7 @@ namespace FileStub.Templates
         }
         long GetCodeSize(FileInterface NSO)
         {
-            return BitConverter.ToInt32(NSO.PeekBytes(0x1C, 4), 0);
+            return BitConverter.ToInt32(NSO.PeekBytes(0x18, 4), 0);
         }
         long GetRODataOffset(FileInterface NSO)
         {
@@ -45,7 +45,7 @@ namespace FileStub.Templates
         }
         long GetRODataSize(FileInterface NSO)
         {
-            return BitConverter.ToInt32(NSO.PeekBytes(0x2C, 4), 0);
+            return BitConverter.ToInt32(NSO.PeekBytes(0x28, 4), 0);
         }
         long GetRWDataOffset(FileInterface NSO)
         {
@@ -53,7 +53,7 @@ namespace FileStub.Templates
         }
         long GetRWDataSize(FileInterface NSO)
         {
-            return BitConverter.ToInt32(NSO.PeekBytes(0x3C, 4), 0);
+            return BitConverter.ToInt32(NSO.PeekBytes(0x38, 4), 0);
         }
     }
 }

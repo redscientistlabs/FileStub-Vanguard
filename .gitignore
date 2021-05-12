@@ -3,3 +3,5 @@ FileStub/bin/*
 FileStub/obj/*
 packages/*
 .vscode
+/FileStub/Templates/Yuzu/bin/Debug
+/FileStub/Templates/Yuzu/obj

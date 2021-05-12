@@ -13,6 +13,21 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -76,43 +91,9 @@
     <Compile Include="SelectMultipleForm.Designer.cs">
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Templates\RPCS3.cs" />
-    <Compile Include="Templates\RPCS3.Designer.cs">
-      <DependentUpon>RPCS3.cs</DependentUpon>
-    </Compile>
     <Compile Include="Templates\ELFHelper.cs" />
     <Compile Include="Templates\IFileStubTemplate.cs" />
-    <Compile Include="Templates\Cemu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Templates\Cemu.Designer.cs">
-      <DependentUpon>Cemu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\NSOHelper.cs" />
-    <Compile Include="Templates\SourceEngine.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Templates\SourceEngine.Designer.cs">
-      <DependentUpon>SourceEngine.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\Xenia.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Templates\Xenia.Designer.cs">
-      <DependentUpon>Xenia.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\Yuzu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Templates\Yuzu.Designer.cs">
-      <DependentUpon>Yuzu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\Unity.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Templates\Unity.Designer.cs">
-      <DependentUpon>Unity.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Templates\TemplatePluginHost.cs" />
     <Compile Include="VanguardCore.cs" />
     <Compile Include="VanguardImplementation.cs" />
     <EmbeddedResource Include="StubForm.resx">
@@ -133,24 +114,6 @@
     </Compile>
     <EmbeddedResource Include="SelectMultipleForm.resx">
       <DependentUpon>SelectMultipleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Templates\RPCS3.resx">
-      <DependentUpon>RPCS3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Templates\Cemu.resx">
-      <DependentUpon>Cemu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Templates\SourceEngine.resx">
-      <DependentUpon>SourceEngine.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Templates\Xenia.resx">
-      <DependentUpon>Xenia.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Templates\Yuzu.resx">
-      <DependentUpon>Yuzu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Templates\Unity.resx">
-      <DependentUpon>Unity.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -197,6 +160,18 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

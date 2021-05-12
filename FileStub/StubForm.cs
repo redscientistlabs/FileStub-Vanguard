@@ -17,6 +17,7 @@ namespace FileStub
 
     public partial class StubForm : Form
     {
+        Templates.PluginHost.Host host = new Templates.PluginHost.Host();
         public static Color ProgramColor = Color.Plum;
         int originalWidth;
         Dictionary<string, IFileStubTemplate> templateDico = new Dictionary<string, IFileStubTemplate>();
@@ -46,6 +47,8 @@ namespace FileStub
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN,
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH,
             });
+            string[] templatepaths = new[] { Path.Combine(Directory.GetCurrentDirectory(), "TEMPLATES") };
+            host.Start(templatepaths);
 
             var templates = GetAssemblyTemplates();
             foreach (var template in templates)
@@ -55,7 +58,6 @@ namespace FileStub
 
                 this.cbTargetType.Items.AddRange(template.TemplateNames);
             }
-
         }
 
         private IFileStubTemplate[] GetAssemblyTemplates()

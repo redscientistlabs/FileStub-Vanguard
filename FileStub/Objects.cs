@@ -18,15 +18,15 @@ namespace FileStub
     public class FileStubSession
     {
         internal string targetShortName = "No target";
-        internal string selectedExecution = null;
+        /*internal*/public string selectedExecution = null;
         internal bool writeCopyMode = false;
         internal string targetFullName = "No target";
-        internal FileMemoryInterface fileInterface;
+        /*internal*/public FileMemoryInterface fileInterface;
         internal string selectedTargetType = TargetType.SINGLE_FILE;
         internal bool autoUncorrupt = true;
         internal bool TerminateBeforeExecution = true;
         internal bool useAutomaticBackups = true;
-        internal bool bigEndian = false;
+        /*internal*/public bool bigEndian = false;
         internal bool useCacheAndMultithread = true;
 
         public override string ToString()
