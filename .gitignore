@@ -7,3 +7,5 @@ packages/*
 /FileStub/Templates/Yuzu/obj
 /FileStub/Templates/SourceEngine/bin
 /FileStub/Templates/SourceEngine/obj
+/FileStub/Templates/Unity/bin
+/FileStub/Templates/Unity/obj
