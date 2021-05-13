@@ -15,7 +15,7 @@ using RTCV.CorruptCore;
 //a helper class for targeting elf files
 namespace FileStub.Templates
 {
-    class ELFHelper
+    public class ELFHelper
     {
         public string pathtoelf;
         public FileTarget elfTarget;
