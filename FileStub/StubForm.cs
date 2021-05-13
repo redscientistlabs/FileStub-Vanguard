@@ -47,7 +47,7 @@ namespace FileStub
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN,
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH,
             });
-            string[] templatepaths = new[] { Path.Combine(Directory.GetCurrentDirectory(), "TEMPLATES") };
+            string[] templatepaths = new[] { Path.Combine(Directory.GetCurrentDirectory(), "TEMPLATES"), Directory.GetCurrentDirectory() };
             host.Start(templatepaths);
 
             var templates = GetAssemblyTemplates();
