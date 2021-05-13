@@ -23,6 +23,9 @@ namespace FileStub.Templates
         //const string SOURCESTUB_EXE_ALL_DLL = "Source Engine : EXE and all DLLs"; //targeting all dlls for a source engine game is a bad idea
         const string SOURCESTUB_EXE = "Source Engine : Engine EXE";
         const string SOURCESTUB_SOURCEDLL = "Source Engine : engine.dll";
+        const string SOURCESTUB_BSPS = "Source Engine : BSPs";
+        const string SOURCESTUB_VPKS = "Source Engine : VPKs";
+        const string SOURCESTUB_ALLOFTHEABOVE = "Source Engine : EXE, Known DLLs, BSPs, and VPKs";
         string exePath = null;
         string gameFolerName = null;
         string currentSelectedTemplate = null;
@@ -31,6 +34,9 @@ namespace FileStub.Templates
             //SOURCESTUB_EXE_ALL_DLL,
             SOURCESTUB_EXE,
             SOURCESTUB_SOURCEDLL,
+            SOURCESTUB_BSPS,
+            SOURCESTUB_VPKS,
+            SOURCESTUB_ALLOFTHEABOVE
         }; }
 
         public bool DisplayDragAndDrop => true;
@@ -75,12 +81,16 @@ namespace FileStub.Templates
             var enginebinfolder = new DirectoryInfo(enginebinfoldername);
             var gamebinfoldername = Path.Combine(GameFolder, "bin");
             var gamebinfolder = new DirectoryInfo(gamebinfoldername);
+            var gamemapsfoldername = Path.Combine(GameFolder, "maps");
+            var gamemapsfolder = new DirectoryInfo(gamemapsfoldername);
 
             //if (cbParentExeDir.Checked)
             //    baseFolder = baseFolder.Parent;
 
             List<FileInfo> allengineFiles = SelectMultipleForm.DirSearch(enginebinfolder);
             List<FileInfo> allgamebinFiles = SelectMultipleForm.DirSearch(gamebinfolder);
+            List<FileInfo> allgamemaps = SelectMultipleForm.DirSearch(gamemapsfolder);
+            List<FileInfo> allgamerootfiles = SelectMultipleForm.DirSearch(gameDirectoryInfo);
 
             string baseless(string path) => path.Replace(exeFolder, "");
 
@@ -104,7 +114,12 @@ namespace FileStub.Templates
             var allKnownGameDlls = allGameDlls.Where(it =>
                     it.Name.ToUpper().Contains("CLIENT.DLL")
                     ).ToArray();
-
+            var allBSPs = allgamemaps.Where(it =>
+                    it.Name.ToUpper().Contains(".BSP")
+                    ).ToArray();
+            var allVPKs = allgamerootfiles.Where(it =>
+                    it.Name.ToUpper().Contains(".VPK")
+                    ).ToArray();
 
             switch (currentSelectedTemplate)
             {
@@ -125,13 +140,32 @@ namespace FileStub.Templates
                         targets.AddRange(allSourceEngine.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
                     }
                     break;
+                case SOURCESTUB_BSPS:
+                    {
+                        targets.AddRange(allBSPs.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
+                    }
+                    break;
+                case SOURCESTUB_VPKS:
+                    {
+                        targets.AddRange(allVPKs.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
+                    }
+                    break;
+                case SOURCESTUB_ALLOFTHEABOVE:
+                    {
+                        targets.Add(exeTarget);
+                        targets.AddRange(allKnownEngineDlls.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
+                        targets.AddRange(allKnownGameDlls.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
+                        targets.AddRange(allBSPs.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
+                        targets.AddRange(allVPKs.Select(it => Vault.RequestFileTarget(baseless(it.FullName), baseFolder.FullName)));
+                    }
+                    break;
             }
 
 
             var sf = S.GET<StubForm>();
             FileWatch.currentSession.selectedExecution = ExecutionType.EXECUTE_OTHER_PROGRAM;
             Executor.otherProgram = targetExe;
-            sf.tbArgs.Text = $"-game {gameFolerName} -insecure";
+            sf.tbArgs.Text = $"-game {gameFolerName} -insecure {commandLineBox.Text}";
             return targets.ToArray();
         }
 
@@ -148,6 +182,7 @@ namespace FileStub.Templates
             lbTemplateDescription.Text =
 $@"== Corrupt Source Engine ==
 Click on Browse Target and select the gameinfo.txt of the game you want to corrupt, or drag and drop it into the box.
+Be sure to decompress all vpks if you plan to target vpks, but don't extract files from them.
 Don't be stupid. Don't corrupt online games like TF2 or CounterStrike.
 ";
         }

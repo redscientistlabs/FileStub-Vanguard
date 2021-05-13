@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuzuTemplatePlugin", "FileStub\Templates\Yuzu\YuzuTemplatePlugin.csproj", "{BA664F2E-8750-4A3F-866E-EB1F4A5EEAC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceEngineTemplatePlugin", "FileStub\Templates\SourceEngine\SourceEngineTemplatePlugin.csproj", "{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,18 @@ Global
 		{BA664F2E-8750-4A3F-866E-EB1F4A5EEAC0}.Release|x64.Build.0 = Release|Any CPU
 		{BA664F2E-8750-4A3F-866E-EB1F4A5EEAC0}.Release|x86.ActiveCfg = Release|Any CPU
 		{BA664F2E-8750-4A3F-866E-EB1F4A5EEAC0}.Release|x86.Build.0 = Release|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Debug|x64.Build.0 = Debug|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Debug|x86.Build.0 = Debug|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Release|x64.ActiveCfg = Release|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Release|x64.Build.0 = Release|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Release|x86.ActiveCfg = Release|Any CPU
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +160,7 @@ Global
 		{A31C17E1-2EAB-434F-A022-20193F2CEAB7} = {2956F1A8-9BE7-4B90-861F-E6A13D0D9260}
 		{3C459CCC-A110-4D57-AB68-36F1802B93E3} = {E2B85FA8-490F-4E21-A2FD-058E2DE0757D}
 		{BA664F2E-8750-4A3F-866E-EB1F4A5EEAC0} = {3C459CCC-A110-4D57-AB68-36F1802B93E3}
+		{8C3F71AB-517C-4C5D-80BB-EFF7C59AB651} = {3C459CCC-A110-4D57-AB68-36F1802B93E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EC88951-5F32-44D5-8F0B-2EC14A1CF867}
