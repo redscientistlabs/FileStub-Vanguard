@@ -11,7 +11,7 @@ namespace FileStub
     using RTCV.Common;
     using RTCV.CorruptCore;
 
-    static class Executor
+    public static class Executor
     {
         public static string otherProgram = null;
         public static string script = null;

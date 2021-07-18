@@ -8,14 +8,14 @@ namespace FileStub
     using System.Windows.Forms;
     using RTCV.CorruptCore;
 
-    interface IFileStubTemplate
+    public interface IFileStubTemplate
     {
         Form GetTemplateForm(string templateName);
         FileTarget[] GetTargets();
+        void GetSegments(FileInterface exeInterface);
         string[] TemplateNames { get; }
 
         bool DragDrop(string[] fd);
-
         bool DisplayBrowseTarget { get; }
         bool DisplayDragAndDrop { get; }
         void BrowseFiles();
