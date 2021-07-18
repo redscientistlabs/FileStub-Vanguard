@@ -84,6 +84,7 @@ namespace FileStub
             this.panel9 = new System.Windows.Forms.Panel();
             this.panel10 = new System.Windows.Forms.Panel();
             this.btnExtendPanel = new System.Windows.Forms.Button();
+            this.btnOpenPackageDownloader = new System.Windows.Forms.Button();
             this.pnTarget.SuspendLayout();
             this.pnSideBar.SuspendLayout();
             this.pnTargetExecution.SuspendLayout();
@@ -930,12 +931,31 @@ namespace FileStub
             this.btnExtendPanel.UseVisualStyleBackColor = false;
             this.btnExtendPanel.Click += new System.EventHandler(this.btnExtendPanel_Click);
             // 
+            // btnOpenPackageDownloader
+            // 
+            this.btnOpenPackageDownloader.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenPackageDownloader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnOpenPackageDownloader.FlatAppearance.BorderSize = 0;
+            this.btnOpenPackageDownloader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenPackageDownloader.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnOpenPackageDownloader.ForeColor = System.Drawing.Color.White;
+            this.btnOpenPackageDownloader.Location = new System.Drawing.Point(561, 13);
+            this.btnOpenPackageDownloader.Name = "btnOpenPackageDownloader";
+            this.btnOpenPackageDownloader.Size = new System.Drawing.Size(247, 32);
+            this.btnOpenPackageDownloader.TabIndex = 191;
+            this.btnOpenPackageDownloader.TabStop = false;
+            this.btnOpenPackageDownloader.Tag = "color:dark1";
+            this.btnOpenPackageDownloader.Text = "Install Templates from Package Downloader";
+            this.btnOpenPackageDownloader.UseVisualStyleBackColor = false;
+            this.btnOpenPackageDownloader.Click += new System.EventHandler(this.btnOpenPackageDownloader_Click);
+            // 
             // StubForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.ClientSize = new System.Drawing.Size(1010, 479);
+            this.Controls.Add(this.btnOpenPackageDownloader);
             this.Controls.Add(this.btnExtendPanel);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
@@ -1043,6 +1063,7 @@ namespace FileStub
         public System.Windows.Forms.Label lbDirtyFiles;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnOpenPackageDownloader;
     }
 }
 

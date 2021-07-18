@@ -4,6 +4,7 @@ namespace FileStub
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
+    using System.Diagnostics;
     using System.Drawing;
     using System.IO;
     using System.Linq;
@@ -63,15 +64,37 @@ namespace FileStub
         private IFileStubTemplate[] GetAssemblyTemplates()
         {
             var type = typeof(IFileStubTemplate);
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => type.IsAssignableFrom(p));
+            var alltypes = AppDomain.CurrentDomain.GetAssemblies().ToArray();
+            var allsubtypes = new List<Type>();
 
-            return types
+            foreach (var typ in alltypes)
+            {
+                try
+                {
+                    var subs = typ.GetTypes();
+                    allsubtypes.AddRange(subs.Where(p => type.IsAssignableFrom(p)));
+
+                }
+                catch (Exception ex)
+                {
+                    new object(); //eat it
+                }
+            }
+
+            return allsubtypes
                 .Where(it => it != typeof(IFileStubTemplate))
                 .Select(it => (IFileStubTemplate)Activator.CreateInstance(it))
                 .ToArray();
+
+            //var types = alltypes.SelectMany(s => s.GetTypes())
+            //    .Where(p => type.IsAssignableFrom(p)).ToArray();
+
+            //return types
+            //    .Where(it => it != typeof(IFileStubTemplate))
+            //    .Select(it => (IFileStubTemplate)Activator.CreateInstance(it))
+            //    .ToArray();
         }
+
 
         public void ShrinkStubForm()
         {
@@ -112,6 +135,7 @@ namespace FileStub
             Colors.SetRTCColor(ProgramColor, this);
 
             FileWatch.Start();
+
         }
 
         internal void RunProgressBar(string progressLabel, int maxProgress, Action<object, EventArgs> action, Action<object, EventArgs> postAction = null)
@@ -374,7 +398,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 //overrideTargets.
             }
 
-            if(overrideTargets == null)
+            if(overrideTargets == null && lbTargets.Items.Count == 0)
             {
                 MessageBox.Show("Error loading target");
             }
@@ -448,7 +472,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             {
                 foreach (var file in fd)
                 {
-                    if (Directory.Exists(file))
+                    if (Directory.Exists(file)) // is a directory
                     {
                         var files = SelectMultipleForm.DirSearch(file);
 
@@ -459,14 +483,14 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
 
                         lbTargets.Items.AddRange(targets.ToArray());
                     }
-                    else
+                    else //is a file
                     {
-                        var targets = fd.Select(it => Vault.RequestFileTarget(it));
+                        var target = Vault.RequestFileTarget(file);
 
-                        if (targets.Count() > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
+                        if (fd.Count() > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
                             cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
 
-                        lbTargets.Items.AddRange(targets.ToArray());
+                        lbTargets.Items.Add(target);
                     }
                 }
 
@@ -498,14 +522,14 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             DialogResult result = fbd.ShowDialog();
 
-            if(result == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 var baseDir = fbd.SelectedPath;
 
                 FileTarget invalid = lbTargets.Items.Cast<FileTarget>()
                     .FirstOrDefault(it => string.IsNullOrWhiteSpace(it.BaseDir) && !it.FilePath.Contains(baseDir));
 
-                if(invalid != null)
+                if (invalid != null)
                 {
                     MessageBox.Show("Could not match all files with basedir");
                     return;
@@ -529,6 +553,21 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         private void btnBakeAllDirty_Click(object sender, EventArgs e)
         {
             FileWatch.BakeDirty();
+        }
+
+        private void btnOpenPackageDownloader_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("The Package Downloader will now open.\n\nYou will need to restart FileStub after installing Templates from the Package Downloader");
+
+            string tempLauncherDir = Path.Combine(RtcCore.EmuDir, "..\\Launcher");
+
+            string exeFile = Path.Combine(tempLauncherDir, "PackageDownloader.exe");
+            var psi = new ProcessStartInfo
+            {
+                FileName = exeFile,
+                WorkingDirectory = tempLauncherDir,
+            };
+            Process.Start(psi);
         }
     }
 }
