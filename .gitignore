@@ -3,8 +3,6 @@ FileStub/bin/*
 FileStub/obj/*
 packages/*
 .vscode
-/FileStub/Templates/Yuzu/bin/Debug
-/FileStub/Templates/Yuzu/obj
 /FileStub/Templates/SourceEngine/bin
 /FileStub/Templates/SourceEngine/obj
 /FileStub/Templates/Unity/bin
