@@ -1,9 +1,0 @@
-.vs/*
-FileStub/bin/*
-FileStub/obj/*
-packages/*
-.vscode
-/FileStub/Templates/SourceEngine/bin
-/FileStub/Templates/SourceEngine/obj
-/FileStub/Templates/Unity/bin
-/FileStub/Templates/Unity/obj
