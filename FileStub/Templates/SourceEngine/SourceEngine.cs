@@ -18,7 +18,6 @@ namespace FileStub.Templates
 
     public partial class FileStubTemplaceSource : Form, IFileStubTemplate
     {
-        
         const string SOURCESTUB_EXE_KNOWN_DLL = "Source Engine : EXE and known DLLs";
         //const string SOURCESTUB_EXE_ALL_DLL = "Source Engine : EXE and all DLLs"; //targeting all dlls for a source engine game is a bad idea
         const string SOURCESTUB_EXE = "Source Engine : Engine EXE";
@@ -51,7 +50,7 @@ namespace FileStub.Templates
         public FileTarget[] GetTargets()
         {
             string targetGame = lbGameTarget.Text;
-            if(targetGame == "" || targetGame == " ")
+            if (targetGame == string.Empty)
             {
                 MessageBox.Show("No target loaded");
                 return null;
@@ -102,21 +101,17 @@ namespace FileStub.Templates
                     it.Name.ToUpper().Contains("PHYS") ||
                     it.Name.ToUpper().Contains("STUDIORENDER.DLL") ||
                     it.Name.ToUpper().Contains("CLIENT.DLL") ||
-                    it.Name.ToUpper().Contains("ENGINE.DLL")
-                    ).ToArray();
+                    it.Name.ToUpper().Contains("ENGINE.DLL")).ToArray();
 
             var allSourceEngine = allEngineDlls.Where(it =>
-                    it.Name.ToUpper().Contains("ENGINE.DLL")
-                    ).ToArray();
+                    it.Name.ToUpper().Contains("ENGINE.DLL")).ToArray();
 
             var allGameDlls = allgamebinFiles.Where(it => it.Extension == ".dll");
 
             var allKnownGameDlls = allGameDlls.Where(it =>
-                    it.Name.ToUpper().Contains("CLIENT.DLL")
-                    ).ToArray();
+                    it.Name.ToUpper().Contains("CLIENT.DLL")).ToArray();
             var allBSPs = allgamemaps.Where(it =>
-                    it.Name.ToUpper().Contains(".BSP")
-                    ).ToArray();
+                    it.Name.ToUpper().Contains(".BSP")).ToArray();
             var allVPKs = allgamerootfiles.Where(it =>
                     it.Name.ToUpper().Contains(".VPK")
                     ).ToArray();
@@ -160,7 +155,6 @@ namespace FileStub.Templates
                     }
                     break;
             }
-
 
             var sf = S.GET<StubForm>();
             FileWatch.currentSession.selectedExecution = ExecutionType.EXECUTE_OTHER_PROGRAM;
