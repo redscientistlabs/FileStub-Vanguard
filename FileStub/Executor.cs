@@ -13,9 +13,12 @@ namespace FileStub
 
     public static class Executor
     {
+#pragma warning disable CA1051 // Do not declare visible instance fields
+#pragma warning disable CA2211 // Non-constant fields should not be visible
         public static string otherProgram = null;
         public static string script = null;
-
+#pragma warning restore CA2211 // Non-constant fields should not be visible
+#pragma warning restore CA1051 // Do not declare visible instance fields
         public static void EditExec()
         {
             if (FileWatch.currentSession.selectedExecution == ExecutionType.EXECUTE_OTHER_PROGRAM ||

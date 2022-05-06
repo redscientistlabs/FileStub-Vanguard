@@ -79,14 +79,14 @@ namespace FileStub
             List<FileInfo> files = new List<FileInfo>();
             try
             {
-                files.AddRange(dir.GetFiles());
+                files.AddRange(dir?.GetFiles());
 
                 foreach (var d in dir.GetDirectories())
                     files.AddRange(DirSearch(d));
             }
             catch (System.Exception ex)
             {
-                
+                _ = ex;
             }
 
             return files;

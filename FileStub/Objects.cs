@@ -17,17 +17,19 @@ namespace FileStub
 
     public class FileStubSession
     {
-        internal string targetShortName = "No target";
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        public string targetShortName = "No target";
         public string selectedExecution = null;
-        internal bool writeCopyMode = false;
-        internal string targetFullName = "No target";
+        public bool writeCopyMode = false;
+        public string targetFullName = "No target";
         public FileMemoryInterface fileInterface;
-        internal string selectedTargetType = TargetType.SINGLE_FILE;
-        internal bool autoUncorrupt = true;
-        internal bool TerminateBeforeExecution = true;
-        internal bool useAutomaticBackups = true;
+        public string selectedTargetType = TargetType.SINGLE_FILE;
+        public bool autoUncorrupt = true;
+        public bool TerminateBeforeExecution = true;
+        public bool useAutomaticBackups = true;
         public bool bigEndian = false;
-        internal bool useCacheAndMultithread = true;
+        public bool useCacheAndMultithread = true;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         public override string ToString()
         {
@@ -51,5 +53,4 @@ namespace FileStub
         public const string MULTIPLE_FILE_MULTIDOMAIN = "Multiple files (Many domains)";
         public const string MULTIPLE_FILE_MULTIDOMAIN_FULLPATH = "Multiple files (Many domains + Full path)";
     }
-
 }

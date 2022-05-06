@@ -1,14 +1,13 @@
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.IO;
-using System.Reflection;
-using NLog;
-
 namespace FileStub.Templates.PluginHost
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.IO;
+    using System.Reflection;
+    using NLog;
+
     //Code copypasted from RTCV and refitted for filestub
     //Sorry everyone, I had to make a separate plugin class for filestub as opposed to just making templates RTCV plugins as you HAVE to load a template BEFORE you can connect filestub to rtcv
 
@@ -26,7 +25,6 @@ namespace FileStub.Templates.PluginHost
         Version Version { get; }
         //RTCSide SupportedSide { get; } //
 
-
         bool Start();
     }
     public class Host : IDisposable
@@ -36,7 +34,6 @@ namespace FileStub.Templates.PluginHost
         private IEnumerable<IFileStubPlugin> plugins;
         private List<IFileStubPlugin> _loadedPlugins;
         public IReadOnlyList<IFileStubPlugin> LoadedPlugins => _loadedPlugins;
-
 
         private CompositionContainer _container;
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -91,11 +88,8 @@ namespace FileStub.Templates.PluginHost
                 {
                     logger.Info($"Loading {p.Name}");
 
-
                     //Hack Hack Hack. If we're in attached, we're both sides. We can't thin-client this, we're actually both sides.
                     //Start both sides and leave it up to the plugin dev to handle it for now if they're devving in attached mode (sorry Narry) //Narry 3-22-20
-
-
                     /*if (side == RTCSide.Both)
                     {
                         if (p.Start(RTCSide.Client))
@@ -123,7 +117,7 @@ namespace FileStub.Templates.PluginHost
             }
             initialized = true;
         }
-        public void Shutdown()
+        public static void Shutdown()
         {
         }
 
@@ -148,7 +142,7 @@ namespace FileStub.Templates.PluginHost
 
             var assemblyLoaderType = assembly.GetType("Costura.AssemblyLoader", false);
             var attachMethod = assemblyLoaderType?.GetMethod("Attach", BindingFlags.Static | BindingFlags.Public);
-            attachMethod?.Invoke(null, new object[] { });
+            attachMethod?.Invoke(null, Array.Empty<object>());
         }
     }
 }

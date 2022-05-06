@@ -28,6 +28,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+	<DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -69,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Executor.cs" />
     <Compile Include="FileWatch.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="StubForm.cs">
       <SubType>Form</SubType>
     </Compile>

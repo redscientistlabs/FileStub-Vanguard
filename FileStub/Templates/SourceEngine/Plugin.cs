@@ -17,9 +17,7 @@ namespace SourceEngine
         public Version Version => new Version(0, 0, 1);
         public bool Start()
         {
-
             return true;
         }
-
     }
 }

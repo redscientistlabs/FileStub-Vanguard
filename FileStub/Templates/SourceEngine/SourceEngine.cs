@@ -41,7 +41,6 @@ namespace FileStub.Templates
         public bool DisplayDragAndDrop => true;
         public bool DisplayBrowseTarget => true;
 
-
         public FileStubTemplaceSource()
         {
             InitializeComponent();
@@ -50,7 +49,7 @@ namespace FileStub.Templates
         public FileTarget[] GetTargets()
         {
             string targetGame = lbGameTarget.Text;
-            if (targetGame == string.Empty)
+            if (string.IsNullOrEmpty(targetGame))
             {
                 MessageBox.Show("No target loaded");
                 return null;

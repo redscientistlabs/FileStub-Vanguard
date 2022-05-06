@@ -18,7 +18,6 @@ namespace FileStub.Templates
 
     public partial class FileStubTemplateUnity : Form, IFileStubTemplate
     {
-        
         const string UNITYSTUB_EXE_KNOWN_DLL = "Unity Engine : EXE and known DLLs";
         const string UNITYSTUB_EXE_ALL_DLL = "Unity Engine : EXE and all DLLs";
         const string UNITYSTUB_EXE = "Unity Engine : Main EXE";
@@ -34,8 +33,6 @@ namespace FileStub.Templates
 
         public bool DisplayDragAndDrop => true;
         public bool DisplayBrowseTarget => true;
-
-
         public FileStubTemplateUnity()
         {
             InitializeComponent();
@@ -44,7 +41,7 @@ namespace FileStub.Templates
         {
             string targetExe = lbExeTarget.Text;
 
-            if(targetExe == "")
+            if (string.IsNullOrEmpty(targetExe))
             {
                 MessageBox.Show("No target loaded");
                 return null;
@@ -57,7 +54,7 @@ namespace FileStub.Templates
 
             var baseFolder = exeFileInfo.Directory;
 
-            if(cbParentExeDir.Checked)
+            if (cbParentExeDir.Checked)
                 baseFolder = baseFolder.Parent;
 
             List<FileInfo> allFiles = SelectMultipleForm.DirSearch(baseFolder);
@@ -82,7 +79,6 @@ namespace FileStub.Templates
             var allUnityEngine = allDlls.Where(it =>
                     it.Name.ToUpper().Contains("UNITYENGINE.DLL")
                     ).ToArray();
-
 
             switch (currentSelectedTemplate)
             {
@@ -136,7 +132,7 @@ Click on Browse Target and select the EXE of the game you want to corrupt or dra
 
         bool IFileStubTemplate.DragDrop(string[] fd)
         {
-            if(fd.Length > 1 || fd[0].EndsWith("\\") || !fd[0].ToUpper().EndsWith(".EXE"))
+            if (fd.Length > 1 || fd[0].EndsWith("\\") || !fd[0].ToUpper().EndsWith(".EXE"))
             {
                 MessageBox.Show("Please only drop the game's main EXE");
                 lbExeTarget.Text = "";
@@ -181,6 +177,5 @@ Click on Browse Target and select the EXE of the game you want to corrupt or dra
         {
             throw new NotImplementedException();
         }
-
     }
 }

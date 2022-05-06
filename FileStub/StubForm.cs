@@ -48,7 +48,7 @@ namespace FileStub
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN,
                 TargetType.MULTIPLE_FILE_MULTIDOMAIN_FULLPATH,
             });
-            string[] templatepaths = new[] { Path.Combine(Directory.GetCurrentDirectory(), "TEMPLATES")};
+            string[] templatepaths = new[] { Path.Combine(Directory.GetCurrentDirectory(), "TEMPLATES") };
             host.Start(templatepaths);
 
             var templates = GetAssemblyTemplates();
@@ -61,7 +61,7 @@ namespace FileStub
             }
         }
 
-        private IFileStubTemplate[] GetAssemblyTemplates()
+        private static IFileStubTemplate[] GetAssemblyTemplates()
         {
             var type = typeof(IFileStubTemplate);
             var alltypes = AppDomain.CurrentDomain.GetAssemblies().ToArray();
@@ -73,10 +73,10 @@ namespace FileStub
                 {
                     var subs = typ.GetTypes();
                     allsubtypes.AddRange(subs.Where(p => type.IsAssignableFrom(p)));
-
                 }
                 catch (Exception ex)
                 {
+                    _ = ex;
                     new object(); //eat it
                 }
             }
@@ -94,8 +94,6 @@ namespace FileStub
             //    .Select(it => (IFileStubTemplate)Activator.CreateInstance(it))
             //    .ToArray();
         }
-
-
         public void ShrinkStubForm()
         {
             int remainder = this.Width - (btnTargetSettings.Location.X + btnTargetSettings.Width);
@@ -135,7 +133,6 @@ namespace FileStub
             Colors.SetRTCColor(ProgramColor, this);
 
             FileWatch.Start();
-
         }
 
         internal void RunProgressBar(string progressLabel, int maxProgress, Action<object, EventArgs> action, Action<object, EventArgs> postAction = null)
@@ -226,7 +223,7 @@ namespace FileStub
 
         private void BtnBrowseTarget_Click(object sender, EventArgs e)
         {
-            if(selectedTemplate != null)
+            if (selectedTemplate != null)
             {
                 selectedTemplate.BrowseFiles();
             }
@@ -236,7 +233,7 @@ namespace FileStub
 
         private void BtnUnloadTarget_Click(object sender, EventArgs e)
         {
-            if (!FileWatch.CloseActiveTargets(restoreTarget:false))
+            if (!FileWatch.CloseActiveTargets(restoreTarget: false))
                 return;
             DisableTargetInterface();
         }
@@ -247,9 +244,9 @@ namespace FileStub
             lbTargetTypeDisplay.Text = FileWatch.currentSession.selectedTargetType;
             lbTargets.Items.Clear();
 
-            if(templateDico.TryGetValue(FileWatch.currentSession.selectedTargetType, out IFileStubTemplate template))
+            if (templateDico.TryGetValue(FileWatch.currentSession.selectedTargetType, out IFileStubTemplate template))
             {
-                if(selectedTemplate != null)
+                if (selectedTemplate != null)
                 {
                     var st = (selectedTemplate as Form);
                     if (st.Parent != null)
@@ -279,7 +276,7 @@ namespace FileStub
                 if (selectedTemplate != null)
                 {
                     var st = (selectedTemplate as Form);
-                    if(st.Parent != null)
+                    if (st.Parent != null)
                         st.Parent.Controls.Remove(st);
                 }
                 selectedTemplate = null;
@@ -388,7 +385,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         public void btnLoadTargets_Click(object sender, EventArgs e)
         {
             FileTarget[] overrideTargets = null;
-            if(selectedTemplate != null)
+            if (selectedTemplate != null)
             {
                 lbTargets.Items.Clear();
                 overrideTargets = selectedTemplate.GetTargets();
@@ -398,7 +395,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                 //overrideTargets.
             }
 
-            if(overrideTargets == null && lbTargets.Items.Count == 0)
+            if (overrideTargets == null && lbTargets.Items.Count == 0)
             {
                 MessageBox.Show("Error loading target");
             }
@@ -459,6 +456,8 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
         private void lbTargets_DragDrop(object sender, DragEventArgs e) => targetDragDrop(sender, e);
         bool targetDragDrop(object sender, DragEventArgs e)
         {
+            _ = sender;
+
             var formats = e.Data.GetFormats();
             e.Effect = DragDropEffects.Move;
 
@@ -466,7 +465,6 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
             if (selectedTemplate != null)
             {
                 return selectedTemplate.DragDrop(fd);
-
             }
             else
             {
@@ -487,7 +485,7 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                     {
                         var target = Vault.RequestFileTarget(file);
 
-                        if (fd.Count() > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
+                        if (fd.Length > 1 && FileWatch.currentSession.selectedTargetType == TargetType.SINGLE_FILE)
                             cbTargetType.SelectedItem = cbTargetType.Items.Cast<object>().FirstOrDefault(iterator => iterator.ToString() == TargetType.MULTIPLE_FILE_MULTIDOMAIN);
 
                         lbTargets.Items.Add(target);
@@ -540,9 +538,6 @@ Are you sure you want to reset the current target's backup?", "WARNING", Message
                     target.SetBaseDir(baseDir);
                 }
             }
-
-
-
         }
 
         private void btnRestoreDirty_Click(object sender, EventArgs e)

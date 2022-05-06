@@ -1,22 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using RTCV.Common;
-using RTCV.CorruptCore;
 //a helper class for targeting elf files
 namespace FileStub.Templates
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
+    using System.Runtime.Remoting.Messaging;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using RTCV.Common;
+    using RTCV.CorruptCore;
+
     public class ELFHelper
     {
+#pragma warning disable CA1051 // Do not declare visible instance fields
         public string pathtoelf;
         public FileTarget elfTarget;
         public int bitwidth;
@@ -31,16 +33,17 @@ namespace FileStub.Templates
         public string[] ss_names = new string[1024];
         public long[] ss_offsets = new long[1024];
         public long[] ss_sizes = new long[1024];
+#pragma warning restore CA1051 // Do not declare visible instance fields
         public ELFHelper(FileInterface elfInterface)
         {
-            string elfpath = elfInterface.Filename;
+            string elfpath = elfInterface?.Filename;
             pathtoelf = elfpath;
             if (elfpath.Contains("rpx")) IsRPX = true;
             else { IsRPX = false; }
             var elfpathInfo = new FileInfo(elfpath);
             bitwidth = GetElfBitWidth(elfInterface);
             BigEndian = IsElfBigEndian(elfInterface);
-            if(!IsRPX) //RPXs are ELF files but don't have program headers.
+            if (!IsRPX) //RPXs are ELF files but don't have program headers.
             {
                 pht_offset = GetProgramHeaderTableOffset(elfInterface);
                 pht_entries = GetProgramHeaderEntryNum(elfInterface);
@@ -52,7 +55,7 @@ namespace FileStub.Templates
             ss_names = new string[sht_entries];
             ss_offsets = new long[sht_entries];
             ss_sizes = new long[sht_entries];
-            if(!IsRPX)
+            if (!IsRPX)
             {
                 int ph_iterator = 0;
                 while (ph_iterator < pht_entries)
@@ -70,9 +73,8 @@ namespace FileStub.Templates
                 ss_offsets[sh_iterator] = GetSectionSegmentOffset(elfInterface, sh_iterator);
                 ss_sizes[sh_iterator] = GetSectionSegmentSize(elfInterface, sh_iterator);
             }
-            
         }
-        int GetElfBitWidth(FileInterface elf)
+        static int GetElfBitWidth(FileInterface elf)
         {
             if (elf.PeekByte(0x04) == 0x1)
                 return 32;
@@ -80,7 +82,7 @@ namespace FileStub.Templates
                 return 64;
             return 32;
         }
-        bool IsElfBigEndian(FileInterface elf)
+        static bool IsElfBigEndian(FileInterface elf)
         {
             if (elf.PeekByte(0x5) == 0x1)
                 return false;
@@ -89,7 +91,7 @@ namespace FileStub.Templates
                 return true;
             }
         }
-        long GetProgramHeaderTableOffset(FileInterface elf)
+        static long GetProgramHeaderTableOffset(FileInterface elf)
         {
             if (GetElfBitWidth(elf) == 32)
             {
@@ -98,7 +100,7 @@ namespace FileStub.Templates
             else //assume it's 64-bit
                 return (long)BitConverter.ToUInt64(elf.PeekBytes(0x20, 8).Reverse().ToArray(), 0);
         }
-        long GetSectionHeaderTableOffset(FileInterface elf)
+        static long GetSectionHeaderTableOffset(FileInterface elf)
         {
             if (GetElfBitWidth(elf) == 32)
             {
@@ -107,7 +109,7 @@ namespace FileStub.Templates
             else //assume it's 64-bit
                 return (long)BitConverter.ToUInt64(elf.PeekBytes(0x28, 8).Reverse().ToArray(), 0);
         }
-        int GetProgramHeaderEntryNum(FileInterface elf)
+        static int GetProgramHeaderEntryNum(FileInterface elf)
         {
             if (GetElfBitWidth(elf) == 32)
             {
@@ -116,7 +118,7 @@ namespace FileStub.Templates
             else //assume it's 64-bit
                 return BitConverter.ToUInt16(elf.PeekBytes(0x38, 2).Reverse().ToArray(), 0);
         }
-        int GetSectionHeaderEntryNum(FileInterface elf)
+        static int GetSectionHeaderEntryNum(FileInterface elf)
         {
             if (GetElfBitWidth(elf) == 32)
             {
@@ -125,7 +127,7 @@ namespace FileStub.Templates
             else //assume it's 64-bit
                 return BitConverter.ToUInt16(elf.PeekBytes(0x3C, 2).Reverse().ToArray(), 0);
         }
-        long GetProgramSegmentOffset(FileInterface elf, int segment)
+        static long GetProgramSegmentOffset(FileInterface elf, int segment)
         {
             if (GetElfBitWidth(elf) == 32)
             {
@@ -138,7 +140,7 @@ namespace FileStub.Templates
                 return (long)BitConverter.ToUInt64(elf.PeekBytes(Convert.ToInt64(headeroffset) + 0x08, 8).Reverse().ToArray(), 0);
             }
         }
-        long GetProgramSegmentSize(FileInterface elf, int segment)
+        static long GetProgramSegmentSize(FileInterface elf, int segment)
         {
             if (GetElfBitWidth(elf) == 32)
             {
@@ -151,7 +153,7 @@ namespace FileStub.Templates
                 return (long)BitConverter.ToUInt64(elf.PeekBytes(Convert.ToInt64(headeroffset) + 0x20, 8).Reverse().ToArray(), 0);
             }
         }
-        long GetShstrOffset(FileInterface elf)
+        static long GetShstrOffset(FileInterface elf)
         {
             if (GetElfBitWidth(elf) == 32)
             {
@@ -164,14 +166,14 @@ namespace FileStub.Templates
                 return (long)BitConverter.ToUInt64(elf.PeekBytes(GetSectionHeaderTableOffset(elf) + (0x40 * Convert.ToInt64(segmentindex)) + 10, 8).Reverse().ToArray(), 0);
             }
         }
-        string GetSectionSegmentName(FileInterface elf, int segment)
+        static string GetSectionSegmentName(FileInterface elf, int segment)
         {
             if (GetElfBitWidth(elf) == 32)
             {
                 long headeroffset = GetSectionHeaderTableOffset(elf) + (0x28 * Convert.ToInt64(segment));
                 long stroffset = BitConverter.ToUInt32(elf.PeekBytes(headeroffset, 4).Reverse().ToArray(), 0);
                 if (GetShstrOffset(elf) == 0) return " ";
-                return System.Text.Encoding.ASCII.GetString(elf.PeekBytes(GetShstrOffset(elf)+stroffset, 8));
+                return System.Text.Encoding.ASCII.GetString(elf.PeekBytes(GetShstrOffset(elf) + stroffset, 8));
             }
             else
             {
@@ -194,7 +196,7 @@ namespace FileStub.Templates
                 return (long)BitConverter.ToUInt64(elf.PeekBytes(Convert.ToInt64(headeroffset) + 0x18, 8).Reverse().ToArray(), 0);
             }
         }
-        long GetSectionSegmentSize(FileInterface elf, int segment)
+        static long GetSectionSegmentSize(FileInterface elf, int segment)
         {
             if (GetElfBitWidth(elf) == 32)
             {
@@ -207,6 +209,5 @@ namespace FileStub.Templates
                 return (long)BitConverter.ToUInt64(elf.PeekBytes(Convert.ToInt64(headeroffset) + 0x20, 8).Reverse().ToArray(), 0);
             }
         }
-
     }
 }

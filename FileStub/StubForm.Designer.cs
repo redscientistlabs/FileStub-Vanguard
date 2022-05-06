@@ -17,6 +17,7 @@ namespace FileStub
             {
                 components.Dispose();
             }
+            host.Dispose();
             base.Dispose(disposing);
         }
 

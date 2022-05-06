@@ -20,12 +20,14 @@ namespace FileStub
 
     public static class FileWatch
     {
-        internal static string FileStubVersion = "0.2.1";
+#pragma warning disable CA2211 // Non-constant fields should not be visible
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        public static string FileStubVersion = "0.2.1";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-
         public static FileStubSession currentSession = new FileStubSession();
-
-        internal static ProgressForm progressForm;
+        public static ProgressForm progressForm;
+#pragma warning restore CA2211 // Non-constant fields should not be visible
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         public static void Start()
         {
@@ -65,11 +67,8 @@ namespace FileStub
 
         private static void RefreshVaultInterface()
         {
-
             SyncObjectSingleton.FormExecute(() =>
             {
-
-
                 List<FileTarget> dirtyTargets = Vault.GetDirtyTargets();
                 var sf = S.GET<StubForm>();
 
@@ -79,7 +78,6 @@ namespace FileStub
                     sf.btnBakeAllDirty.Enabled = false;
                     sf.btnRestoreDirty.Enabled = false;
                     sf.btnClearVaultData.Enabled = true;
-
                 }
                 else
                 {
@@ -88,7 +86,6 @@ namespace FileStub
                     sf.btnRestoreDirty.Enabled = true;
                     sf.btnClearVaultData.Enabled = false;
                 }
-
             });
         }
 
@@ -147,7 +144,6 @@ namespace FileStub
 
         internal static bool LoadTargets(FileTarget[] provided = null)
         {
-
             FileTarget[] targets;
             string requestedFileType = currentSession.selectedTargetType;
 
@@ -227,7 +223,6 @@ namespace FileStub
                         FileInterface.identity = FileInterfaceIdentity.FULL_PATH;
                         break;
                 }
-
 
                 foreach (var target in targets)
                     target.BigEndian = FileWatch.currentSession.bigEndian;
@@ -348,7 +343,7 @@ namespace FileStub
         {
             if (FileWatch.currentSession.fileInterface != null)
             {
-                if(restoreTarget)
+                if (restoreTarget)
                     FileWatch.RestoreTarget();
 
                 FileWatch.currentSession.fileInterface?.CloseStream();

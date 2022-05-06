@@ -19,6 +19,5 @@ namespace FileStub
         bool DisplayBrowseTarget { get; }
         bool DisplayDragAndDrop { get; }
         void BrowseFiles();
-
     }
 }
