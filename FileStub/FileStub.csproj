@@ -28,7 +28,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-	<DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -52,7 +52,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>FileStubIcon.ico</ApplicationIcon>
+    <ApplicationIcon>FileStub2022.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -131,28 +131,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\RTCV\Source\Frontend\UI\UI.csproj">
-      <Project>{bd376bb2-17ec-4fb0-a9fe-6b1bbf4af3e3}</Project>
-      <Name>UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RTCV\Source\Libraries\Common\Common.csproj">
-      <Project>{a31c17e1-2eab-434f-a022-20193f2ceab7}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RTCV\Source\Libraries\CorruptCore\CorruptCore.csproj">
-      <Project>{b5633a86-dc66-4723-88eb-7dfc95458072}</Project>
-      <Name>CorruptCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RTCV\Source\Libraries\NetCore\NetCore.csproj">
-      <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
-      <Name>NetCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RTCV\Source\Libraries\Vanguard\Vanguard.csproj">
-      <Project>{364c705e-b7ab-4a94-a59b-88899ce65958}</Project>
-      <Name>Vanguard</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="FileStub2022.ico" />
     <Content Include="FileStubIcon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +153,28 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RTCV\Source\Frontend\UI\UI.csproj">
+      <Project>{bd376bb2-17ec-4fb0-a9fe-6b1bbf4af3e3}</Project>
+      <Name>UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RTCV\Source\Libraries\Common\Common.csproj">
+      <Project>{a31c17e1-2eab-434f-a022-20193f2ceab7}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RTCV\Source\Libraries\CorruptCore\CorruptCore.csproj">
+      <Project>{b5633a86-dc66-4723-88eb-7dfc95458072}</Project>
+      <Name>CorruptCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RTCV\Source\Libraries\NetCore\NetCore.csproj">
+      <Project>{7e106aec-5614-4206-9e4d-25759c90e8ae}</Project>
+      <Name>NetCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RTCV\Source\Libraries\Vanguard\Vanguard.csproj">
+      <Project>{364c705e-b7ab-4a94-a59b-88899ce65958}</Project>
+      <Name>Vanguard</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

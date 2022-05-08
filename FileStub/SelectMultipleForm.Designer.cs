@@ -45,7 +45,7 @@ namespace FileStub
             // 
             this.lbMultipleFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbMultipleFiles.BackColor = System.Drawing.Color.Black;
+            this.lbMultipleFiles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.lbMultipleFiles.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lbMultipleFiles.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lbMultipleFiles.ForeColor = System.Drawing.Color.White;
@@ -58,7 +58,7 @@ namespace FileStub
             // 
             // btnSendList
             // 
-            this.btnSendList.BackColor = System.Drawing.Color.Black;
+            this.btnSendList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.btnSendList.FlatAppearance.BorderSize = 0;
             this.btnSendList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSendList.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -73,11 +73,11 @@ namespace FileStub
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.Black;
+            this.btnCancel.BackColor = System.Drawing.Color.Gray;
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Location = new System.Drawing.Point(12, 509);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(66, 23);
@@ -88,11 +88,11 @@ namespace FileStub
             // 
             // btnAddFiles
             // 
-            this.btnAddFiles.BackColor = System.Drawing.Color.Black;
+            this.btnAddFiles.BackColor = System.Drawing.Color.Gray;
             this.btnAddFiles.FlatAppearance.BorderSize = 0;
             this.btnAddFiles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddFiles.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnAddFiles.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnAddFiles.ForeColor = System.Drawing.Color.White;
             this.btnAddFiles.Location = new System.Drawing.Point(12, 451);
             this.btnAddFiles.Name = "btnAddFiles";
             this.btnAddFiles.Size = new System.Drawing.Size(66, 23);
@@ -103,11 +103,11 @@ namespace FileStub
             // 
             // btnRemoveSelected
             // 
-            this.btnRemoveSelected.BackColor = System.Drawing.Color.Black;
+            this.btnRemoveSelected.BackColor = System.Drawing.Color.Gray;
             this.btnRemoveSelected.FlatAppearance.BorderSize = 0;
             this.btnRemoveSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveSelected.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnRemoveSelected.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnRemoveSelected.ForeColor = System.Drawing.Color.White;
             this.btnRemoveSelected.Location = new System.Drawing.Point(157, 451);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(101, 23);
@@ -118,11 +118,11 @@ namespace FileStub
             // 
             // btnClearList
             // 
-            this.btnClearList.BackColor = System.Drawing.Color.Black;
+            this.btnClearList.BackColor = System.Drawing.Color.Gray;
             this.btnClearList.FlatAppearance.BorderSize = 0;
             this.btnClearList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClearList.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnClearList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnClearList.ForeColor = System.Drawing.Color.White;
             this.btnClearList.Location = new System.Drawing.Point(260, 451);
             this.btnClearList.Name = "btnClearList";
             this.btnClearList.Size = new System.Drawing.Size(42, 23);
@@ -133,11 +133,11 @@ namespace FileStub
             // 
             // btnLoadFile
             // 
-            this.btnLoadFile.BackColor = System.Drawing.Color.Black;
+            this.btnLoadFile.BackColor = System.Drawing.Color.Gray;
             this.btnLoadFile.FlatAppearance.BorderSize = 0;
             this.btnLoadFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadFile.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnLoadFile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnLoadFile.ForeColor = System.Drawing.Color.White;
             this.btnLoadFile.Location = new System.Drawing.Point(12, 480);
             this.btnLoadFile.Name = "btnLoadFile";
             this.btnLoadFile.Size = new System.Drawing.Size(143, 23);
@@ -148,11 +148,11 @@ namespace FileStub
             // 
             // btnSaveFile
             // 
-            this.btnSaveFile.BackColor = System.Drawing.Color.Black;
+            this.btnSaveFile.BackColor = System.Drawing.Color.Gray;
             this.btnSaveFile.FlatAppearance.BorderSize = 0;
             this.btnSaveFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveFile.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnSaveFile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnSaveFile.ForeColor = System.Drawing.Color.White;
             this.btnSaveFile.Location = new System.Drawing.Point(157, 480);
             this.btnSaveFile.Name = "btnSaveFile";
             this.btnSaveFile.Size = new System.Drawing.Size(145, 23);
@@ -163,11 +163,11 @@ namespace FileStub
             // 
             // btnAddFolder
             // 
-            this.btnAddFolder.BackColor = System.Drawing.Color.Black;
+            this.btnAddFolder.BackColor = System.Drawing.Color.Gray;
             this.btnAddFolder.FlatAppearance.BorderSize = 0;
             this.btnAddFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddFolder.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnAddFolder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnAddFolder.ForeColor = System.Drawing.Color.White;
             this.btnAddFolder.Location = new System.Drawing.Point(81, 451);
             this.btnAddFolder.Name = "btnAddFolder";
             this.btnAddFolder.Size = new System.Drawing.Size(74, 23);
@@ -193,7 +193,7 @@ namespace FileStub
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(314, 571);
             this.Controls.Add(this.cbLoadAnything);
             this.Controls.Add(this.btnAddFolder);
