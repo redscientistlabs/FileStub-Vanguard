@@ -137,9 +137,6 @@
     <Content Include="FileStubIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Ceras">
-      <Version>4.1.7</Version>
-    </PackageReference>
     <PackageReference Include="Costura.Fody">
       <Version>5.7.0</Version>
       <PrivateAssets>all</PrivateAssets>
@@ -180,6 +177,10 @@
     <ProjectReference Include="..\..\RTCV\Source\Libraries\Vanguard\Vanguard.csproj">
       <Project>{364c705e-b7ab-4a94-a59b-88899ce65958}</Project>
       <Name>Vanguard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RTCV\Source\Libraries\ZombieCeras\src\Ceras\Ceras.csproj">
+      <Project>{5cd29e13-385e-400b-aa6f-498d9e1c7a0a}</Project>
+      <Name>Ceras</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
