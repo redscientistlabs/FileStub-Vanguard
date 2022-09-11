@@ -22,7 +22,7 @@ namespace FileStub
     {
 #pragma warning disable CA2211 // Non-constant fields should not be visible
 #pragma warning disable CA1051 // Do not declare visible instance fields
-        public static string FileStubVersion = "0.2.1";
+        public static string FileStubVersion = "0.2.2";
         public static string currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         public static FileStubSession currentSession = new FileStubSession();
         public static ProgressForm progressForm;

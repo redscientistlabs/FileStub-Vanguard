@@ -66,6 +66,10 @@ namespace FileStub.Templates.PluginHost
             {
                 logger.Error(compositionException, "Composition failed in plugin initialization");
             }
+            catch ( Exception ex)
+            {
+                logger.Error(ex, "Failed in plugin initialization");
+            }
         }
 
         public void Start(string[] pluginDirs)
@@ -82,6 +86,7 @@ namespace FileStub.Templates.PluginHost
 
             initialize(pluginDirs);
 
+            if (plugins != null)
             foreach (var p in plugins)
             {
                 if (/*p.SupportedSide == side || p.SupportedSide == RTCSide.Both*/true)
@@ -130,6 +135,7 @@ namespace FileStub.Templates.PluginHost
         //Costura doesn't play nicely with loading assemblies via reflection so we need Costura to register any of the loaded assemblies
         private void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
+
             Assembly assembly = null;
             if (args.LoadedAssembly.IsDynamic)
             {
@@ -137,7 +143,15 @@ namespace FileStub.Templates.PluginHost
             }
             else
             {
-                assembly = Assembly.LoadFile(args.LoadedAssembly.Location);
+                var location = args.LoadedAssembly.Location;
+                if (!string.IsNullOrEmpty(location))
+                    assembly = Assembly.LoadFile(location);
+                else
+                {
+                    //preloaded by fody
+                    assembly = args.LoadedAssembly;
+                    new object();
+                }
             }
 
             var assemblyLoaderType = assembly.GetType("Costura.AssemblyLoader", false);
